@@ -282,7 +282,7 @@
 
       contenedor.innerHTML = data.alertas.map(a => `
         <div class="alerta-row">
-          <span class="alerta-tipo ${a.tipo}">${a.tipo}</span>
+          <span class="alerta-mensaje">${formatearMensaje(a.mensaje)}</span>
           <span class="alerta-mensaje">${a.mensaje}</span>
           <span class="alerta-hora">${formatearFecha(a.created_at)}</span>
         </div>
@@ -291,7 +291,12 @@
       document.getElementById('lista-alertas').innerHTML = '<p class="vacio">Error al cargar alertas</p>';
     }
   }
-
+function formatearMensaje(mensaje) {
+  // Reemplaza fechas ISO dentro del texto por formato legible
+  return mensaje.replace(/\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}(\.\d+)?/g, (fecha) => {
+    return formatearFecha(fecha);
+  });
+}
   function formatearFecha(isoString) {
     if (!isoString) return 'desconocida';
     return new Date(isoString).toLocaleString('es-ES', {
