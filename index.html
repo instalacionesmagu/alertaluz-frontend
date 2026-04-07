@@ -133,7 +133,7 @@
     }
     .alerta-tipo.offline { background: #fdedec; color: #c0392b; }
     .alerta-tipo.online { background: #eafaf1; color: #27ae60; }
-    .alerta-mensaje { flex: 1; color: #555; }
+    .alerta-mensaje { flex: 1; color: #555; word-break: break-word; }
     .alerta-hora { color: #aaa; flex-shrink: 0; }
 
     .vacio { color: #aaa; font-size: 14px; text-align: center; padding: 24px 0; }
@@ -188,7 +188,6 @@
   const BACKEND = 'https://alertaluz-backend.onrender.com';
   let sesionEmail = null;
 
-  // Comprobar sesión guardada
   window.onload = () => {
     const emailGuardado = localStorage.getItem('alertaluz_email');
     if (emailGuardado) {
@@ -200,9 +199,7 @@
   async function iniciarSesion() {
     const email = document.getElementById('login-email').value.trim();
     const password = document.getElementById('login-password').value;
-
     if (!email || !password) return;
-
     try {
       const res = await fetch(`${BACKEND}/login`, {
         method: 'POST',
@@ -210,7 +207,6 @@
         body: JSON.stringify({ email, password })
       });
       const data = await res.json();
-
       if (data.ok) {
         sesionEmail = email;
         localStorage.setItem('alertaluz_email', email);
@@ -236,7 +232,6 @@
     document.getElementById('header-email').textContent = sesionEmail;
     await cargarDispositivos();
     await cargarAlertas();
-    // Actualizar cada 30 segundos
     setInterval(async () => {
       await cargarDispositivos();
       await cargarAlertas();
@@ -248,12 +243,10 @@
       const res = await fetch(`${BACKEND}/dispositivos?email=${encodeURIComponent(sesionEmail)}`);
       const data = await res.json();
       const contenedor = document.getElementById('lista-dispositivos');
-
       if (!data.dispositivos || data.dispositivos.length === 0) {
         contenedor.innerHTML = '<p class="vacio">No tienes dispositivos registrados</p>';
         return;
       }
-
       contenedor.innerHTML = data.dispositivos.map(d => `
         <div class="dispositivo-card">
           <div class="estado-dot ${d.estado}"></div>
@@ -274,16 +267,14 @@
       const res = await fetch(`${BACKEND}/alertas?email=${encodeURIComponent(sesionEmail)}`);
       const data = await res.json();
       const contenedor = document.getElementById('lista-alertas');
-
       if (!data.alertas || data.alertas.length === 0) {
         contenedor.innerHTML = '<p class="vacio">Sin alertas recientes</p>';
         return;
       }
-
       contenedor.innerHTML = data.alertas.map(a => `
         <div class="alerta-row">
+          <span class="alerta-tipo ${a.tipo}">${a.tipo === 'offline' ? 'Sin señal' : 'Reconectado'}</span>
           <span class="alerta-mensaje">${formatearMensaje(a.mensaje)}</span>
-          <span class="alerta-mensaje">${a.mensaje}</span>
           <span class="alerta-hora">${formatearFecha(a.created_at)}</span>
         </div>
       `).join('');
@@ -291,12 +282,13 @@
       document.getElementById('lista-alertas').innerHTML = '<p class="vacio">Error al cargar alertas</p>';
     }
   }
-function formatearMensaje(mensaje) {
-  // Reemplaza fechas ISO dentro del texto por formato legible
-  return mensaje.replace(/\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}(\.\d+)?/g, (fecha) => {
-    return formatearFecha(fecha);
-  });
-}
+
+  function formatearMensaje(mensaje) {
+    return mensaje.replace(/\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}(\.\d+)?/g, (fecha) => {
+      return formatearFecha(fecha);
+    });
+  }
+
   function formatearFecha(isoString) {
     if (!isoString) return 'desconocida';
     return new Date(isoString).toLocaleString('es-ES', {
