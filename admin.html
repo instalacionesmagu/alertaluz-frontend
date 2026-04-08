@@ -1,0 +1,291 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>AlertaLuz — Panel Admin</title>
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body { font-family: system-ui, sans-serif; background: #f0f2f5; color: #333; }
+
+    .header {
+      background: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%);
+      padding: 16px 24px;
+      display: flex; align-items: center; justify-content: space-between;
+    }
+    .header-left { display: flex; align-items: center; gap: 12px; }
+    .header-logo {
+      width: 44px; height: 44px;
+      background: rgba(255,255,255,0.1);
+      border-radius: 12px; border: 1px solid rgba(255,255,255,0.2);
+      overflow: hidden; display: flex; align-items: center; justify-content: center;
+    }
+    .header-logo img { width: 100%; height: 100%; object-fit: contain; }
+    .header-title { color: white; font-size: 18px; font-weight: 700; }
+    .header-sub { color: #FFD600; font-size: 11px; font-weight: 700; letter-spacing: 0.5px; }
+    .header-right { display: flex; align-items: center; gap: 12px; }
+    .last-update { color: rgba(255,255,255,0.5); font-size: 11px; }
+    .btn-refresh {
+      background: rgba(255,255,255,0.1); border: 1px solid rgba(255,255,255,0.2);
+      color: white; padding: 7px 16px; border-radius: 8px;
+      font-size: 12px; font-weight: 600; cursor: pointer;
+    }
+    .btn-refresh:hover { background: rgba(255,255,255,0.2); }
+
+    .login-wrap {
+      min-height: 100vh;
+      background: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%);
+      display: flex; align-items: center; justify-content: center; padding: 24px;
+    }
+    .login-card {
+      background: white; border-radius: 16px; padding: 32px;
+      width: 100%; max-width: 340px;
+    }
+    .login-card h2 { font-size: 20px; font-weight: 700; margin-bottom: 4px; }
+    .login-card p { font-size: 13px; color: #888; margin-bottom: 24px; }
+    .form-group { margin-bottom: 16px; }
+    .form-group label { display: block; font-size: 12px; font-weight: 600; color: #555; margin-bottom: 6px; text-transform: uppercase; letter-spacing: 0.5px; }
+    .form-group input { width: 100%; padding: 11px 14px; border: 1.5px solid #e8e8e8; border-radius: 8px; font-size: 14px; }
+    .form-group input:focus { outline: none; border-color: #1a1a2e; }
+    .btn-admin { width: 100%; padding: 12px; background: #1a1a2e; color: white; border: none; border-radius: 8px; font-size: 14px; font-weight: 600; cursor: pointer; }
+    .btn-admin:hover { background: #16213e; }
+    .error-msg { color: #e74c3c; font-size: 12px; margin-top: 10px; text-align: center; display: none; }
+
+    .container { max-width: 1100px; margin: 24px auto; padding: 0 16px; }
+
+    .stats-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 12px; margin-bottom: 24px; }
+    .stat-card { background: white; border-radius: 12px; padding: 16px; border: 1px solid #eee; }
+    .stat-icon { width: 36px; height: 36px; border-radius: 10px; display: flex; align-items: center; justify-content: center; margin-bottom: 10px; font-size: 18px; }
+    .stat-icon.green { background: #e8faf0; }
+    .stat-icon.red { background: #fdecea; }
+    .stat-icon.blue { background: #e3f2fd; }
+    .stat-icon.yellow { background: #fffde7; }
+    .stat-num { font-size: 28px; font-weight: 700; color: #1a1a2e; }
+    .stat-label { font-size: 11px; color: #888; margin-top: 2px; font-weight: 500; }
+
+    .section-title { font-size: 12px; font-weight: 700; color: #888; text-transform: uppercase; letter-spacing: 0.8px; margin-bottom: 10px; }
+
+    .table-card { background: white; border-radius: 14px; border: 1px solid #eee; overflow: hidden; margin-bottom: 24px; }
+    .table-card-header { padding: 14px 18px; border-bottom: 1px solid #f0f0f0; display: flex; align-items: center; justify-content: space-between; }
+    .table-card-header h3 { font-size: 14px; font-weight: 700; color: #1a1a2e; }
+    .table-card-header span { font-size: 12px; color: #888; }
+    table { width: 100%; border-collapse: collapse; }
+    th { font-size: 11px; font-weight: 700; color: #888; text-transform: uppercase; letter-spacing: 0.5px; padding: 10px 18px; text-align: left; background: #fafafa; border-bottom: 1px solid #f0f0f0; }
+    td { font-size: 13px; padding: 12px 18px; border-bottom: 1px solid #f8f8f8; color: #444; }
+    tr:last-child td { border-bottom: none; }
+    tr:hover td { background: #fafafa; }
+
+    .badge { font-size: 11px; font-weight: 700; padding: 4px 10px; border-radius: 20px; }
+    .badge.online { background: #e8faf0; color: #27ae60; }
+    .badge.offline { background: #fdecea; color: #c0392b; }
+
+    .dot { width: 8px; height: 8px; border-radius: 50%; display: inline-block; margin-right: 6px; }
+    .dot.online { background: #2ecc71; }
+    .dot.offline { background: #e74c3c; }
+
+    .loading { color: #aaa; font-size: 14px; text-align: center; padding: 40px; }
+    .chip-id { font-family: monospace; font-size: 12px; color: #888; }
+  </style>
+</head>
+<body>
+
+<div id="pantalla-login">
+  <div class="login-wrap">
+    <div class="login-card">
+      <h2>Panel de administración</h2>
+      <p>Acceso exclusivo MaGu Multiservicios</p>
+      <div class="form-group">
+        <label>Clave de acceso</label>
+        <input type="password" id="admin-clave" placeholder="••••••••" onkeydown="if(event.key==='Enter')entrarAdmin()">
+      </div>
+      <button class="btn-admin" onclick="entrarAdmin()">Acceder</button>
+      <p class="error-msg" id="admin-error">Clave incorrecta</p>
+    </div>
+  </div>
+</div>
+
+<div id="pantalla-admin" style="display:none">
+  <div class="header">
+    <div class="header-left">
+      <div class="header-logo"><img src="/img/logo.jpeg" alt="MaGu"></div>
+      <div>
+        <div class="header-title">AlertaLuz Admin</div>
+        <div class="header-sub">MaGu Multiservicios</div>
+      </div>
+    </div>
+    <div class="header-right">
+      <span class="last-update" id="last-update">Actualizando...</span>
+      <button class="btn-refresh" onclick="cargarTodo()">Actualizar</button>
+    </div>
+  </div>
+
+  <div class="container">
+    <div class="stats-grid">
+      <div class="stat-card">
+        <div class="stat-icon green">🟢</div>
+        <div class="stat-num" id="stat-online">-</div>
+        <div class="stat-label">Online ahora</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-icon red">🔴</div>
+        <div class="stat-num" id="stat-offline">-</div>
+        <div class="stat-label">Sin señal</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-icon blue">📱</div>
+        <div class="stat-num" id="stat-total">-</div>
+        <div class="stat-label">Total dispositivos</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-icon yellow">👥</div>
+        <div class="stat-num" id="stat-clientes">-</div>
+        <div class="stat-label">Clientes registrados</div>
+      </div>
+    </div>
+
+    <div class="section-title">Dispositivos</div>
+    <div class="table-card">
+      <div class="table-card-header">
+        <h3>Todos los dispositivos</h3>
+        <span id="devices-count">Cargando...</span>
+      </div>
+      <div id="tabla-dispositivos"><p class="loading">Cargando...</p></div>
+    </div>
+
+    <div class="section-title">Clientes</div>
+    <div class="table-card">
+      <div class="table-card-header">
+        <h3>Clientes registrados</h3>
+        <span id="clients-count">Cargando...</span>
+      </div>
+      <div id="tabla-clientes"><p class="loading">Cargando...</p></div>
+    </div>
+  </div>
+</div>
+
+<script>
+  const BACKEND = 'https://alertaluz-backend.onrender.com';
+  let adminClave = null;
+
+  function entrarAdmin() {
+    const clave = document.getElementById('admin-clave').value;
+    if (!clave) return;
+    adminClave = clave;
+    cargarTodo();
+  }
+
+  async function cargarTodo() {
+    try {
+      const [resD, resC] = await Promise.all([
+        fetch(`${BACKEND}/admin/dispositivos?clave=${encodeURIComponent(adminClave)}`),
+        fetch(`${BACKEND}/admin/clientes?clave=${encodeURIComponent(adminClave)}`)
+      ]);
+
+      if (resD.status === 401) {
+        document.getElementById('admin-error').style.display = 'block';
+        return;
+      }
+
+      document.getElementById('pantalla-login').style.display = 'none';
+      document.getElementById('pantalla-admin').style.display = 'block';
+
+      const dataD = await resD.json();
+      const dataC = await resC.json();
+
+      renderDispositivos(dataD.dispositivos || []);
+      renderClientes(dataC.clientes || []);
+
+      const ahora = new Date().toLocaleString('es-ES', { timeZone: 'Europe/Madrid', hour: '2-digit', minute: '2-digit', second: '2-digit' });
+      document.getElementById('last-update').textContent = `Actualizado a las ${ahora}`;
+
+    } catch(e) {
+      document.getElementById('admin-error').style.display = 'block';
+    }
+  }
+
+  function renderDispositivos(dispositivos) {
+    const online = dispositivos.filter(d => d.estado === 'online').length;
+    const offline = dispositivos.filter(d => d.estado === 'offline').length;
+    document.getElementById('stat-online').textContent = online;
+    document.getElementById('stat-offline').textContent = offline;
+    document.getElementById('stat-total').textContent = dispositivos.length;
+    document.getElementById('devices-count').textContent = `${dispositivos.length} dispositivos`;
+
+    if (dispositivos.length === 0) {
+      document.getElementById('tabla-dispositivos').innerHTML = '<p class="loading">Sin dispositivos</p>';
+      return;
+    }
+
+    document.getElementById('tabla-dispositivos').innerHTML = `
+      <table>
+        <thead>
+          <tr>
+            <th>Estado</th>
+            <th>Nombre</th>
+            <th>Cliente</th>
+            <th>Chip ID</th>
+            <th>Último ping</th>
+            <th>Motivo corte</th>
+          </tr>
+        </thead>
+        <tbody>
+          ${dispositivos.map(d => `
+            <tr>
+              <td><span class="badge ${d.estado}">${d.estado === 'online' ? 'Online' : 'Sin señal'}</span></td>
+              <td><strong>${d.nombre || '—'}</strong></td>
+              <td>${d.email_cliente || '—'}</td>
+              <td class="chip-id">${d.chip_id}</td>
+              <td>${formatearFecha(d.ultimo_ping)}</td>
+              <td>${d.motivo_corte || '—'}</td>
+            </tr>
+          `).join('')}
+        </tbody>
+      </table>
+    `;
+  }
+
+  function renderClientes(clientes) {
+    document.getElementById('stat-clientes').textContent = clientes.length;
+    document.getElementById('clients-count').textContent = `${clientes.length} clientes`;
+
+    if (clientes.length === 0) {
+      document.getElementById('tabla-clientes').innerHTML = '<p class="loading">Sin clientes</p>';
+      return;
+    }
+
+    document.getElementById('tabla-clientes').innerHTML = `
+      <table>
+        <thead>
+          <tr>
+            <th>Nombre</th>
+            <th>Email</th>
+            <th>Registrado</th>
+          </tr>
+        </thead>
+        <tbody>
+          ${clientes.map(c => `
+            <tr>
+              <td><strong>${c.nombre || '—'}</strong></td>
+              <td>${c.email}</td>
+              <td>${formatearFecha(c.created_at)}</td>
+            </tr>
+          `).join('')}
+        </tbody>
+      </table>
+    `;
+  }
+
+  function formatearFecha(isoString) {
+    if (!isoString) return '—';
+    const iso = isoString.endsWith('Z') ? isoString : isoString + 'Z';
+    return new Date(iso).toLocaleString('es-ES', {
+      timeZone: 'Europe/Madrid',
+      day: '2-digit', month: '2-digit', year: 'numeric',
+      hour: '2-digit', minute: '2-digit'
+    });
+  }
+
+  setInterval(() => { if (adminClave) cargarTodo(); }, 60000);
+</script>
+</body>
+</html>
