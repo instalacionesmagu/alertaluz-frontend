@@ -3,138 +3,146 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>AlertaLuz — Panel de control</title>
+  <title>AlertaLuz — MaGu Multiservicios</title>
   <style>
     * { margin: 0; padding: 0; box-sizing: border-box; }
-    body { font-family: system-ui, sans-serif; background: #f5f5f5; color: #333; }
+    body { font-family: system-ui, sans-serif; background: #f0f2f5; color: #333; }
 
+    /* HEADER */
     .header {
-      background: #1a1a2e;
-      color: white;
+      background: linear-gradient(135deg, #1565C0 0%, #1976D2 100%);
       padding: 16px 24px;
       display: flex;
       align-items: center;
       justify-content: space-between;
     }
-    .header h1 { font-size: 20px; font-weight: 600; }
-    .header span { font-size: 13px; color: #aaa; }
-    .btn-logout {
-      background: transparent;
-      border: 1px solid #555;
-      color: #aaa;
-      padding: 6px 14px;
-      border-radius: 6px;
-      cursor: pointer;
-      font-size: 13px;
+    .header-left { display: flex; align-items: center; gap: 12px; }
+    .header-logo {
+      width: 44px; height: 44px;
+      background: rgba(255,255,255,0.15);
+      border-radius: 12px;
+      border: 1px solid rgba(255,255,255,0.3);
+      overflow: hidden;
+      display: flex; align-items: center; justify-content: center;
     }
-    .btn-logout:hover { border-color: #aaa; color: white; }
-
-    .container { max-width: 800px; margin: 32px auto; padding: 0 16px; }
+    .header-logo img { width: 100%; height: 100%; object-fit: contain; }
+    .header-texts .title { color: white; font-size: 18px; font-weight: 700; }
+    .header-texts .brand { color: #FFD600; font-size: 11px; font-weight: 700; letter-spacing: 0.5px; }
+    .header-texts .email { color: rgba(255,255,255,0.7); font-size: 11px; margin-top: 1px; }
+    .btn-salir {
+      background: rgba(255,255,255,0.15);
+      border: 1px solid rgba(255,255,255,0.3);
+      color: white; padding: 7px 16px;
+      border-radius: 8px; font-size: 12px; font-weight: 600; cursor: pointer;
+    }
+    .btn-salir:hover { background: rgba(255,255,255,0.25); }
 
     /* LOGIN */
-    .login-box {
-      background: white;
-      border-radius: 12px;
-      padding: 40px;
-      max-width: 400px;
-      margin: 80px auto;
-      box-shadow: 0 2px 12px rgba(0,0,0,0.08);
+    #pantalla-login {
+      min-height: 100vh;
+      background: linear-gradient(135deg, #1565C0 0%, #1976D2 50%, #FFD600 100%);
+      display: flex; align-items: center; justify-content: center;
+      padding: 24px;
     }
-    .login-box h2 { font-size: 22px; margin-bottom: 8px; }
-    .login-box p { color: #888; font-size: 14px; margin-bottom: 24px; }
-    .input-group { margin-bottom: 16px; }
-    .input-group label { display: block; font-size: 13px; color: #555; margin-bottom: 6px; }
-    .input-group input {
-      width: 100%;
-      padding: 10px 14px;
-      border: 1px solid #ddd;
-      border-radius: 8px;
-      font-size: 14px;
+    .login-card {
+      background: white; border-radius: 20px;
+      padding: 36px 32px; width: 100%; max-width: 380px;
+      box-shadow: 0 20px 60px rgba(0,0,0,0.15);
     }
-    .input-group input:focus { outline: none; border-color: #1a1a2e; }
-    .btn-primary {
-      width: 100%;
-      background: #1a1a2e;
-      color: white;
-      border: none;
-      padding: 12px;
-      border-radius: 8px;
-      font-size: 15px;
-      cursor: pointer;
-      margin-top: 8px;
+    .login-logo { text-align: center; margin-bottom: 28px; }
+    .login-logo-img {
+      width: 80px; height: 80px;
+      background: #f0f4ff;
+      border-radius: 20px;
+      margin: 0 auto 12px;
+      overflow: hidden;
+      display: flex; align-items: center; justify-content: center;
     }
-    .btn-primary:hover { background: #16213e; }
-    .error-msg { color: #e74c3c; font-size: 13px; margin-top: 12px; display: none; }
+    .login-logo-img img { width: 100%; height: 100%; object-fit: contain; }
+    .login-title { font-size: 24px; font-weight: 700; color: #1a1a2e; }
+    .login-brand { font-size: 13px; color: #1976D2; font-weight: 600; margin-top: 2px; }
+    .login-sub { font-size: 12px; color: #888; margin-top: 4px; }
+    .form-group { margin-bottom: 16px; }
+    .form-group label {
+      display: block; font-size: 12px; font-weight: 600;
+      color: #555; margin-bottom: 6px;
+      text-transform: uppercase; letter-spacing: 0.5px;
+    }
+    .form-group input {
+      width: 100%; padding: 12px 16px;
+      border: 1.5px solid #e8e8e8; border-radius: 10px;
+      font-size: 14px; color: #333; transition: border-color 0.2s;
+    }
+    .form-group input:focus { outline: none; border-color: #1976D2; }
+    .btn-login {
+      width: 100%; padding: 13px;
+      background: linear-gradient(135deg, #1565C0, #1976D2);
+      color: white; border: none; border-radius: 10px;
+      font-size: 15px; font-weight: 600; cursor: pointer; margin-top: 8px;
+    }
+    .btn-login:hover { opacity: 0.9; }
+    .error-msg { color: #e74c3c; font-size: 13px; margin-top: 12px; text-align: center; display: none; }
+
+    /* PANEL */
+    #pantalla-panel { display: none; }
+    .container { max-width: 800px; margin: 24px auto; padding: 0 16px; }
+
+    /* STATS */
+    .stats-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-bottom: 20px; }
+    .stat-card { background: white; border-radius: 14px; padding: 16px; border: 1px solid #eee; }
+    .stat-icon {
+      width: 36px; height: 36px; border-radius: 10px;
+      display: flex; align-items: center; justify-content: center;
+      margin-bottom: 10px; font-size: 18px;
+    }
+    .stat-icon.blue { background: #e3f2fd; }
+    .stat-icon.yellow { background: #fffde7; }
+    .stat-num { font-size: 24px; font-weight: 700; color: #1a1a2e; }
+    .stat-label { font-size: 11px; color: #888; margin-top: 2px; font-weight: 500; }
 
     /* DISPOSITIVOS */
-    .seccion-titulo {
-      font-size: 13px;
-      color: #888;
-      text-transform: uppercase;
-      letter-spacing: 0.5px;
-      margin-bottom: 12px;
+    .section-title {
+      font-size: 12px; font-weight: 700; color: #888;
+      text-transform: uppercase; letter-spacing: 0.8px; margin-bottom: 10px;
     }
-
-    .dispositivo-card {
-      background: white;
-      border-radius: 12px;
-      padding: 20px 24px;
-      margin-bottom: 16px;
-      box-shadow: 0 1px 4px rgba(0,0,0,0.06);
-      display: flex;
-      align-items: center;
-      gap: 16px;
+    .device-card {
+      background: white; border-radius: 14px;
+      padding: 16px 18px; margin-bottom: 10px;
+      display: flex; align-items: center; gap: 14px;
+      border: 1px solid #eee; border-left: 4px solid #2ecc71;
     }
-    .estado-dot {
-      width: 14px;
-      height: 14px;
-      border-radius: 50%;
-      flex-shrink: 0;
+    .device-card.offline { border-left-color: #e74c3c; }
+    .device-pulse { position: relative; width: 14px; height: 14px; flex-shrink: 0; }
+    .pulse-dot { width: 14px; height: 14px; border-radius: 50%; background: #2ecc71; }
+    .pulse-dot.offline { background: #e74c3c; }
+    .pulse-ring {
+      position: absolute; top: -4px; left: -4px;
+      width: 22px; height: 22px; border-radius: 50%;
+      background: rgba(46,204,113,0.2);
+      animation: pulse 2s infinite;
     }
-    .estado-dot.online { background: #2ecc71; box-shadow: 0 0 0 4px rgba(46,204,113,0.2); }
-    .estado-dot.offline { background: #e74c3c; box-shadow: 0 0 0 4px rgba(231,76,60,0.2); }
-
-    .dispositivo-info { flex: 1; }
-    .dispositivo-nombre { font-size: 16px; font-weight: 600; margin-bottom: 4px; }
-    .dispositivo-detalle { font-size: 13px; color: #888; }
-
-    .estado-badge {
-      font-size: 12px;
-      font-weight: 600;
-      padding: 4px 12px;
-      border-radius: 20px;
-    }
-    .estado-badge.online { background: #eafaf1; color: #27ae60; }
-    .estado-badge.offline { background: #fdedec; color: #c0392b; }
+    .pulse-ring.offline { background: rgba(231,76,60,0.2); animation: none; }
+    @keyframes pulse { 0% { transform: scale(0.8); opacity: 1; } 100% { transform: scale(1.4); opacity: 0; } }
+    .device-info { flex: 1; }
+    .device-name { font-size: 15px; font-weight: 700; color: #1a1a2e; }
+    .device-detail { font-size: 12px; color: #888; margin-top: 2px; }
+    .device-badge { font-size: 11px; font-weight: 700; padding: 5px 12px; border-radius: 20px; }
+    .device-badge.online { background: #e8faf0; color: #27ae60; }
+    .device-badge.offline { background: #fdecea; color: #c0392b; }
 
     /* HISTORIAL */
-    .historial-card {
-      background: white;
-      border-radius: 12px;
-      padding: 20px 24px;
-      box-shadow: 0 1px 4px rgba(0,0,0,0.06);
+    .historial-card { background: white; border-radius: 14px; padding: 16px 18px; border: 1px solid #eee; }
+    .historial-card h3 { font-size: 14px; font-weight: 700; color: #1a1a2e; margin-bottom: 14px; }
+    .hist-row {
+      display: flex; align-items: center; gap: 10px;
+      padding: 9px 0; border-bottom: 1px solid #f5f5f5; font-size: 12px;
     }
-    .historial-card h3 { font-size: 15px; font-weight: 600; margin-bottom: 16px; }
-    .alerta-row {
-      display: flex;
-      align-items: center;
-      gap: 12px;
-      padding: 10px 0;
-      border-bottom: 1px solid #f0f0f0;
-      font-size: 13px;
-    }
-    .alerta-row:last-child { border-bottom: none; }
-    .alerta-tipo {
-      font-size: 11px;
-      font-weight: 600;
-      padding: 2px 8px;
-      border-radius: 10px;
-      flex-shrink: 0;
-    }
-    .alerta-tipo.offline { background: #fdedec; color: #c0392b; }
-    .alerta-tipo.online { background: #eafaf1; color: #27ae60; }
-    .alerta-mensaje { flex: 1; color: #555; word-break: break-word; }
-    .alerta-hora { color: #aaa; flex-shrink: 0; }
+    .hist-row:last-child { border-bottom: none; }
+    .hist-badge { font-size: 10px; font-weight: 700; padding: 3px 8px; border-radius: 8px; flex-shrink: 0; }
+    .hist-badge.offline { background: #fdecea; color: #c0392b; }
+    .hist-badge.online { background: #e8faf0; color: #27ae60; }
+    .hist-msg { flex: 1; color: #555; word-break: break-word; }
+    .hist-time { color: #bbb; flex-shrink: 0; }
 
     .vacio { color: #aaa; font-size: 14px; text-align: center; padding: 24px 0; }
     .loading { color: #aaa; font-size: 14px; text-align: center; padding: 40px 0; }
@@ -142,43 +150,68 @@
 </head>
 <body>
 
-<!-- CABECERA -->
-<div class="header">
-  <h1>AlertaLuz</h1>
-  <div style="display:flex;align-items:center;gap:16px">
-    <span id="header-email"></span>
-    <button class="btn-logout" onclick="cerrarSesion()">Salir</button>
+<!-- HEADER -->
+<div class="header" id="main-header" style="display:none">
+  <div class="header-left">
+    <div class="header-logo">
+      <img src="/img/logo.jpeg" alt="MaGu">
+    </div>
+    <div class="header-texts">
+      <div class="title">AlertaLuz</div>
+      <div class="brand">MaGu Multiservicios</div>
+      <div class="email" id="header-email"></div>
+    </div>
   </div>
+  <button class="btn-salir" onclick="cerrarSesion()">Salir</button>
 </div>
 
 <!-- LOGIN -->
 <div id="pantalla-login">
-  <div class="login-box">
-    <h2>Bienvenido</h2>
-    <p>Accede para ver el estado de tu dispositivo</p>
-    <div class="input-group">
-      <label>Email</label>
-      <input type="email" id="login-email" placeholder="tu@email.com">
+  <div class="login-card">
+    <div class="login-logo">
+      <div class="login-logo-img">
+        <img src="/img/logo.jpeg" alt="MaGu AlertaLuz">
+      </div>
+      <div class="login-title">AlertaLuz</div>
+      <div class="login-brand">by MaGu Multiservicios</div>
+      <div class="login-sub">Monitoreo de suministro eléctrico</div>
     </div>
-    <div class="input-group">
+    <div class="form-group">
+      <label>Email</label>
+      <input type="email" id="login-email" placeholder="tucorreo@email.com">
+    </div>
+    <div class="form-group">
       <label>Contraseña</label>
       <input type="password" id="login-password" placeholder="••••••••" onkeydown="if(event.key==='Enter')iniciarSesion()">
     </div>
-    <button class="btn-primary" onclick="iniciarSesion()">Entrar</button>
+    <button class="btn-login" onclick="iniciarSesion()">Acceder a mi panel</button>
     <p class="error-msg" id="login-error">Email o contraseña incorrectos</p>
   </div>
 </div>
 
-<!-- PANEL PRINCIPAL -->
-<div id="pantalla-panel" style="display:none">
+<!-- PANEL -->
+<div id="pantalla-panel">
   <div class="container">
-    <p class="seccion-titulo">Tus dispositivos</p>
+    <div class="stats-grid">
+      <div class="stat-card">
+        <div class="stat-icon blue">🔌</div>
+        <div class="stat-num" id="stat-online">-</div>
+        <div class="stat-label">Dispositivos online</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-icon yellow">⚡</div>
+        <div class="stat-num" id="stat-alertas">-</div>
+        <div class="stat-label">Alertas este mes</div>
+      </div>
+    </div>
+
+    <div class="section-title">Tus dispositivos</div>
     <div id="lista-dispositivos"><p class="loading">Cargando...</p></div>
 
     <br>
 
     <div class="historial-card">
-      <h3>Historial de alertas</h3>
+      <h3>📋 Historial de alertas</h3>
       <div id="lista-alertas"><p class="loading">Cargando...</p></div>
     </div>
   </div>
@@ -222,13 +255,15 @@
   function cerrarSesion() {
     localStorage.removeItem('alertaluz_email');
     sesionEmail = null;
-    document.getElementById('pantalla-login').style.display = 'block';
+    document.getElementById('main-header').style.display = 'none';
+    document.getElementById('pantalla-login').style.display = 'flex';
     document.getElementById('pantalla-panel').style.display = 'none';
   }
 
   async function mostrarPanel() {
     document.getElementById('pantalla-login').style.display = 'none';
     document.getElementById('pantalla-panel').style.display = 'block';
+    document.getElementById('main-header').style.display = 'flex';
     document.getElementById('header-email').textContent = sesionEmail;
     await cargarDispositivos();
     await cargarAlertas();
@@ -245,16 +280,22 @@
       const contenedor = document.getElementById('lista-dispositivos');
       if (!data.dispositivos || data.dispositivos.length === 0) {
         contenedor.innerHTML = '<p class="vacio">No tienes dispositivos registrados</p>';
+        document.getElementById('stat-online').textContent = '0';
         return;
       }
+      const online = data.dispositivos.filter(d => d.estado === 'online').length;
+      document.getElementById('stat-online').textContent = online;
       contenedor.innerHTML = data.dispositivos.map(d => `
-        <div class="dispositivo-card">
-          <div class="estado-dot ${d.estado}"></div>
-          <div class="dispositivo-info">
-            <div class="dispositivo-nombre">${d.nombre || d.chip_id}</div>
-            <div class="dispositivo-detalle">Último ping: ${formatearFecha(d.ultimo_ping)}</div>
+        <div class="device-card ${d.estado === 'offline' ? 'offline' : ''}">
+          <div class="device-pulse">
+            <div class="pulse-dot ${d.estado === 'offline' ? 'offline' : ''}"></div>
+            <div class="pulse-ring ${d.estado === 'offline' ? 'offline' : ''}"></div>
           </div>
-          <span class="estado-badge ${d.estado}">${d.estado === 'online' ? 'Online' : 'Sin señal'}</span>
+          <div class="device-info">
+            <div class="device-name">${d.nombre || d.chip_id}</div>
+            <div class="device-detail">Último ping: ${formatearFecha(d.ultimo_ping)}</div>
+          </div>
+          <span class="device-badge ${d.estado}">${d.estado === 'online' ? 'Online' : 'Sin señal'}</span>
         </div>
       `).join('');
     } catch(e) {
@@ -269,13 +310,20 @@
       const contenedor = document.getElementById('lista-alertas');
       if (!data.alertas || data.alertas.length === 0) {
         contenedor.innerHTML = '<p class="vacio">Sin alertas recientes</p>';
+        document.getElementById('stat-alertas').textContent = '0';
         return;
       }
+      const esteMes = data.alertas.filter(a => {
+        const fecha = new Date(a.created_at + 'Z');
+        const ahora = new Date();
+        return fecha.getMonth() === ahora.getMonth() && fecha.getFullYear() === ahora.getFullYear();
+      }).length;
+      document.getElementById('stat-alertas').textContent = esteMes;
       contenedor.innerHTML = data.alertas.map(a => `
-        <div class="alerta-row">
-          <span class="alerta-tipo ${a.tipo}">${a.tipo === 'offline' ? 'Sin señal' : 'Reconectado'}</span>
-          <span class="alerta-mensaje">${formatearMensaje(a.mensaje)}</span>
-          <span class="alerta-hora">${formatearFecha(a.created_at)}</span>
+        <div class="hist-row">
+          <span class="hist-badge ${a.tipo}">${a.tipo === 'offline' ? 'Sin señal' : 'Reconectado'}</span>
+          <span class="hist-msg">${formatearMensaje(a.mensaje)}</span>
+          <span class="hist-time">${formatearFecha(a.created_at)}</span>
         </div>
       `).join('');
     } catch(e) {
@@ -289,15 +337,15 @@
     });
   }
 
-function formatearFecha(isoString) {
-  if (!isoString) return 'desconocida';
-  const iso = isoString.endsWith('Z') ? isoString : isoString + 'Z';
-  return new Date(iso).toLocaleString('es-ES', {
-    timeZone: 'Europe/Madrid',
-    day: '2-digit', month: '2-digit', year: 'numeric',
-    hour: '2-digit', minute: '2-digit'
-  });
-}
+  function formatearFecha(isoString) {
+    if (!isoString) return 'desconocida';
+    const iso = isoString.endsWith('Z') ? isoString : isoString + 'Z';
+    return new Date(iso).toLocaleString('es-ES', {
+      timeZone: 'Europe/Madrid',
+      day: '2-digit', month: '2-digit', year: 'numeric',
+      hour: '2-digit', minute: '2-digit'
+    });
+  }
 </script>
 </body>
 </html>
