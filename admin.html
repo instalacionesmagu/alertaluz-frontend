@@ -8,11 +8,7 @@
     * { margin: 0; padding: 0; box-sizing: border-box; }
     body { font-family: system-ui, sans-serif; background: #f0f2f5; color: #333; }
 
-    .header {
-      background: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%);
-      padding: 16px 24px;
-      display: flex; align-items: center; justify-content: space-between;
-    }
+    .header { background: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%); padding: 16px 24px; display: flex; align-items: center; justify-content: space-between; }
     .header-left { display: flex; align-items: center; gap: 12px; }
     .header-logo { width: 44px; height: 44px; background: rgba(255,255,255,0.1); border-radius: 12px; border: 1px solid rgba(255,255,255,0.2); overflow: hidden; display: flex; align-items: center; justify-content: center; }
     .header-logo img { width: 100%; height: 100%; object-fit: contain; }
@@ -34,7 +30,7 @@
     .btn-admin { width: 100%; padding: 12px; background: #1a1a2e; color: white; border: none; border-radius: 8px; font-size: 14px; font-weight: 600; cursor: pointer; }
     .error-msg { color: #e74c3c; font-size: 12px; margin-top: 10px; text-align: center; display: none; }
 
-    .container { max-width: 1100px; margin: 24px auto; padding: 0 16px; }
+    .container { max-width: 1200px; margin: 24px auto; padding: 0 16px; }
 
     .stats-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 12px; margin-bottom: 24px; }
     .stat-card { background: white; border-radius: 12px; padding: 16px; border: 1px solid #eee; }
@@ -48,38 +44,39 @@
 
     .section-title { font-size: 12px; font-weight: 700; color: #888; text-transform: uppercase; letter-spacing: 0.8px; margin-bottom: 10px; }
 
-    .table-card { background: white; border-radius: 14px; border: 1px solid #eee; overflow: hidden; margin-bottom: 24px; }
+    .table-card { background: white; border-radius: 14px; border: 1px solid #eee; overflow: hidden; margin-bottom: 24px; overflow-x: auto; }
     .table-card-header { padding: 14px 18px; border-bottom: 1px solid #f0f0f0; display: flex; align-items: center; justify-content: space-between; }
     .table-card-header h3 { font-size: 14px; font-weight: 700; color: #1a1a2e; }
     .table-card-header span { font-size: 12px; color: #888; }
 
-    table { width: 100%; border-collapse: collapse; }
-    th { font-size: 11px; font-weight: 700; color: #888; text-transform: uppercase; letter-spacing: 0.5px; padding: 10px 14px; text-align: left; background: #fafafa; border-bottom: 1px solid #f0f0f0; }
+    table { width: 100%; border-collapse: collapse; min-width: 900px; }
+    th { font-size: 11px; font-weight: 700; color: #888; text-transform: uppercase; letter-spacing: 0.5px; padding: 10px 14px; text-align: left; background: #fafafa; border-bottom: 1px solid #f0f0f0; white-space: nowrap; }
     td { font-size: 13px; padding: 11px 14px; border-bottom: 1px solid #f8f8f8; color: #444; vertical-align: middle; }
     tr:last-child td { border-bottom: none; }
     tr:hover td { background: #fafafa; }
 
-    .badge { font-size: 11px; font-weight: 700; padding: 4px 10px; border-radius: 20px; }
+    .badge { font-size: 11px; font-weight: 700; padding: 4px 10px; border-radius: 20px; white-space: nowrap; }
     .badge.online { background: #e8faf0; color: #27ae60; }
     .badge.offline { background: #fdecea; color: #c0392b; }
     .badge.desactivado { background: #f0f0f0; color: #888; }
-    .badge.caducado { background: #fff3cd; color: #856404; }
-    .badge.ok { background: #e8faf0; color: #27ae60; }
+    .badge.telegram-on { background: #e3f2fd; color: #1565C0; }
+    .badge.telegram-off { background: #f5f5f5; color: #aaa; }
 
     .chip-id { font-family: monospace; font-size: 12px; color: #888; }
     .loading { color: #aaa; font-size: 14px; text-align: center; padding: 40px; }
 
-    .acciones { display: flex; gap: 6px; flex-wrap: wrap; }
-    .btn-accion { font-size: 11px; font-weight: 600; padding: 5px 10px; border-radius: 6px; cursor: pointer; border: none; }
+    .acciones { display: flex; gap: 5px; flex-wrap: wrap; align-items: center; }
+    .btn-accion { font-size: 11px; font-weight: 600; padding: 5px 10px; border-radius: 6px; cursor: pointer; border: none; white-space: nowrap; }
     .btn-activar { background: #e8faf0; color: #27ae60; }
     .btn-desactivar { background: #fdecea; color: #c0392b; }
-    .btn-renovar { background: #e3f2fd; color: #1565C0; }
+    .btn-telegram-on { background: #e3f2fd; color: #1565C0; }
+    .btn-telegram-off { background: #fff3e0; color: #e65100; }
+    .btn-renovar-ok { background: #1565C0; color: white; font-size: 11px; padding: 5px 10px; border-radius: 6px; border: none; cursor: pointer; font-weight: 600; }
     .btn-eliminar { background: #f5f5f5; color: #888; }
     .btn-accion:hover { opacity: 0.8; }
 
-    .renovar-form { display: flex; gap: 6px; align-items: center; }
+    .renovar-form { display: flex; gap: 5px; align-items: center; }
     .renovar-form input[type="date"] { font-size: 12px; padding: 4px 8px; border: 1px solid #ddd; border-radius: 6px; }
-    .btn-guardar { background: #1565C0; color: white; font-size: 11px; padding: 5px 10px; border-radius: 6px; border: none; cursor: pointer; font-weight: 600; }
 
     .exp-ok { color: #27ae60; font-size: 12px; }
     .exp-warn { color: #e67e22; font-size: 12px; font-weight: 600; }
@@ -197,7 +194,6 @@
 
       const ahora = new Date().toLocaleString('es-ES', { timeZone: 'Europe/Madrid', hour: '2-digit', minute: '2-digit', second: '2-digit' });
       document.getElementById('last-update').textContent = `Actualizado a las ${ahora}`;
-
     } catch(e) {
       document.getElementById('admin-error').style.display = 'block';
     }
@@ -205,10 +201,8 @@
 
   function diasHastaExpiracion(fechaExp) {
     if (!fechaExp) return null;
-    const hoy = new Date();
-    hoy.setHours(0,0,0,0);
-    const exp = new Date(fechaExp);
-    return Math.ceil((exp - hoy) / (1000 * 60 * 60 * 24));
+    const hoy = new Date(); hoy.setHours(0,0,0,0);
+    return Math.ceil((new Date(fechaExp) - hoy) / (1000 * 60 * 60 * 24));
   }
 
   function badgeExpiracion(d) {
@@ -219,6 +213,12 @@
     if (dias < 0) return `<span class="exp-danger">Caducado (${fecha})</span>`;
     if (dias <= 15) return `<span class="exp-warn">⚠️ ${dias} días (${fecha})</span>`;
     return `<span class="exp-ok">${fecha}</span>`;
+  }
+
+  function badgeTelegram(d) {
+    if (d.telegram_activo && d.telegram_chat_id) return '<span class="badge telegram-on">Telegram ✓</span>';
+    if (d.telegram_activo && !d.telegram_chat_id) return '<span class="badge telegram-on">Activado (sin vincular)</span>';
+    return '<span class="badge telegram-off">Sin Telegram</span>';
   }
 
   function renderDispositivos(dispositivos) {
@@ -244,27 +244,33 @@
             <th>Chip ID</th>
             <th>Último ping</th>
             <th>Expira</th>
+            <th>Telegram</th>
             <th>Acciones</th>
           </tr>
         </thead>
         <tbody>
           ${dispositivos.map(d => `
-            <tr id="row-${d.chip_id}">
+            <tr>
               <td><span class="badge ${d.activo === false ? 'desactivado' : d.estado}">${d.activo === false ? 'Desactivado' : d.estado === 'online' ? 'Online' : 'Sin señal'}</span></td>
               <td><strong>${d.nombre || '—'}</strong></td>
-              <td>${d.email_cliente || '—'}</td>
+              <td style="font-size:12px">${d.email_cliente || '—'}</td>
               <td class="chip-id">${d.chip_id}</td>
               <td>${formatearFecha(d.ultimo_ping)}</td>
               <td>${badgeExpiracion(d)}</td>
+              <td>${badgeTelegram(d)}</td>
               <td>
                 <div class="acciones">
                   ${d.activo !== false
                     ? `<button class="btn-accion btn-desactivar" onclick="toggleActivo('${d.chip_id}', false)">Desactivar</button>`
                     : `<button class="btn-accion btn-activar" onclick="toggleActivo('${d.chip_id}', true)">Activar</button>`
                   }
+                  ${d.telegram_activo
+                    ? `<button class="btn-accion btn-telegram-off" onclick="toggleTelegram('${d.chip_id}', false)">📵 Desactivar Telegram</button>`
+                    : `<button class="btn-accion btn-telegram-on" onclick="toggleTelegram('${d.chip_id}', true)">📱 Activar Telegram</button>`
+                  }
                   <div class="renovar-form">
                     <input type="date" id="fecha-${d.chip_id}" value="${d.fecha_expiracion || ''}">
-                    <button class="btn-guardar" onclick="renovar('${d.chip_id}')">Renovar</button>
+                    <button class="btn-renovar-ok" onclick="renovar('${d.chip_id}')">Renovar</button>
                   </div>
                   <button class="btn-accion btn-eliminar" onclick="eliminarDispositivo('${d.chip_id}', '${d.nombre || d.chip_id}')">Eliminar</button>
                 </div>
@@ -314,8 +320,7 @@
   async function toggleActivo(chip_id, activo) {
     if (!confirm(`¿${activo ? 'Activar' : 'Desactivar'} el dispositivo ${chip_id}?`)) return;
     const res = await fetch(`${BACKEND}/admin/dispositivo/activar`, {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
+      method: 'POST', headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ clave: adminClave, chip_id, activo })
     });
     const data = await res.json();
@@ -323,34 +328,49 @@
     else alert('Error al actualizar');
   }
 
+  async function toggleTelegram(chip_id, telegram_activo) {
+    const accion = telegram_activo ? 'activar' : 'desactivar';
+    const msg = telegram_activo
+      ? '¿Activar Telegram para este dispositivo?\n\nSe enviará un email al cliente con las instrucciones para vincularlo.'
+      : '¿Desactivar Telegram para este dispositivo?\n\nEl cliente dejará de recibir alertas por Telegram.';
+    if (!confirm(msg)) return;
+
+    const res = await fetch(`${BACKEND}/admin/dispositivo/telegram`, {
+      method: 'POST', headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ clave: adminClave, chip_id, telegram_activo })
+    });
+    const data = await res.json();
+    if (data.ok) {
+      alert(telegram_activo ? '✅ Telegram activado. Email con instrucciones enviado al cliente.' : '📵 Telegram desactivado.');
+      cargarTodo();
+    } else {
+      alert('Error al actualizar Telegram');
+    }
+  }
+
   async function renovar(chip_id) {
     const fecha = document.getElementById(`fecha-${chip_id}`).value;
     if (!fecha) { alert('Selecciona una fecha'); return; }
     const res = await fetch(`${BACKEND}/admin/dispositivo/renovar`, {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
+      method: 'POST', headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ clave: adminClave, chip_id, fecha_expiracion: fecha })
     });
     const data = await res.json();
-    if (data.ok) { alert('Renovado correctamente'); cargarTodo(); }
+    if (data.ok) { alert('✅ Renovado correctamente'); cargarTodo(); }
     else alert('Error al renovar');
   }
 
   async function eliminarDispositivo(chip_id, nombre) {
-    if (!confirm(`¿Eliminar el dispositivo "${nombre}"? Esta acción no se puede deshacer.`)) return;
-    const res = await fetch(`${BACKEND}/admin/dispositivo/${chip_id}?clave=${encodeURIComponent(adminClave)}`, {
-      method: 'DELETE'
-    });
+    if (!confirm(`¿Eliminar el dispositivo "${nombre}"?\nEsta acción no se puede deshacer.`)) return;
+    const res = await fetch(`${BACKEND}/admin/dispositivo/${chip_id}?clave=${encodeURIComponent(adminClave)}`, { method: 'DELETE' });
     const data = await res.json();
     if (data.ok) cargarTodo();
     else alert('Error al eliminar');
   }
 
   async function eliminarCliente(email, nombre) {
-    if (!confirm(`¿Eliminar el cliente "${nombre}"? Sus dispositivos NO se eliminarán.`)) return;
-    const res = await fetch(`${BACKEND}/admin/cliente/${encodeURIComponent(email)}?clave=${encodeURIComponent(adminClave)}`, {
-      method: 'DELETE'
-    });
+    if (!confirm(`¿Eliminar el cliente "${nombre}"?\nSus dispositivos NO se eliminarán.`)) return;
+    const res = await fetch(`${BACKEND}/admin/cliente/${encodeURIComponent(email)}?clave=${encodeURIComponent(adminClave)}`, { method: 'DELETE' });
     const data = await res.json();
     if (data.ok) cargarTodo();
     else alert('Error al eliminar');
