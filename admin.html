@@ -586,25 +586,43 @@
     document.getElementById('modal-nombre-dispositivo').textContent = d.nombre || chip_id;
     document.getElementById('modal-chip-id-texto').textContent = 'Chip ID: ' + chip_id;
 
+    // Email múltiple
+    document.getElementById('cfg-email-activo').checked = d.extra_email_multiple || false;
+    document.getElementById('cfg-email-expira').value = d.extra_email_expira || '';
     const emails = (d.extra_emails || '').split(',').map(e => e.trim());
     document.getElementById('cfg-email1').value = emails[0] || '';
     document.getElementById('cfg-email2').value = emails[1] || '';
     document.getElementById('cfg-email3').value = emails[2] || '';
 
+    // Telegram múltiple
+    document.getElementById('cfg-telegram-activo').checked = d.extra_telegram_multiple || false;
+    document.getElementById('cfg-telegram-expira').value = d.extra_telegram_expira || '';
     const tgIds = (d.extra_telegram_ids || '').split(',').map(e => e.trim());
     document.getElementById('cfg-tg1').value = tgIds[0] || '';
     document.getElementById('cfg-tg2').value = tgIds[1] || '';
     document.getElementById('cfg-tg3').value = tgIds[2] || '';
 
+    // Push
+    document.getElementById('cfg-push-activo').checked = d.extra_push || false;
+    document.getElementById('cfg-push-expira').value = d.extra_push_expira || '';
+
+    // SMS
+    document.getElementById('cfg-sms-activo').checked = d.extra_sms || false;
+    document.getElementById('cfg-sms-expira').value = d.extra_sms_expira || '';
     document.getElementById('cfg-sms-tel').value = d.extra_sms_telefono || '';
     document.getElementById('cfg-sms-tiempo').value = d.extra_sms_tiempo || 0;
     document.getElementById('cfg-sms-limite').value = d.extra_sms_limite || 10;
     document.getElementById('cfg-sms-usados').textContent = d.extra_sms_usados || 0;
+    document.getElementById('cfg-sms-limite-txt').textContent = d.extra_sms_limite || 10;
 
+    // Llamada
+    document.getElementById('cfg-llamada-activo').checked = d.extra_llamada || false;
+    document.getElementById('cfg-llamada-expira').value = d.extra_llamada_expira || '';
     document.getElementById('cfg-llamada-tel').value = d.extra_llamada_telefono || '';
     document.getElementById('cfg-llamada-tiempo').value = d.extra_llamada_tiempo || 15;
     document.getElementById('cfg-llamada-limite').value = d.extra_llamada_limite || 5;
     document.getElementById('cfg-llamada-usadas').textContent = d.extra_llamada_usadas || 0;
+    document.getElementById('cfg-llamada-limite-txt').textContent = d.extra_llamada_limite || 5;
 
     document.getElementById('modal-config').style.display = 'flex';
   }
@@ -632,11 +650,21 @@
     ].filter(Boolean).join(',');
 
     const updates = {
+      extra_email_multiple: document.getElementById('cfg-email-activo').checked,
+      extra_email_expira: document.getElementById('cfg-email-expira').value || null,
       extra_emails: emails,
+      extra_telegram_multiple: document.getElementById('cfg-telegram-activo').checked,
+      extra_telegram_expira: document.getElementById('cfg-telegram-expira').value || null,
       extra_telegram_ids: tgIds,
+      extra_push: document.getElementById('cfg-push-activo').checked,
+      extra_push_expira: document.getElementById('cfg-push-expira').value || null,
+      extra_sms: document.getElementById('cfg-sms-activo').checked,
+      extra_sms_expira: document.getElementById('cfg-sms-expira').value || null,
       extra_sms_telefono: document.getElementById('cfg-sms-tel').value.trim(),
       extra_sms_tiempo: parseInt(document.getElementById('cfg-sms-tiempo').value),
       extra_sms_limite: parseInt(document.getElementById('cfg-sms-limite').value),
+      extra_llamada: document.getElementById('cfg-llamada-activo').checked,
+      extra_llamada_expira: document.getElementById('cfg-llamada-expira').value || null,
       extra_llamada_telefono: document.getElementById('cfg-llamada-tel').value.trim(),
       extra_llamada_tiempo: parseInt(document.getElementById('cfg-llamada-tiempo').value),
       extra_llamada_limite: parseInt(document.getElementById('cfg-llamada-limite').value),
@@ -656,6 +684,43 @@
       if (btnGuardar) { btnGuardar.disabled = false; btnGuardar.textContent = 'Guardar cambios'; }
     }
   }
+
+  async function añadirSMS() {
+    if (!chipIdModal) return;
+    const d = datosDispositivos.find(x => x.chip_id === chipIdModal);
+    if (!d) return;
+    const nuevoLimite = (d.extra_sms_limite || 10) + 10;
+    const res = await fetch('https://alertaluz-backend.onrender.com/admin/dispositivo/configurar', {
+      method: 'POST', headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ clave: adminClave, chip_id: chipIdModal, updates: { extra_sms_limite: nuevoLimite } })
+    });
+    const data = await res.json();
+    if (data.ok) {
+      document.getElementById('cfg-sms-limite').value = nuevoLimite;
+      document.getElementById('cfg-sms-limite-txt').textContent = nuevoLimite;
+      // Actualizar datos locales
+      d.extra_sms_limite = nuevoLimite;
+      alert(`✅ Añadidos 10 SMS. Nuevo límite: ${nuevoLimite} SMS/mes`);
+    }
+  }
+
+  async function añadirLlamadas() {
+    if (!chipIdModal) return;
+    const d = datosDispositivos.find(x => x.chip_id === chipIdModal);
+    if (!d) return;
+    const nuevoLimite = (d.extra_llamada_limite || 5) + 5;
+    const res = await fetch('https://alertaluz-backend.onrender.com/admin/dispositivo/configurar', {
+      method: 'POST', headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ clave: adminClave, chip_id: chipIdModal, updates: { extra_llamada_limite: nuevoLimite } })
+    });
+    const data = await res.json();
+    if (data.ok) {
+      document.getElementById('cfg-llamada-limite').value = nuevoLimite;
+      document.getElementById('cfg-llamada-limite-txt').textContent = nuevoLimite;
+      d.extra_llamada_limite = nuevoLimite;
+      alert(`✅ Añadidas 5 llamadas. Nuevo límite: ${nuevoLimite} llamadas/mes`);
+    }
+  }
   setInterval(() => { if (adminClave) cargarTodo(); }, 60000);
 </script>
 
@@ -664,68 +729,130 @@
     <div class="modal-titulo" id="modal-nombre-dispositivo">Configurar dispositivo</div>
     <div class="modal-sub" id="modal-chip-id-texto"></div>
 
-    <div class="modal-seccion">Email adicionales (hasta 3)</div>
-    <input class="modal-input" id="cfg-email1" placeholder="Email extra 1" type="email">
-    <input class="modal-input" id="cfg-email2" placeholder="Email extra 2" type="email">
-    <input class="modal-input" id="cfg-email3" placeholder="Email extra 3" type="email">
-
-    <div class="modal-seccion">Telegram adicionales (hasta 3 Chat IDs)</div>
-    <input class="modal-input" id="cfg-tg1" placeholder="Chat ID Telegram extra 1">
-    <input class="modal-input" id="cfg-tg2" placeholder="Chat ID Telegram extra 2">
-    <input class="modal-input" id="cfg-tg3" placeholder="Chat ID Telegram extra 3">
-
-    <div class="modal-seccion">SMS</div>
-    <label class="modal-label">Teléfono para SMS</label>
-    <input class="modal-input" id="cfg-sms-tel" placeholder="+34 600 000 000">
-    <div class="modal-fila">
-      <div>
-        <label class="modal-label">Tiempo de espera</label>
-        <select class="modal-select" id="cfg-sms-tiempo">
-          <option value="0">Instantáneo</option>
-          <option value="15">15 minutos</option>
-          <option value="30">30 minutos</option>
-          <option value="60">60 minutos</option>
-        </select>
+    <!-- EMAIL MÚLTIPLE -->
+    <div style="background:#f8f9fa;border-radius:10px;padding:14px;margin-bottom:12px">
+      <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:10px">
+        <div style="display:flex;align-items:center;gap:8px">
+          <input type="checkbox" id="cfg-email-activo" style="width:16px;height:16px;accent-color:#1565C0">
+          <span style="font-size:13px;font-weight:700;color:#1a1a2e">📧 Email múltiple</span>
+        </div>
+        <div style="display:flex;align-items:center;gap:6px">
+          <label class="modal-label" style="margin:0;white-space:nowrap">Expira:</label>
+          <input type="date" class="modal-input" id="cfg-email-expira" style="margin:0;width:140px">
+        </div>
       </div>
-      <div>
-        <label class="modal-label">Límite mensual</label>
-        <select class="modal-select" id="cfg-sms-limite">
-          <option value="5">5 SMS/mes</option>
-          <option value="10">10 SMS/mes</option>
-          <option value="20">20 SMS/mes</option>
-          <option value="30">30 SMS/mes</option>
-        </select>
-      </div>
-    </div>
-    <div class="contador-info">
-      <span>SMS usados este mes:</span>
-      <b id="cfg-sms-usados">0</b>
+      <input class="modal-input" id="cfg-email1" placeholder="Email extra 1" type="email">
+      <input class="modal-input" id="cfg-email2" placeholder="Email extra 2" type="email">
+      <input class="modal-input" id="cfg-email3" placeholder="Email extra 3" type="email">
     </div>
 
-    <div class="modal-seccion">Llamada telefónica</div>
-    <label class="modal-label">Teléfono para llamadas</label>
-    <input class="modal-input" id="cfg-llamada-tel" placeholder="+34 600 000 000">
-    <div class="modal-fila">
-      <div>
-        <label class="modal-label">Esperar antes de llamar</label>
-        <select class="modal-select" id="cfg-llamada-tiempo">
-          <option value="15">15 minutos</option>
-          <option value="30">30 minutos</option>
-          <option value="60">60 minutos</option>
-        </select>
+    <!-- TELEGRAM MÚLTIPLE -->
+    <div style="background:#f8f9fa;border-radius:10px;padding:14px;margin-bottom:12px">
+      <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:10px">
+        <div style="display:flex;align-items:center;gap:8px">
+          <input type="checkbox" id="cfg-telegram-activo" style="width:16px;height:16px;accent-color:#1565C0">
+          <span style="font-size:13px;font-weight:700;color:#1a1a2e">📱 Telegram múltiple</span>
+        </div>
+        <div style="display:flex;align-items:center;gap:6px">
+          <label class="modal-label" style="margin:0;white-space:nowrap">Expira:</label>
+          <input type="date" class="modal-input" id="cfg-telegram-expira" style="margin:0;width:140px">
+        </div>
       </div>
-      <div>
-        <label class="modal-label">Límite mensual</label>
-        <select class="modal-select" id="cfg-llamada-limite">
-          <option value="3">3 llamadas/mes</option>
-          <option value="5">5 llamadas/mes</option>
-          <option value="10">10 llamadas/mes</option>
-        </select>
+      <input class="modal-input" id="cfg-tg1" placeholder="Chat ID extra 1">
+      <input class="modal-input" id="cfg-tg2" placeholder="Chat ID extra 2">
+      <input class="modal-input" id="cfg-tg3" placeholder="Chat ID extra 3">
+    </div>
+
+    <!-- PUSH -->
+    <div style="background:#f8f9fa;border-radius:10px;padding:14px;margin-bottom:12px">
+      <div style="display:flex;align-items:center;justify-content:space-between">
+        <div style="display:flex;align-items:center;gap:8px">
+          <input type="checkbox" id="cfg-push-activo" style="width:16px;height:16px;accent-color:#1565C0">
+          <span style="font-size:13px;font-weight:700;color:#1a1a2e">🔔 Push notifications</span>
+        </div>
+        <div style="display:flex;align-items:center;gap:6px">
+          <label class="modal-label" style="margin:0;white-space:nowrap">Expira:</label>
+          <input type="date" class="modal-input" id="cfg-push-expira" style="margin:0;width:140px">
+        </div>
       </div>
     </div>
-    <div class="contador-info">
-      <span>Llamadas usadas este mes:</span>
-      <b id="cfg-llamada-usadas">0</b>
+
+    <!-- SMS -->
+    <div style="background:#f8f9fa;border-radius:10px;padding:14px;margin-bottom:12px">
+      <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:10px">
+        <div style="display:flex;align-items:center;gap:8px">
+          <input type="checkbox" id="cfg-sms-activo" style="width:16px;height:16px;accent-color:#1565C0">
+          <span style="font-size:13px;font-weight:700;color:#1a1a2e">💬 SMS</span>
+        </div>
+        <div style="display:flex;align-items:center;gap:6px">
+          <label class="modal-label" style="margin:0;white-space:nowrap">Expira:</label>
+          <input type="date" class="modal-input" id="cfg-sms-expira" style="margin:0;width:140px">
+        </div>
+      </div>
+      <label class="modal-label">Teléfono para SMS</label>
+      <input class="modal-input" id="cfg-sms-tel" placeholder="+34 600 000 000">
+      <div class="modal-fila">
+        <div>
+          <label class="modal-label">Tiempo de espera</label>
+          <select class="modal-select" id="cfg-sms-tiempo">
+            <option value="0">Instantáneo</option>
+            <option value="15">15 minutos</option>
+            <option value="30">30 minutos</option>
+            <option value="60">60 minutos</option>
+          </select>
+        </div>
+        <div>
+          <label class="modal-label">Límite mensual</label>
+          <select class="modal-select" id="cfg-sms-limite">
+            <option value="5">5 SMS/mes</option>
+            <option value="10">10 SMS/mes</option>
+            <option value="20">20 SMS/mes</option>
+            <option value="30">30 SMS/mes</option>
+          </select>
+        </div>
+      </div>
+      <div class="contador-info">
+        <span>SMS usados este mes: <b id="cfg-sms-usados">0</b> / <b id="cfg-sms-limite-txt">10</b></span>
+        <button onclick="añadirSMS()" style="background:#1565C0;color:white;border:none;padding:4px 10px;border-radius:6px;font-size:11px;font-weight:600;cursor:pointer">+ Añadir 10 SMS</button>
+      </div>
+    </div>
+
+    <!-- LLAMADA -->
+    <div style="background:#f8f9fa;border-radius:10px;padding:14px;margin-bottom:12px">
+      <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:10px">
+        <div style="display:flex;align-items:center;gap:8px">
+          <input type="checkbox" id="cfg-llamada-activo" style="width:16px;height:16px;accent-color:#1565C0">
+          <span style="font-size:13px;font-weight:700;color:#1a1a2e">📞 Llamada telefónica</span>
+        </div>
+        <div style="display:flex;align-items:center;gap:6px">
+          <label class="modal-label" style="margin:0;white-space:nowrap">Expira:</label>
+          <input type="date" class="modal-input" id="cfg-llamada-expira" style="margin:0;width:140px">
+        </div>
+      </div>
+      <label class="modal-label">Teléfono para llamadas</label>
+      <input class="modal-input" id="cfg-llamada-tel" placeholder="+34 600 000 000">
+      <div class="modal-fila">
+        <div>
+          <label class="modal-label">Esperar antes de llamar</label>
+          <select class="modal-select" id="cfg-llamada-tiempo">
+            <option value="15">15 minutos</option>
+            <option value="30">30 minutos</option>
+            <option value="60">60 minutos</option>
+          </select>
+        </div>
+        <div>
+          <label class="modal-label">Límite mensual</label>
+          <select class="modal-select" id="cfg-llamada-limite">
+            <option value="3">3 llamadas/mes</option>
+            <option value="5">5 llamadas/mes</option>
+            <option value="10">10 llamadas/mes</option>
+          </select>
+        </div>
+      </div>
+      <div class="contador-info">
+        <span>Llamadas usadas este mes: <b id="cfg-llamada-usadas">0</b> / <b id="cfg-llamada-limite-txt">5</b></span>
+        <button onclick="añadirLlamadas()" style="background:#1565C0;color:white;border:none;padding:4px 10px;border-radius:6px;font-size:11px;font-weight:600;cursor:pointer">+ Añadir 5 llamadas</button>
+      </div>
     </div>
 
     <div class="modal-footer">
