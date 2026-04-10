@@ -625,6 +625,8 @@
 
   async function guardarConfiguracion() {
     if (!chipIdModal) return;
+    const btnGuardar = document.querySelector('.btn-guardar-modal');
+    if (btnGuardar) { btnGuardar.disabled = true; btnGuardar.textContent = 'Guardando...'; }
 
     const emails = [
       document.getElementById('cfg-email1').value.trim(),
@@ -649,13 +651,19 @@
       extra_llamada_limite: parseInt(document.getElementById('cfg-llamada-limite').value),
     };
 
-    const res = await fetch(`${BACKEND}/admin/dispositivo/configurar`, {
-      method: 'POST', headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ clave: adminClave, chip_id: chipIdModal, updates })
-    });
-    const data = await res.json();
-    if (data.ok) { alert('✅ Configuración guardada'); cerrarModal(); cargarTodo(); }
-    else alert('Error al guardar');
+    try {
+      const res = await fetch('https://alertaluz-backend.onrender.com/admin/dispositivo/configurar', {
+        method: 'POST', headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ clave: adminClave, chip_id: chipIdModal, updates })
+      });
+      const data = await res.json();
+      if (data.ok) { alert('✅ Configuración guardada'); cerrarModal(); cargarTodo(); }
+      else { alert('Error: ' + (data.error || 'Error desconocido')); }
+    } catch(e) {
+      alert('Error de conexión: ' + e.message);
+    } finally {
+      if (btnGuardar) { btnGuardar.disabled = false; btnGuardar.textContent = 'Guardar cambios'; }
+    }
   }
   setInterval(() => { if (adminClave) cargarTodo(); }, 60000);
 </script>

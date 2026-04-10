@@ -1,0 +1,337 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>AlertaLuz — Monitoreo de suministro eléctrico | MaGu Multiservicios</title>
+  <meta name="description" content="AlertaLuz te avisa al instante cuando se va la luz o el internet en tu hogar o negocio. Dispositivo IoT con alertas por email, Telegram y SMS. Desde 15€/año.">
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body { font-family: system-ui, -apple-system, sans-serif; color: #333; }
+
+    /* NAV */
+    nav { background: white; padding: 14px 24px; display: flex; align-items: center; justify-content: space-between; border-bottom: 1px solid #eee; position: sticky; top: 0; z-index: 100; box-shadow: 0 2px 8px rgba(0,0,0,0.06); }
+    .nav-logo { display: flex; align-items: center; gap: 10px; text-decoration: none; }
+    .nav-logo img { width: 36px; height: 36px; border-radius: 8px; }
+    .nav-logo-texto { font-size: 17px; font-weight: 700; color: #1a1a2e; }
+    .nav-logo-sub { font-size: 10px; color: #1565C0; font-weight: 600; }
+    .nav-links { display: flex; align-items: center; gap: 24px; }
+    .nav-links a { text-decoration: none; font-size: 14px; font-weight: 500; color: #555; }
+    .nav-links a:hover { color: #1565C0; }
+    .btn-nav { background: #1565C0; color: white !important; padding: 8px 20px; border-radius: 8px; font-weight: 600 !important; }
+    .btn-nav:hover { background: #1976D2 !important; opacity: 1 !important; }
+
+    /* HERO */
+    .hero { background: linear-gradient(135deg, #1a1a2e 0%, #1565C0 60%, #1976D2 100%); padding: 80px 24px; text-align: center; }
+    .hero-badge { display: inline-block; background: rgba(255,214,0,0.2); color: #FFD600; font-size: 12px; font-weight: 700; padding: 6px 16px; border-radius: 20px; border: 1px solid rgba(255,214,0,0.3); margin-bottom: 20px; letter-spacing: 0.5px; }
+    .hero h1 { font-size: 44px; font-weight: 800; color: white; line-height: 1.15; margin-bottom: 20px; max-width: 700px; margin-left: auto; margin-right: auto; }
+    .hero h1 span { color: #FFD600; }
+    .hero p { font-size: 18px; color: rgba(255,255,255,0.8); max-width: 560px; margin: 0 auto 36px; line-height: 1.7; }
+    .hero-btns { display: flex; gap: 14px; justify-content: center; flex-wrap: wrap; }
+    .btn-primary { background: #FFD600; color: #1a1a2e; padding: 14px 32px; border-radius: 10px; font-size: 15px; font-weight: 700; text-decoration: none; display: inline-block; }
+    .btn-primary:hover { background: #FFC107; }
+    .btn-secondary { background: rgba(255,255,255,0.1); color: white; padding: 14px 32px; border-radius: 10px; font-size: 15px; font-weight: 600; text-decoration: none; display: inline-block; border: 1px solid rgba(255,255,255,0.3); }
+    .btn-secondary:hover { background: rgba(255,255,255,0.2); }
+    .hero-img { margin-top: 56px; display: flex; justify-content: center; }
+    .hero-device { background: rgba(255,255,255,0.1); border: 1px solid rgba(255,255,255,0.2); border-radius: 20px; padding: 32px 48px; display: inline-flex; align-items: center; gap: 20px; }
+    .hero-device-icon { font-size: 48px; }
+    .hero-device-info { text-align: left; }
+    .hero-device-nombre { color: white; font-size: 16px; font-weight: 700; }
+    .hero-device-estado { color: #4ade80; font-size: 13px; font-weight: 600; margin-top: 4px; display: flex; align-items: center; gap: 6px; }
+    .dot-verde { width: 8px; height: 8px; border-radius: 50%; background: #4ade80; display: inline-block; animation: blink 2s infinite; }
+    @keyframes blink { 0%,100%{opacity:1} 50%{opacity:0.3} }
+    .hero-device-ping { color: rgba(255,255,255,0.5); font-size: 11px; margin-top: 4px; }
+
+    /* SECCIÓN CÓMO FUNCIONA */
+    .section { padding: 72px 24px; }
+    .section-inner { max-width: 1100px; margin: 0 auto; }
+    .section-tag { font-size: 12px; font-weight: 700; color: #1565C0; text-transform: uppercase; letter-spacing: 1px; margin-bottom: 12px; }
+    .section-title { font-size: 34px; font-weight: 800; color: #1a1a2e; margin-bottom: 16px; line-height: 1.2; }
+    .section-sub { font-size: 17px; color: #666; max-width: 560px; line-height: 1.7; margin-bottom: 48px; }
+
+    .steps { display: grid; grid-template-columns: repeat(3, 1fr); gap: 24px; }
+    .step { background: white; border-radius: 16px; padding: 28px; border: 1px solid #eee; box-shadow: 0 4px 20px rgba(0,0,0,0.05); }
+    .step-num { width: 40px; height: 40px; background: #e3f2fd; border-radius: 12px; display: flex; align-items: center; justify-content: center; font-size: 18px; font-weight: 800; color: #1565C0; margin-bottom: 16px; }
+    .step h3 { font-size: 16px; font-weight: 700; color: #1a1a2e; margin-bottom: 8px; }
+    .step p { font-size: 14px; color: #666; line-height: 1.6; }
+
+    /* CARACTERÍSTICAS */
+    .features-bg { background: #f8f9fb; }
+    .features-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 20px; }
+    .feature { background: white; border-radius: 14px; padding: 24px; border: 1px solid #eee; }
+    .feature-icon { font-size: 28px; margin-bottom: 12px; }
+    .feature h3 { font-size: 15px; font-weight: 700; color: #1a1a2e; margin-bottom: 6px; }
+    .feature p { font-size: 13px; color: #666; line-height: 1.6; }
+
+    /* PRECIOS */
+    .precios-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 20px; align-items: start; }
+    .precio-card { background: white; border-radius: 16px; padding: 28px; border: 2px solid #eee; }
+    .precio-card.destacado { border-color: #1565C0; position: relative; }
+    .precio-badge { position: absolute; top: -12px; left: 50%; transform: translateX(-50%); background: #1565C0; color: white; font-size: 11px; font-weight: 700; padding: 4px 14px; border-radius: 20px; white-space: nowrap; }
+    .precio-nombre { font-size: 13px; font-weight: 700; color: #888; text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 8px; }
+    .precio-num { font-size: 40px; font-weight: 800; color: #1a1a2e; }
+    .precio-per { font-size: 14px; color: #888; margin-left: 4px; }
+    .precio-desc { font-size: 13px; color: #666; margin: 12px 0 20px; line-height: 1.5; }
+    .precio-items { list-style: none; margin-bottom: 24px; }
+    .precio-items li { font-size: 13px; color: #555; padding: 6px 0; border-bottom: 1px solid #f5f5f5; display: flex; gap: 8px; align-items: flex-start; }
+    .precio-items li:last-child { border-bottom: none; }
+    .check-verde { color: #27ae60; font-weight: 700; flex-shrink: 0; }
+    .btn-precio { display: block; text-align: center; padding: 12px; background: #f0f4ff; color: #1565C0; border-radius: 10px; font-size: 14px; font-weight: 600; text-decoration: none; }
+    .btn-precio.destacado { background: #1565C0; color: white; }
+    .btn-precio:hover { opacity: 0.85; }
+
+    /* ÁREA CLIENTES */
+    .area-clientes { background: linear-gradient(135deg, #1a1a2e, #1565C0); padding: 72px 24px; text-align: center; }
+    .area-clientes h2 { font-size: 32px; font-weight: 800; color: white; margin-bottom: 12px; }
+    .area-clientes p { font-size: 16px; color: rgba(255,255,255,0.75); margin-bottom: 32px; }
+    .btn-cliente { display: inline-block; background: white; color: #1565C0; padding: 14px 36px; border-radius: 10px; font-size: 15px; font-weight: 700; text-decoration: none; }
+    .btn-cliente:hover { background: #f0f4ff; }
+
+    /* FOOTER */
+    footer { background: #1a1a2e; padding: 40px 24px 24px; }
+    .footer-inner { max-width: 1100px; margin: 0 auto; }
+    .footer-top { display: grid; grid-template-columns: 2fr 1fr 1fr; gap: 40px; margin-bottom: 32px; }
+    .footer-brand { display: flex; align-items: flex-start; gap: 10px; margin-bottom: 12px; }
+    .footer-brand img { width: 36px; height: 36px; border-radius: 8px; }
+    .footer-brand-texto { color: white; font-size: 16px; font-weight: 700; }
+    .footer-brand-sub { color: #FFD600; font-size: 10px; font-weight: 600; }
+    .footer-desc { font-size: 13px; color: rgba(255,255,255,0.5); line-height: 1.7; }
+    .footer-col h4 { color: white; font-size: 13px; font-weight: 700; margin-bottom: 14px; text-transform: uppercase; letter-spacing: 0.5px; }
+    .footer-col a { display: block; color: rgba(255,255,255,0.5); font-size: 13px; text-decoration: none; margin-bottom: 8px; }
+    .footer-col a:hover { color: white; }
+    .footer-bottom { border-top: 1px solid rgba(255,255,255,0.1); padding-top: 20px; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 10px; }
+    .footer-copy { font-size: 12px; color: rgba(255,255,255,0.3); }
+    .footer-legal { display: flex; gap: 20px; }
+    .footer-legal a { font-size: 12px; color: rgba(255,255,255,0.3); text-decoration: none; }
+    .footer-legal a:hover { color: rgba(255,255,255,0.7); }
+
+    /* RESPONSIVE */
+    @media (max-width: 768px) {
+      .hero h1 { font-size: 28px; }
+      .steps { grid-template-columns: 1fr; }
+      .features-grid { grid-template-columns: 1fr 1fr; }
+      .precios-grid { grid-template-columns: 1fr; }
+      .footer-top { grid-template-columns: 1fr; gap: 24px; }
+      .nav-links { display: none; }
+    }
+  </style>
+</head>
+<body>
+
+<nav>
+  <a href="/" class="nav-logo">
+    <img src="/img/logo.jpeg" alt="AlertaLuz">
+    <div>
+      <div class="nav-logo-texto">AlertaLuz</div>
+      <div class="nav-logo-sub">MaGu Multiservicios</div>
+    </div>
+  </a>
+  <div class="nav-links">
+    <a href="#como-funciona">Cómo funciona</a>
+    <a href="#precios">Precios</a>
+    <a href="/manual.html">Manual</a>
+    <a href="#contacto">Contacto</a>
+    <a href="/index.html" class="btn-nav">Área clientes</a>
+  </div>
+</nav>
+
+<!-- HERO -->
+<section class="hero">
+  <div class="hero-badge">⚡ MONITOREO ELÉCTRICO 24H</div>
+  <h1>Sabe al instante cuando<br>se va la <span>luz o el internet</span></h1>
+  <p>AlertaLuz monitoriza tu suministro eléctrico e internet y te avisa en menos de 3 minutos cuando se produce cualquier corte.</p>
+  <div class="hero-btns">
+    <a href="#precios" class="btn-primary">Ver precios</a>
+    <a href="#como-funciona" class="btn-secondary">Cómo funciona</a>
+  </div>
+  <div class="hero-img">
+    <div class="hero-device">
+      <div class="hero-device-icon">🔌</div>
+      <div class="hero-device-info">
+        <div class="hero-device-nombre">Casa principal</div>
+        <div class="hero-device-estado"><span class="dot-verde"></span> Suministro normal</div>
+        <div class="hero-device-ping">Último ping: hace 32 segundos</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- CÓMO FUNCIONA -->
+<section class="section" id="como-funciona">
+  <div class="section-inner">
+    <div class="section-tag">Fácil de instalar</div>
+    <div class="section-title">Funcionando en 5 minutos</div>
+    <div class="section-sub">Sin técnicos, sin complicaciones. Solo enchufas el dispositivo, lo conectas a tu WiFi y listo.</div>
+    <div class="steps">
+      <div class="step">
+        <div class="step-num">1</div>
+        <h3>Enchufa el dispositivo</h3>
+        <p>Conecta el AlertaLuz a cualquier cargador USB de 5V cerca de tu router. No necesita instalación eléctrica.</p>
+      </div>
+      <div class="step">
+        <div class="step-num">2</div>
+        <h3>Conéctalo a tu WiFi</h3>
+        <p>Desde tu móvil conéctate a la red AlertaLuz-Config, introduce tu WiFi y tu email. Listo en 2 minutos.</p>
+      </div>
+      <div class="step">
+        <div class="step-num">3</div>
+        <h3>Recibe las alertas</h3>
+        <p>Desde ese momento recibirás un email inmediato si se corta la luz o internet, y otro cuando se restablezca.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- CARACTERÍSTICAS -->
+<section class="section features-bg">
+  <div class="section-inner">
+    <div class="section-tag">Características</div>
+    <div class="section-title">Todo lo que necesitas</div>
+    <div class="section-sub">AlertaLuz detecta y diferencia entre cortes de luz y cortes de internet.</div>
+    <div class="features-grid">
+      <div class="feature">
+        <div class="feature-icon">⚡</div>
+        <h3>Detecta cortes de luz</h3>
+        <p>Cuando vuelve la corriente, el dispositivo arranca y te avisa indicando que fue un corte eléctrico.</p>
+      </div>
+      <div class="feature">
+        <div class="feature-icon">📡</div>
+        <h3>Detecta cortes de internet</h3>
+        <p>Si se cae el router pero hay luz, el dispositivo lo detecta y te avisa por separado.</p>
+      </div>
+      <div class="feature">
+        <div class="feature-icon">📧</div>
+        <h3>Alertas por email</h3>
+        <p>Recibe emails inmediatos cuando se detecta un corte y cuando el servicio se restablece.</p>
+      </div>
+      <div class="feature">
+        <div class="feature-icon">📱</div>
+        <h3>Alertas por Telegram</h3>
+        <p>Vincula tu cuenta de Telegram y recibe las alertas también por mensaje instantáneo.</p>
+      </div>
+      <div class="feature">
+        <div class="feature-icon">📊</div>
+        <h3>Panel web en tiempo real</h3>
+        <p>Accede desde cualquier dispositivo a tu panel en alertaluz.es para ver el estado y el historial.</p>
+      </div>
+      <div class="feature">
+        <div class="feature-icon">🔧</div>
+        <h3>Sin mantenimiento</h3>
+        <p>Una vez instalado funciona solo. Sin pilas, sin actualizaciones manuales, sin complicaciones.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- PRECIOS -->
+<section class="section" id="precios">
+  <div class="section-inner">
+    <div class="section-tag">Precios</div>
+    <div class="section-title">Simple y transparente</div>
+    <div class="section-sub">Un pago anual sin sorpresas. Cancela cuando quieras.</div>
+    <div class="precios-grid">
+      <div class="precio-card">
+        <div class="precio-nombre">Servicio base</div>
+        <div><span class="precio-num">15€</span><span class="precio-per">/año</span></div>
+        <div class="precio-desc">Todo lo que necesitas para monitorizar tu suministro.</div>
+        <ul class="precio-items">
+          <li><span class="check-verde">✓</span> Monitoreo 24h los 365 días</li>
+          <li><span class="check-verde">✓</span> Alertas por email</li>
+          <li><span class="check-verde">✓</span> Detección luz e internet</li>
+          <li><span class="check-verde">✓</span> Panel web en tiempo real</li>
+          <li><span class="check-verde">✓</span> Historial de alertas</li>
+        </ul>
+        <a href="#contacto" class="btn-precio">Contratar</a>
+      </div>
+      <div class="precio-card destacado">
+        <div class="precio-badge">⭐ MÁS POPULAR</div>
+        <div class="precio-nombre">Base + Pack extras</div>
+        <div><span class="precio-num">50€</span><span class="precio-per">/año</span></div>
+        <div class="precio-desc">El servicio completo con todos los canales de notificación.</div>
+        <ul class="precio-items">
+          <li><span class="check-verde">✓</span> Todo lo del servicio base</li>
+          <li><span class="check-verde">✓</span> Alertas por Telegram</li>
+          <li><span class="check-verde">✓</span> Hasta 3 emails adicionales</li>
+          <li><span class="check-verde">✓</span> Notificaciones push en móvil</li>
+          <li><span class="check-verde">✓</span> SMS de alerta (máx. 10/mes)</li>
+          <li><span class="check-verde">✓</span> Llamada telefónica (máx. 5/mes)</li>
+        </ul>
+        <a href="#contacto" class="btn-precio destacado">Contratar</a>
+      </div>
+      <div class="precio-card">
+        <div class="precio-nombre">Extras individuales</div>
+        <div><span class="precio-num">5€</span><span class="precio-per">cada uno/año</span></div>
+        <div class="precio-desc">Añade solo los canales que necesitas.</div>
+        <ul class="precio-items">
+          <li><span class="check-verde">✓</span> Telegram: 5€/año</li>
+          <li><span class="check-verde">✓</span> Email múltiple: 5€/año</li>
+          <li><span class="check-verde">✓</span> Push notifications: 5€/año</li>
+          <li><span class="check-verde">✓</span> SMS: 10€/año</li>
+          <li><span class="check-verde">✓</span> Llamada: 15€/año</li>
+        </ul>
+        <a href="#contacto" class="btn-precio">Contratar</a>
+      </div>
+    </div>
+    <p style="text-align:center;font-size:13px;color:#888;margin-top:20px">El dispositivo hardware se adquiere en el momento de la instalación. Precio bajo consulta según modelo.</p>
+  </div>
+</section>
+
+<!-- ÁREA CLIENTES -->
+<section class="area-clientes">
+  <h2>¿Ya eres cliente?</h2>
+  <p>Accede a tu panel para ver el estado de tus dispositivos y gestionar tu servicio.</p>
+  <a href="/index.html" class="btn-cliente">Acceder al área de clientes</a>
+</section>
+
+<!-- CONTACTO -->
+<section class="section" id="contacto">
+  <div class="section-inner" style="text-align:center">
+    <div class="section-tag">Contacto</div>
+    <div class="section-title">¿Tienes alguna pregunta?</div>
+    <div class="section-sub" style="margin-left:auto;margin-right:auto">Estamos en Formentera pero instalamos y enviamos a toda España. Escríbenos y te respondemos en menos de 24 horas.</div>
+    <div style="display:inline-flex;flex-direction:column;gap:12px;align-items:center;background:#f8f9fb;border-radius:16px;padding:32px 48px;border:1px solid #eee">
+      <div style="font-size:15px;color:#333">📧 <a href="mailto:instalacionesmagu@gmail.com" style="color:#1565C0;font-weight:600">instalacionesmagu@gmail.com</a></div>
+      <div style="font-size:15px;color:#333">🌐 <a href="https://alertaluz.es" style="color:#1565C0;font-weight:600">alertaluz.es</a></div>
+      <div style="font-size:13px;color:#888">MaGu Multiservicios S.L. · Formentera, Islas Baleares</div>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <div class="footer-inner">
+    <div class="footer-top">
+      <div>
+        <div class="footer-brand">
+          <img src="/img/logo.jpeg" alt="AlertaLuz">
+          <div>
+            <div class="footer-brand-texto">AlertaLuz</div>
+            <div class="footer-brand-sub">MaGu Multiservicios S.L.</div>
+          </div>
+        </div>
+        <div class="footer-desc">Sistema de monitoreo de suministro eléctrico e internet para hogares y negocios. Alertas instantáneas cuando más las necesitas.</div>
+      </div>
+      <div class="footer-col">
+        <h4>Producto</h4>
+        <a href="#como-funciona">Cómo funciona</a>
+        <a href="#precios">Precios</a>
+        <a href="/manual.html">Manual de uso</a>
+      </div>
+      <div class="footer-col">
+        <h4>Legal</h4>
+        <a href="/aviso-legal.html">Aviso legal</a>
+        <a href="/privacidad.html">Política de privacidad</a>
+        <a href="/index.html">Área de clientes</a>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <div class="footer-copy">© 2026 MaGu Multiservicios S.L. · CIF B44571065 · Todos los derechos reservados</div>
+      <div class="footer-legal">
+        <a href="/aviso-legal.html">Aviso legal</a>
+        <a href="/privacidad.html">Privacidad</a>
+      </div>
+    </div>
+  </div>
+</footer>
+
+</body>
+</html>

@@ -1,0 +1,173 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Manual de uso — AlertaLuz</title>
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body { font-family: system-ui, sans-serif; background: #f8f9fb; color: #333; }
+    nav { background: white; padding: 14px 24px; display: flex; align-items: center; justify-content: space-between; border-bottom: 1px solid #eee; }
+    .nav-logo { display: flex; align-items: center; gap: 10px; text-decoration: none; }
+    .nav-logo img { width: 36px; height: 36px; border-radius: 8px; }
+    .nav-logo-texto { font-size: 17px; font-weight: 700; color: #1a1a2e; }
+    .nav-logo-sub { font-size: 10px; color: #1565C0; font-weight: 600; }
+    .btn-volver { background: #f0f4ff; color: #1565C0; padding: 8px 18px; border-radius: 8px; font-size: 13px; font-weight: 600; text-decoration: none; }
+
+    .hero-manual { background: linear-gradient(135deg, #1565C0, #1976D2); padding: 48px 24px; text-align: center; }
+    .hero-manual h1 { color: white; font-size: 32px; font-weight: 800; margin-bottom: 8px; }
+    .hero-manual p { color: rgba(255,255,255,0.8); font-size: 16px; }
+
+    .container { max-width: 800px; margin: 0 auto; padding: 40px 16px; }
+    .seccion { background: white; border-radius: 14px; padding: 28px; border: 1px solid #eee; margin-bottom: 16px; }
+    .seccion h2 { font-size: 18px; font-weight: 700; color: #1a1a2e; margin-bottom: 16px; display: flex; align-items: center; gap: 10px; }
+    .seccion p { font-size: 14px; color: #555; line-height: 1.7; margin-bottom: 12px; }
+    .seccion p:last-child { margin-bottom: 0; }
+
+    .paso { display: flex; gap: 14px; margin-bottom: 16px; align-items: flex-start; }
+    .paso-num { width: 32px; height: 32px; background: #1565C0; color: white; border-radius: 10px; display: flex; align-items: center; justify-content: center; font-size: 14px; font-weight: 700; flex-shrink: 0; }
+    .paso-info h3 { font-size: 14px; font-weight: 700; color: #1a1a2e; margin-bottom: 4px; }
+    .paso-info p { font-size: 13px; color: #666; line-height: 1.6; margin: 0; }
+
+    .info-box { background: #e3f2fd; border-radius: 10px; padding: 14px; margin: 12px 0; font-size: 13px; color: #1565C0; line-height: 1.6; }
+    .warn-box { background: #fff3e0; border-radius: 10px; padding: 14px; margin: 12px 0; font-size: 13px; color: #e65100; line-height: 1.6; }
+    .code-box { background: #1a1a2e; color: #4ade80; font-family: monospace; font-size: 13px; padding: 12px 16px; border-radius: 8px; margin: 8px 0; }
+
+    footer { background: #1a1a2e; padding: 24px; text-align: center; }
+    footer p { font-size: 12px; color: rgba(255,255,255,0.4); }
+    footer a { color: rgba(255,255,255,0.6); text-decoration: none; }
+  </style>
+</head>
+<body>
+<nav>
+  <a href="/" class="nav-logo">
+    <img src="/img/logo.jpeg" alt="AlertaLuz">
+    <div>
+      <div class="nav-logo-texto">AlertaLuz</div>
+      <div class="nav-logo-sub">MaGu Multiservicios</div>
+    </div>
+  </a>
+  <a href="/" class="btn-volver">← Volver al inicio</a>
+</nav>
+
+<div class="hero-manual">
+  <h1>📖 Manual de uso</h1>
+  <p>Guía completa para instalar y usar tu dispositivo AlertaLuz</p>
+</div>
+
+<div class="container">
+
+  <div class="seccion">
+    <h2>⚡ ¿Qué es AlertaLuz?</h2>
+    <p>AlertaLuz es un pequeño dispositivo que se conecta a tu red WiFi y monitoriza continuamente si tienes suministro eléctrico e internet en tu hogar o negocio.</p>
+    <p>Si detecta un corte de luz o de internet, te avisará automáticamente por email en menos de 3 minutos. También te notifica cuando el servicio se restablece e indica el motivo del corte.</p>
+  </div>
+
+  <div class="seccion">
+    <h2>🔧 Primera instalación</h2>
+    <div class="paso">
+      <div class="paso-num">1</div>
+      <div class="paso-info">
+        <h3>Enchufa el dispositivo</h3>
+        <p>Conecta el AlertaLuz a cualquier cargador USB de 5V (el mismo que usas para cargar el móvil). Colócalo cerca del router WiFi.</p>
+      </div>
+    </div>
+    <div class="paso">
+      <div class="paso-num">2</div>
+      <div class="paso-info">
+        <h3>Conéctate a la red de configuración</h3>
+        <p>Desde tu móvil ve a Ajustes → WiFi y conéctate a la red <strong>AlertaLuz-Config</strong></p>
+        <div class="code-box">Contraseña: alertaluz</div>
+      </div>
+    </div>
+    <div class="paso">
+      <div class="paso-num">3</div>
+      <div class="paso-info">
+        <h3>Configura tu WiFi</h3>
+        <p>Se abrirá una página automáticamente. Si no se abre, escribe <strong>192.168.4.1</strong> en el navegador. Selecciona tu red WiFi e introduce la contraseña.</p>
+      </div>
+    </div>
+    <div class="paso">
+      <div class="paso-num">4</div>
+      <div class="paso-info">
+        <h3>Introduce tus datos</h3>
+        <p>Rellena tu email, el nombre del lugar (ej: Casa, Oficina, Almacén) y una contraseña para acceder al panel web.</p>
+      </div>
+    </div>
+    <div class="paso">
+      <div class="paso-num">5</div>
+      <div class="paso-info">
+        <h3>Confirma que funciona</h3>
+        <p>En menos de 2 minutos recibirás un email de confirmación. El dispositivo ya está monitorizando.</p>
+      </div>
+    </div>
+  </div>
+
+  <div class="seccion">
+    <h2>🌐 Tu panel web</h2>
+    <p>Accede a tu panel en cualquier momento desde <a href="https://alertaluz.es/index.html" style="color:#1565C0;font-weight:600">alertaluz.es</a> con el email y contraseña que configuraste.</p>
+    <p>En el panel podrás ver el estado actual de tus dispositivos, el historial de alertas, gestionar tus extras y solicitar la renovación del servicio.</p>
+  </div>
+
+  <div class="seccion">
+    <h2>🔄 Cómo funcionan las alertas</h2>
+    <p><strong>Corte de LUZ:</strong> El dispositivo se apaga. Al volver la corriente arranca de nuevo y te envía un aviso indicando que fue un corte de suministro eléctrico.</p>
+    <p><strong>Corte de INTERNET:</strong> El dispositivo sigue encendido pero sin conexión. Cuando vuelve internet te avisa indicando que fue un corte de red, no de luz.</p>
+    <div class="info-box">El sistema detecta la ausencia de señal después de <strong>2 minutos</strong> sin recibir ping del dispositivo.</div>
+  </div>
+
+  <div class="seccion">
+    <h2>🔁 Cambiar la red WiFi</h2>
+    <p>Si cambias de router o contraseña WiFi necesitas reconfigurar el dispositivo:</p>
+    <div class="warn-box"><strong>3 reinicios rápidos = modo fábrica.</strong> Desenchufa y vuelve a enchufar el dispositivo 3 veces seguidas en menos de 10 segundos. El dispositivo entrará en modo configuración y aparecerá la red AlertaLuz-Config.</div>
+    <p>Sigue los mismos pasos de la instalación inicial para configurarlo de nuevo.</p>
+  </div>
+
+  <div class="seccion">
+    <h2>📱 Activar Telegram (extra de pago)</h2>
+    <p>Si tienes contratado el extra de Telegram, sigue estos pasos para vincularlo:</p>
+    <div class="paso">
+      <div class="paso-num">1</div>
+      <div class="paso-info"><h3>Abre Telegram</h3><p>Busca el bot <strong>@alertaluz_magu_bot</strong> y pulsa Iniciar.</p></div>
+    </div>
+    <div class="paso">
+      <div class="paso-num">2</div>
+      <div class="paso-info">
+        <h3>Vincula tu cuenta</h3>
+        <p>Escribe el siguiente comando sustituyendo por tu email:</p>
+        <div class="code-box">/vincular tuemail@ejemplo.com</div>
+      </div>
+    </div>
+    <div class="paso">
+      <div class="paso-num">3</div>
+      <div class="paso-info"><h3>Listo</h3><p>El bot te confirmará la vinculación y empezarás a recibir alertas.</p></div>
+    </div>
+  </div>
+
+  <div class="seccion">
+    <h2>❓ Preguntas frecuentes</h2>
+    <p><strong>¿El dispositivo funciona con cualquier router?</strong><br>Sí, funciona con cualquier red WiFi de 2.4GHz. No es compatible con redes de solo 5GHz.</p>
+    <br>
+    <p><strong>¿Qué pasa si se va la luz y el internet a la vez?</strong><br>El dispositivo se apaga. Cuando vuelve la corriente arranca y envía la alerta indicando que el corte fue de luz.</p>
+    <br>
+    <p><strong>¿Cuánto tarda en avisarme?</strong><br>El sistema detecta la ausencia de señal en 2 minutos y envía la alerta de inmediato.</p>
+    <br>
+    <p><strong>¿Puedo tener varios dispositivos?</strong><br>Sí, puedes tener tantos dispositivos como quieras en el mismo panel con el mismo email.</p>
+    <br>
+    <p><strong>¿Necesito instalar alguna app?</strong><br>No. El panel es una web accesible desde cualquier navegador. Para Telegram solo necesitas la app de Telegram.</p>
+  </div>
+
+  <div class="seccion">
+    <h2>📞 Contacto y soporte</h2>
+    <p>¿Tienes algún problema o pregunta? Escríbenos y te respondemos en menos de 24 horas.</p>
+    <p>📧 <a href="mailto:instalacionesmagu@gmail.com" style="color:#1565C0;font-weight:600">instalacionesmagu@gmail.com</a></p>
+    <p style="margin-top:8px">🌐 <a href="https://alertaluz.es" style="color:#1565C0">alertaluz.es</a></p>
+  </div>
+
+</div>
+
+<footer>
+  <p>© 2026 <a href="/">MaGu Multiservicios S.L.</a> · <a href="/aviso-legal.html">Aviso legal</a> · <a href="/privacidad.html">Privacidad</a></p>
+</footer>
+</body>
+</html>

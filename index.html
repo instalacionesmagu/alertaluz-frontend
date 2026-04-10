@@ -433,6 +433,9 @@
     document.querySelectorAll('.tab-content').forEach(t => t.classList.remove('active'));
     el.classList.add('active');
     document.getElementById(`tab-${tab}`).classList.add('active');
+    if (tab === 'config' && dispositivosData.length > 0) {
+      cargarConfigDispositivo();
+    }
   }
 
   async function iniciarSesion() {
@@ -498,7 +501,10 @@
 
       const sel = document.getElementById('selector-chip');
       const selConfig = document.getElementById('selector-chip-config');
-      if (selConfig) selConfig.innerHTML = dispositivosData.map(d => `<option value="${d.chip_id}">${d.nombre || d.chip_id}</option>`).join('');
+      if (selConfig) {
+        selConfig.innerHTML = dispositivosData.map(d => `<option value="${d.chip_id}">${d.nombre || d.chip_id}</option>`).join('');
+        cargarConfigDispositivo();
+      }
       sel.innerHTML = dispositivosData.map(d => `<option value="${d.chip_id}">${d.nombre || d.chip_id}</option>`).join('');
       actualizarTabExtras();
     } catch(e) {
