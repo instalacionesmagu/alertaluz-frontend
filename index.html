@@ -8,119 +8,56 @@
     * { margin: 0; padding: 0; box-sizing: border-box; }
     body { font-family: system-ui, sans-serif; background: #f0f2f5; color: #333; }
 
-    /* HEADER */
-    .header {
-      background: linear-gradient(135deg, #1565C0 0%, #1976D2 100%);
-      padding: 16px 24px;
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-    }
+    .header { background: linear-gradient(135deg, #1565C0 0%, #1976D2 100%); padding: 16px 24px; display: flex; align-items: center; justify-content: space-between; }
     .header-left { display: flex; align-items: center; gap: 12px; }
-    .header-logo {
-      width: 44px; height: 44px;
-      background: rgba(255,255,255,0.15);
-      border-radius: 12px;
-      border: 1px solid rgba(255,255,255,0.3);
-      overflow: hidden;
-      display: flex; align-items: center; justify-content: center;
-    }
+    .header-logo { width: 44px; height: 44px; background: rgba(255,255,255,0.15); border-radius: 12px; border: 1px solid rgba(255,255,255,0.3); overflow: hidden; display: flex; align-items: center; justify-content: center; }
     .header-logo img { width: 100%; height: 100%; object-fit: contain; }
     .header-texts .title { color: white; font-size: 18px; font-weight: 700; }
     .header-texts .brand { color: #FFD600; font-size: 11px; font-weight: 700; letter-spacing: 0.5px; }
     .header-texts .email { color: rgba(255,255,255,0.7); font-size: 11px; margin-top: 1px; }
-    .btn-salir {
-      background: rgba(255,255,255,0.15);
-      border: 1px solid rgba(255,255,255,0.3);
-      color: white; padding: 7px 16px;
-      border-radius: 8px; font-size: 12px; font-weight: 600; cursor: pointer;
-    }
-    .btn-salir:hover { background: rgba(255,255,255,0.25); }
+    .btn-salir { background: rgba(255,255,255,0.15); border: 1px solid rgba(255,255,255,0.3); color: white; padding: 7px 16px; border-radius: 8px; font-size: 12px; font-weight: 600; cursor: pointer; }
 
-    /* LOGIN */
-    #pantalla-login {
-      min-height: 100vh;
-      background: linear-gradient(135deg, #1565C0 0%, #1976D2 50%, #FFD600 100%);
-      display: flex; align-items: center; justify-content: center;
-      padding: 24px;
-    }
-    .login-card {
-      background: white; border-radius: 20px;
-      padding: 36px 32px; width: 100%; max-width: 380px;
-      box-shadow: 0 20px 60px rgba(0,0,0,0.15);
-    }
+    #pantalla-login { min-height: 100vh; background: linear-gradient(135deg, #1565C0 0%, #1976D2 50%, #FFD600 100%); display: flex; align-items: center; justify-content: center; padding: 24px; }
+    .login-card { background: white; border-radius: 20px; padding: 36px 32px; width: 100%; max-width: 380px; box-shadow: 0 20px 60px rgba(0,0,0,0.15); }
     .login-logo { text-align: center; margin-bottom: 28px; }
-    .login-logo-img {
-      width: 80px; height: 80px;
-      background: #f0f4ff;
-      border-radius: 20px;
-      margin: 0 auto 12px;
-      overflow: hidden;
-      display: flex; align-items: center; justify-content: center;
-    }
+    .login-logo-img { width: 80px; height: 80px; background: #f0f4ff; border-radius: 20px; margin: 0 auto 12px; overflow: hidden; display: flex; align-items: center; justify-content: center; }
     .login-logo-img img { width: 100%; height: 100%; object-fit: contain; }
     .login-title { font-size: 24px; font-weight: 700; color: #1a1a2e; }
     .login-brand { font-size: 13px; color: #1976D2; font-weight: 600; margin-top: 2px; }
     .login-sub { font-size: 12px; color: #888; margin-top: 4px; }
     .form-group { margin-bottom: 16px; }
-    .form-group label {
-      display: block; font-size: 12px; font-weight: 600;
-      color: #555; margin-bottom: 6px;
-      text-transform: uppercase; letter-spacing: 0.5px;
-    }
-    .form-group input {
-      width: 100%; padding: 12px 16px;
-      border: 1.5px solid #e8e8e8; border-radius: 10px;
-      font-size: 14px; color: #333; transition: border-color 0.2s;
-    }
+    .form-group label { display: block; font-size: 12px; font-weight: 600; color: #555; margin-bottom: 6px; text-transform: uppercase; letter-spacing: 0.5px; }
+    .form-group input { width: 100%; padding: 12px 16px; border: 1.5px solid #e8e8e8; border-radius: 10px; font-size: 14px; color: #333; }
     .form-group input:focus { outline: none; border-color: #1976D2; }
-    .btn-login {
-      width: 100%; padding: 13px;
-      background: linear-gradient(135deg, #1565C0, #1976D2);
-      color: white; border: none; border-radius: 10px;
-      font-size: 15px; font-weight: 600; cursor: pointer; margin-top: 8px;
-    }
-    .btn-login:hover { opacity: 0.9; }
+    .btn-login { width: 100%; padding: 13px; background: linear-gradient(135deg, #1565C0, #1976D2); color: white; border: none; border-radius: 10px; font-size: 15px; font-weight: 600; cursor: pointer; margin-top: 8px; }
     .error-msg { color: #e74c3c; font-size: 13px; margin-top: 12px; text-align: center; display: none; }
 
-    /* PANEL */
     #pantalla-panel { display: none; }
-    .container { max-width: 800px; margin: 24px auto; padding: 0 16px; }
 
-    /* STATS */
+    .nav-tabs { background: white; border-bottom: 1px solid #eee; display: flex; gap: 0; padding: 0 16px; }
+    .nav-tab { padding: 14px 18px; font-size: 13px; font-weight: 600; color: #888; cursor: pointer; border-bottom: 3px solid transparent; }
+    .nav-tab.active { color: #1565C0; border-bottom-color: #1565C0; }
+
+    .container { max-width: 800px; margin: 24px auto; padding: 0 16px; }
+    .tab-content { display: none; }
+    .tab-content.active { display: block; }
+
     .stats-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-bottom: 20px; }
     .stat-card { background: white; border-radius: 14px; padding: 16px; border: 1px solid #eee; }
-    .stat-icon {
-      width: 36px; height: 36px; border-radius: 10px;
-      display: flex; align-items: center; justify-content: center;
-      margin-bottom: 10px; font-size: 18px;
-    }
+    .stat-icon { width: 36px; height: 36px; border-radius: 10px; display: flex; align-items: center; justify-content: center; margin-bottom: 10px; font-size: 18px; }
     .stat-icon.blue { background: #e3f2fd; }
     .stat-icon.yellow { background: #fffde7; }
     .stat-num { font-size: 24px; font-weight: 700; color: #1a1a2e; }
     .stat-label { font-size: 11px; color: #888; margin-top: 2px; font-weight: 500; }
 
-    /* DISPOSITIVOS */
-    .section-title {
-      font-size: 12px; font-weight: 700; color: #888;
-      text-transform: uppercase; letter-spacing: 0.8px; margin-bottom: 10px;
-    }
-    .device-card {
-      background: white; border-radius: 14px;
-      padding: 16px 18px; margin-bottom: 10px;
-      display: flex; align-items: center; gap: 14px;
-      border: 1px solid #eee; border-left: 4px solid #2ecc71;
-    }
+    .section-title { font-size: 12px; font-weight: 700; color: #888; text-transform: uppercase; letter-spacing: 0.8px; margin-bottom: 10px; }
+
+    .device-card { background: white; border-radius: 14px; padding: 16px 18px; margin-bottom: 10px; display: flex; align-items: center; gap: 14px; border: 1px solid #eee; border-left: 4px solid #2ecc71; }
     .device-card.offline { border-left-color: #e74c3c; }
     .device-pulse { position: relative; width: 14px; height: 14px; flex-shrink: 0; }
     .pulse-dot { width: 14px; height: 14px; border-radius: 50%; background: #2ecc71; }
     .pulse-dot.offline { background: #e74c3c; }
-    .pulse-ring {
-      position: absolute; top: -4px; left: -4px;
-      width: 22px; height: 22px; border-radius: 50%;
-      background: rgba(46,204,113,0.2);
-      animation: pulse 2s infinite;
-    }
+    .pulse-ring { position: absolute; top: -4px; left: -4px; width: 22px; height: 22px; border-radius: 50%; background: rgba(46,204,113,0.2); animation: pulse 2s infinite; }
     .pulse-ring.offline { background: rgba(231,76,60,0.2); animation: none; }
     @keyframes pulse { 0% { transform: scale(0.8); opacity: 1; } 100% { transform: scale(1.4); opacity: 0; } }
     .device-info { flex: 1; }
@@ -130,13 +67,9 @@
     .device-badge.online { background: #e8faf0; color: #27ae60; }
     .device-badge.offline { background: #fdecea; color: #c0392b; }
 
-    /* HISTORIAL */
     .historial-card { background: white; border-radius: 14px; padding: 16px 18px; border: 1px solid #eee; }
     .historial-card h3 { font-size: 14px; font-weight: 700; color: #1a1a2e; margin-bottom: 14px; }
-    .hist-row {
-      display: flex; align-items: center; gap: 10px;
-      padding: 9px 0; border-bottom: 1px solid #f5f5f5; font-size: 12px;
-    }
+    .hist-row { display: flex; align-items: center; gap: 10px; padding: 9px 0; border-bottom: 1px solid #f5f5f5; font-size: 12px; }
     .hist-row:last-child { border-bottom: none; }
     .hist-badge { font-size: 10px; font-weight: 700; padding: 3px 8px; border-radius: 8px; flex-shrink: 0; }
     .hist-badge.offline { background: #fdecea; color: #c0392b; }
@@ -144,18 +77,59 @@
     .hist-msg { flex: 1; color: #555; word-break: break-word; }
     .hist-time { color: #bbb; flex-shrink: 0; }
 
+    /* EXTRAS */
+    .extras-intro { background: white; border-radius: 14px; padding: 20px; border: 1px solid #eee; margin-bottom: 20px; }
+    .extras-intro h3 { font-size: 15px; font-weight: 700; color: #1a1a2e; margin-bottom: 6px; }
+    .extras-intro p { font-size: 13px; color: #666; line-height: 1.6; }
+
+    .extra-card { background: white; border-radius: 14px; border: 1px solid #eee; padding: 18px; margin-bottom: 12px; }
+    .extra-card.activo { border-left: 4px solid #27ae60; }
+    .extra-card.inactivo { border-left: 4px solid #ddd; }
+    .extra-header { display: flex; align-items: center; justify-content: space-between; margin-bottom: 8px; }
+    .extra-titulo { font-size: 14px; font-weight: 700; color: #1a1a2e; display: flex; align-items: center; gap: 8px; }
+    .extra-badge-activo { background: #e8faf0; color: #27ae60; font-size: 11px; font-weight: 700; padding: 3px 10px; border-radius: 20px; }
+    .extra-badge-inactivo { background: #f5f5f5; color: #888; font-size: 11px; font-weight: 700; padding: 3px 10px; border-radius: 20px; }
+    .extra-desc { font-size: 13px; color: #666; margin-bottom: 10px; line-height: 1.5; }
+    .extra-precio { font-size: 13px; color: #1565C0; font-weight: 600; }
+
+    .selector-dispositivo { background: white; border-radius: 14px; padding: 16px; border: 1px solid #eee; margin-bottom: 16px; }
+    .selector-dispositivo label { font-size: 12px; font-weight: 700; color: #888; text-transform: uppercase; letter-spacing: 0.5px; display: block; margin-bottom: 8px; }
+    .selector-dispositivo select { width: 100%; padding: 10px 14px; border: 1.5px solid #e8e8e8; border-radius: 8px; font-size: 14px; color: #333; }
+
+    .solicitud-form { background: white; border-radius: 14px; padding: 20px; border: 1px solid #eee; margin-top: 20px; }
+    .solicitud-form h3 { font-size: 15px; font-weight: 700; color: #1a1a2e; margin-bottom: 16px; }
+    .extras-checklist { display: grid; gap: 10px; margin-bottom: 16px; }
+    .extra-check { display: flex; align-items: flex-start; gap: 10px; padding: 12px; background: #f8f9fa; border-radius: 10px; cursor: pointer; border: 2px solid transparent; transition: border-color 0.2s; }
+    .extra-check:hover { border-color: #1565C0; }
+    .extra-check.seleccionado { border-color: #1565C0; background: #e3f2fd; }
+    .extra-check input[type="checkbox"] { margin-top: 2px; flex-shrink: 0; width: 16px; height: 16px; accent-color: #1565C0; }
+    .extra-check-info { flex: 1; }
+    .extra-check-titulo { font-size: 13px; font-weight: 600; color: #1a1a2e; }
+    .extra-check-precio { font-size: 12px; color: #1565C0; margin-top: 2px; }
+    .extra-check-desc { font-size: 12px; color: #888; margin-top: 2px; }
+
+    .periodicidad-selector { display: flex; gap: 10px; margin-bottom: 16px; }
+    .periodo-btn { flex: 1; padding: 10px; border: 2px solid #e8e8e8; border-radius: 10px; text-align: center; cursor: pointer; font-size: 13px; font-weight: 600; color: #888; transition: all 0.2s; }
+    .periodo-btn.activo { border-color: #1565C0; color: #1565C0; background: #e3f2fd; }
+
+    .resumen-precio { background: #e3f2fd; border-radius: 10px; padding: 14px; margin-bottom: 16px; display: flex; justify-content: space-between; align-items: center; }
+    .resumen-precio-label { font-size: 13px; color: #1565C0; font-weight: 600; }
+    .resumen-precio-total { font-size: 20px; font-weight: 700; color: #1565C0; }
+
+    .form-textarea { width: 100%; padding: 10px 14px; border: 1.5px solid #e8e8e8; border-radius: 8px; font-size: 13px; color: #333; resize: vertical; min-height: 70px; margin-bottom: 14px; font-family: inherit; }
+    .btn-solicitar { width: 100%; padding: 13px; background: linear-gradient(135deg, #1565C0, #1976D2); color: white; border: none; border-radius: 10px; font-size: 15px; font-weight: 600; cursor: pointer; }
+    .btn-solicitar:disabled { opacity: 0.5; cursor: not-allowed; }
+
     .vacio { color: #aaa; font-size: 14px; text-align: center; padding: 24px 0; }
     .loading { color: #aaa; font-size: 14px; text-align: center; padding: 40px 0; }
+    .exito-msg { background: #e8faf0; border: 1px solid #27ae60; color: #27ae60; padding: 14px; border-radius: 10px; text-align: center; font-size: 13px; font-weight: 600; display: none; margin-bottom: 16px; }
   </style>
 </head>
 <body>
 
-<!-- HEADER -->
 <div class="header" id="main-header" style="display:none">
   <div class="header-left">
-    <div class="header-logo">
-      <img src="/img/logo.jpeg" alt="MaGu">
-    </div>
+    <div class="header-logo"><img src="/img/logo.jpeg" alt="MaGu"></div>
     <div class="header-texts">
       <div class="title">AlertaLuz</div>
       <div class="brand">MaGu Multiservicios</div>
@@ -165,13 +139,10 @@
   <button class="btn-salir" onclick="cerrarSesion()">Salir</button>
 </div>
 
-<!-- LOGIN -->
 <div id="pantalla-login">
   <div class="login-card">
     <div class="login-logo">
-      <div class="login-logo-img">
-        <img src="/img/logo.jpeg" alt="MaGu AlertaLuz">
-      </div>
+      <div class="login-logo-img"><img src="/img/logo.jpeg" alt="MaGu AlertaLuz"></div>
       <div class="login-title">AlertaLuz</div>
       <div class="login-brand">by MaGu Multiservicios</div>
       <div class="login-sub">Monitoreo de suministro eléctrico</div>
@@ -189,45 +160,111 @@
   </div>
 </div>
 
-<!-- PANEL -->
 <div id="pantalla-panel">
+  <div class="nav-tabs">
+    <div class="nav-tab active" onclick="cambiarTab('inicio', this)">Mis dispositivos</div>
+    <div class="nav-tab" onclick="cambiarTab('extras', this)">Extras y servicios</div>
+  </div>
+
   <div class="container">
-    <div class="stats-grid">
-      <div class="stat-card">
-        <div class="stat-icon blue">🔌</div>
-        <div class="stat-num" id="stat-online">-</div>
-        <div class="stat-label">Dispositivos online</div>
+
+    <!-- TAB INICIO -->
+    <div id="tab-inicio" class="tab-content active">
+      <div class="stats-grid">
+        <div class="stat-card">
+          <div class="stat-icon blue">🔌</div>
+          <div class="stat-num" id="stat-online">-</div>
+          <div class="stat-label">Dispositivos online</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-icon yellow">⚡</div>
+          <div class="stat-num" id="stat-alertas">-</div>
+          <div class="stat-label">Alertas este mes</div>
+        </div>
       </div>
-      <div class="stat-card">
-        <div class="stat-icon yellow">⚡</div>
-        <div class="stat-num" id="stat-alertas">-</div>
-        <div class="stat-label">Alertas este mes</div>
+      <div class="section-title">Tus dispositivos</div>
+      <div id="lista-dispositivos"><p class="loading">Cargando...</p></div>
+      <br>
+      <div class="historial-card">
+        <h3>📋 Historial de alertas</h3>
+        <div id="lista-alertas"><p class="loading">Cargando...</p></div>
       </div>
     </div>
 
-    <div class="section-title">Tus dispositivos</div>
-    <div id="lista-dispositivos"><p class="loading">Cargando...</p></div>
+    <!-- TAB EXTRAS -->
+    <div id="tab-extras" class="tab-content">
+      <div class="extras-intro">
+        <h3>⚡ Amplía tu servicio AlertaLuz</h3>
+        <p>Contrata servicios adicionales para recibir alertas por más canales o añadir más destinatarios. Una vez que selecciones los extras que quieres, recibirás un presupuesto y nos pondremos en contacto contigo para gestionar el pago.</p>
+      </div>
 
-    <br>
+      <div class="selector-dispositivo">
+        <label>Selecciona el dispositivo</label>
+        <select id="selector-chip" onchange="actualizarExtrasActivos()">
+          <option value="">Cargando...</option>
+        </select>
+      </div>
 
-    <div class="historial-card">
-      <h3>📋 Historial de alertas</h3>
-      <div id="lista-alertas"><p class="loading">Cargando...</p></div>
+      <div class="section-title">Extras activos en este dispositivo</div>
+      <div id="extras-activos"><p class="loading">Cargando...</p></div>
+
+      <br>
+      <div class="solicitud-form">
+        <h3>🛒 Contratar extras</h3>
+        <p style="font-size:13px;color:#666;margin-bottom:16px">Selecciona los extras que quieres añadir a tu dispositivo:</p>
+
+        <div class="extras-checklist" id="extras-checklist"></div>
+
+        <div class="section-title" style="margin-top:16px">Periodicidad de pago</div>
+        <div class="periodicidad-selector">
+          <div class="periodo-btn activo" onclick="seleccionarPeriodo('anual', this)">Anual<br><small style="font-weight:400;font-size:11px">Ahorra 2 meses</small></div>
+          <div class="periodo-btn" onclick="seleccionarPeriodo('mensual', this)">Mensual<br><small style="font-weight:400;font-size:11px">Más flexible</small></div>
+        </div>
+
+        <div class="resumen-precio">
+          <span class="resumen-precio-label" id="resumen-label">Selecciona extras para ver el precio</span>
+          <span class="resumen-precio-total" id="resumen-total"></span>
+        </div>
+
+        <textarea class="form-textarea" id="solicitud-mensaje" placeholder="¿Tienes alguna pregunta o comentario? (opcional)"></textarea>
+
+        <div class="exito-msg" id="exito-solicitud">✅ ¡Solicitud enviada! Nos pondremos en contacto contigo en breve.</div>
+
+        <button class="btn-solicitar" id="btn-solicitar" onclick="enviarSolicitud()" disabled>
+          Enviar solicitud de presupuesto
+        </button>
+      </div>
     </div>
+
   </div>
 </div>
 
 <script>
   const BACKEND = 'https://alertaluz-backend.onrender.com';
   let sesionEmail = null;
+  let dispositivosData = [];
+  let periodoSeleccionado = 'anual';
+
+  const EXTRAS = [
+    { id: 'email_multiple', nombre: 'Email múltiple', desc: 'Recibe alertas en hasta 3 emails distintos', precio_anual: 5, precio_mensual: 0.50, campo: 'extra_email_multiple' },
+    { id: 'telegram_multiple', nombre: 'Telegram múltiple', desc: 'Recibe alertas en hasta 3 cuentas de Telegram', precio_anual: 5, precio_mensual: 0.50, campo: 'extra_telegram_multiple' },
+    { id: 'push', nombre: 'Push notifications', desc: 'Notificaciones instantáneas en tu móvil aunque no tengas la app abierta', precio_anual: 5, precio_mensual: 0.50, campo: 'extra_push' },
+    { id: 'sms', nombre: 'SMS de alerta', desc: 'Recibe un SMS cuando se detecte un corte. Máx. 10 SMS/mes', precio_anual: 10, precio_mensual: 1.00, campo: 'extra_sms' },
+    { id: 'llamada', nombre: 'Llamada telefónica', desc: 'Llamada automática si el dispositivo lleva más de 15 min sin señal. Máx. 5 llamadas/mes', precio_anual: 15, precio_mensual: 1.50, campo: 'extra_llamada' },
+  ];
 
   window.onload = () => {
     const emailGuardado = localStorage.getItem('alertaluz_email');
-    if (emailGuardado) {
-      sesionEmail = emailGuardado;
-      mostrarPanel();
-    }
+    if (emailGuardado) { sesionEmail = emailGuardado; mostrarPanel(); }
+    renderChecklist();
   };
+
+  function cambiarTab(tab, el) {
+    document.querySelectorAll('.nav-tab').forEach(t => t.classList.remove('active'));
+    document.querySelectorAll('.tab-content').forEach(t => t.classList.remove('active'));
+    el.classList.add('active');
+    document.getElementById(`tab-${tab}`).classList.add('active');
+  }
 
   async function iniciarSesion() {
     const email = document.getElementById('login-email').value.trim();
@@ -235,8 +272,7 @@
     if (!email || !password) return;
     try {
       const res = await fetch(`${BACKEND}/login`, {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
+        method: 'POST', headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ email, password })
       });
       const data = await res.json();
@@ -247,9 +283,7 @@
       } else {
         document.getElementById('login-error').style.display = 'block';
       }
-    } catch(e) {
-      document.getElementById('login-error').style.display = 'block';
-    }
+    } catch(e) { document.getElementById('login-error').style.display = 'block'; }
   }
 
   function cerrarSesion() {
@@ -267,25 +301,22 @@
     document.getElementById('header-email').textContent = sesionEmail;
     await cargarDispositivos();
     await cargarAlertas();
-    setInterval(async () => {
-      await cargarDispositivos();
-      await cargarAlertas();
-    }, 30000);
+    setInterval(async () => { await cargarDispositivos(); await cargarAlertas(); }, 30000);
   }
 
   async function cargarDispositivos() {
     try {
       const res = await fetch(`${BACKEND}/dispositivos?email=${encodeURIComponent(sesionEmail)}`);
       const data = await res.json();
+      dispositivosData = data.dispositivos || [];
       const contenedor = document.getElementById('lista-dispositivos');
-      if (!data.dispositivos || data.dispositivos.length === 0) {
+      if (!dispositivosData.length) {
         contenedor.innerHTML = '<p class="vacio">No tienes dispositivos registrados</p>';
         document.getElementById('stat-online').textContent = '0';
         return;
       }
-      const online = data.dispositivos.filter(d => d.estado === 'online').length;
-      document.getElementById('stat-online').textContent = online;
-      contenedor.innerHTML = data.dispositivos.map(d => `
+      document.getElementById('stat-online').textContent = dispositivosData.filter(d => d.estado === 'online').length;
+      contenedor.innerHTML = dispositivosData.map(d => `
         <div class="device-card ${d.estado === 'offline' ? 'offline' : ''}">
           <div class="device-pulse">
             <div class="pulse-dot ${d.estado === 'offline' ? 'offline' : ''}"></div>
@@ -298,8 +329,130 @@
           <span class="device-badge ${d.estado}">${d.estado === 'online' ? 'Online' : 'Sin señal'}</span>
         </div>
       `).join('');
+
+      // Actualizar selector de dispositivos en tab extras
+      const sel = document.getElementById('selector-chip');
+      sel.innerHTML = dispositivosData.map(d => `<option value="${d.chip_id}">${d.nombre || d.chip_id}</option>`).join('');
+      actualizarExtrasActivos();
     } catch(e) {
-      document.getElementById('lista-dispositivos').innerHTML = '<p class="vacio">Error al cargar dispositivos</p>';
+      document.getElementById('lista-dispositivos').innerHTML = '<p class="vacio">Error al cargar</p>';
+    }
+  }
+
+  function actualizarExtrasActivos() {
+    const chipId = document.getElementById('selector-chip').value;
+    const disp = dispositivosData.find(d => d.chip_id === chipId);
+    if (!disp) return;
+
+    const activos = EXTRAS.filter(e => disp[e.campo]);
+    const contenedor = document.getElementById('extras-activos');
+
+    if (activos.length === 0) {
+      contenedor.innerHTML = '<p class="vacio">No tienes extras activos en este dispositivo</p>';
+    } else {
+      contenedor.innerHTML = activos.map(e => `
+        <div class="extra-card activo">
+          <div class="extra-header">
+            <div class="extra-titulo">✓ ${e.nombre}</div>
+            <span class="extra-badge-activo">Activo</span>
+          </div>
+          <div class="extra-desc">${e.desc}</div>
+        </div>
+      `).join('');
+    }
+  }
+
+  function renderChecklist() {
+    document.getElementById('extras-checklist').innerHTML = EXTRAS.map(e => `
+      <div class="extra-check" id="check-${e.id}" onclick="toggleExtra('${e.id}', this)">
+        <input type="checkbox" id="cb-${e.id}" onclick="event.stopPropagation()">
+        <div class="extra-check-info">
+          <div class="extra-check-titulo">${e.nombre}</div>
+          <div class="extra-check-precio" id="precio-${e.id}">${e.precio_anual}€/año · ${e.precio_mensual.toFixed(2)}€/mes</div>
+          <div class="extra-check-desc">${e.desc}</div>
+        </div>
+      </div>
+    `).join('');
+  }
+
+  function toggleExtra(id, el) {
+    const cb = document.getElementById(`cb-${id}`);
+    cb.checked = !cb.checked;
+    el.classList.toggle('seleccionado', cb.checked);
+    calcularPrecio();
+  }
+
+  function seleccionarPeriodo(periodo, el) {
+    periodoSeleccionado = periodo;
+    document.querySelectorAll('.periodo-btn').forEach(b => b.classList.remove('activo'));
+    el.classList.add('activo');
+    calcularPrecio();
+  }
+
+  function calcularPrecio() {
+    const seleccionados = EXTRAS.filter(e => document.getElementById(`cb-${e.id}`)?.checked);
+    const btn = document.getElementById('btn-solicitar');
+    const resumenLabel = document.getElementById('resumen-label');
+    const resumenTotal = document.getElementById('resumen-precio-total') || document.getElementById('resumen-total');
+
+    if (seleccionados.length === 0) {
+      resumenLabel.textContent = 'Selecciona extras para ver el precio';
+      resumenTotal.textContent = '';
+      btn.disabled = true;
+      return;
+    }
+
+    const total = seleccionados.reduce((sum, e) => sum + (periodoSeleccionado === 'anual' ? e.precio_anual : e.precio_mensual), 0);
+    const nombres = seleccionados.map(e => e.nombre).join(', ');
+    resumenLabel.textContent = `${seleccionados.length} extra${seleccionados.length > 1 ? 's' : ''}: ${nombres}`;
+    resumenTotal.textContent = `${total.toFixed(2)}€/${periodoSeleccionado === 'anual' ? 'año' : 'mes'}`;
+    btn.disabled = false;
+  }
+
+  async function enviarSolicitud() {
+    const chipId = document.getElementById('selector-chip').value;
+    if (!chipId) { alert('Selecciona un dispositivo'); return; }
+
+    const seleccionados = EXTRAS.filter(e => document.getElementById(`cb-${e.id}`)?.checked);
+    if (seleccionados.length === 0) { alert('Selecciona al menos un extra'); return; }
+
+    const total = seleccionados.reduce((sum, e) => sum + (periodoSeleccionado === 'anual' ? e.precio_anual : e.precio_mensual), 0);
+    const mensaje = document.getElementById('solicitud-mensaje').value;
+
+    const btn = document.getElementById('btn-solicitar');
+    btn.disabled = true;
+    btn.textContent = 'Enviando...';
+
+    try {
+      const res = await fetch(`${BACKEND}/solicitar-extras`, {
+        method: 'POST', headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          email: sesionEmail,
+          chip_id: chipId,
+          extras: JSON.stringify(seleccionados.map(e => e.nombre)),
+          periodicidad: periodoSeleccionado,
+          precio_total: total.toFixed(2),
+          mensaje
+        })
+      });
+      const data = await res.json();
+      if (data.ok) {
+        document.getElementById('exito-solicitud').style.display = 'block';
+        btn.textContent = '✅ Solicitud enviada';
+        EXTRAS.forEach(e => {
+          const cb = document.getElementById(`cb-${e.id}`);
+          if (cb) { cb.checked = false; document.getElementById(`check-${e.id}`).classList.remove('seleccionado'); }
+        });
+        calcularPrecio();
+      } else {
+        alert('Error al enviar. Inténtalo de nuevo.');
+        btn.disabled = false;
+        btn.textContent = 'Enviar solicitud de presupuesto';
+      }
+    } catch(e) {
+      alert('Error de conexión. Inténtalo de nuevo.');
+      btn.disabled = false;
+      btn.textContent = 'Enviar solicitud de presupuesto';
     }
   }
 
@@ -327,14 +480,12 @@
         </div>
       `).join('');
     } catch(e) {
-      document.getElementById('lista-alertas').innerHTML = '<p class="vacio">Error al cargar alertas</p>';
+      document.getElementById('lista-alertas').innerHTML = '<p class="vacio">Error al cargar</p>';
     }
   }
 
   function formatearMensaje(mensaje) {
-    return mensaje.replace(/\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}(\.\d+)?/g, (fecha) => {
-      return formatearFecha(fecha);
-    });
+    return mensaje.replace(/\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}(\.\d+)?/g, f => formatearFecha(f));
   }
 
   function formatearFecha(isoString) {
