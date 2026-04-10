@@ -479,31 +479,22 @@
     gestionarSolicitud(s.id, 'aprobada', s.chip_id, s.email_cliente, s.extras_solicitados);
   }
 
-  async function gestionarSolicitud(id, estado, chip_id, email_cliente, extrasJson) {
+  async function gestionarSolicitud(id, estado, chip_id, email_cliente, extras_solicitados) {
     const accion = estado === 'aprobada' ? 'aprobar y activar' : 'rechazar';
     if (!confirm(`¿${accion} esta solicitud?`)) return;
 
-    let extras_activar = null;
-    if (estado === 'aprobada' && extrasJson) {
-      try {
-        const extras = JSON.parse(extrasJson);
-        extras_activar = {};
-        if (extras.includes('Email múltiple')) extras_activar.extra_email_multiple = true;
-        if (extras.includes('Telegram múltiple')) extras_activar.extra_telegram_multiple = true;
-        if (extras.includes('Push notifications')) extras_activar.extra_push = true;
-        if (extras.includes('SMS')) extras_activar.extra_sms = true;
-        if (extras.includes('Llamada telefónica')) extras_activar.extra_llamada = true;
-      } catch(e) {}
+    try {
+      const res = await fetch(`${BACKEND}/admin/solicitud/gestionar`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ clave: adminClave, id, estado, chip_id, email_cliente, extras_solicitados })
+      });
+      const data = await res.json();
+      if (data.ok) { alert(estado === 'aprobada' ? '✅ Aprobado y activado. Email enviado al cliente.' : 'Solicitud rechazada.'); cargarTodo(); }
+      else alert('Error al gestionar');
+    } catch(e) {
+      alert('Error de conexión: ' + e.message);
     }
-
-    const res = await fetch(`${BACKEND}/admin/solicitud/gestionar`, {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ clave: adminClave, id, estado, chip_id, email_cliente, extras_activar })
-    });
-    const data = await res.json();
-    if (data.ok) { alert(estado === 'aprobada' ? '✅ Aprobado y activado. Email enviado al cliente.' : 'Solicitud rechazada.'); cargarTodo(); }
-    else alert('Error al gestionar');
   }
 
   async function toggleActivo(chip_id, activo) {
