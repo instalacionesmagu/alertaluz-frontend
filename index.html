@@ -33,8 +33,7 @@
     .error-msg { color: #e74c3c; font-size: 13px; margin-top: 12px; text-align: center; display: none; }
 
     #pantalla-panel { display: none; }
-
-    .nav-tabs { background: white; border-bottom: 1px solid #eee; display: flex; gap: 0; padding: 0 16px; }
+    .nav-tabs { background: white; border-bottom: 1px solid #eee; display: flex; padding: 0 16px; }
     .nav-tab { padding: 14px 18px; font-size: 13px; font-weight: 600; color: #888; cursor: pointer; border-bottom: 3px solid transparent; }
     .nav-tab.active { color: #1565C0; border-bottom-color: #1565C0; }
 
@@ -78,26 +77,34 @@
     .hist-time { color: #bbb; flex-shrink: 0; }
 
     /* EXTRAS */
-    .extras-intro { background: white; border-radius: 14px; padding: 20px; border: 1px solid #eee; margin-bottom: 20px; }
-    .extras-intro h3 { font-size: 15px; font-weight: 700; color: #1a1a2e; margin-bottom: 6px; }
-    .extras-intro p { font-size: 13px; color: #666; line-height: 1.6; }
+    .bloque { background: white; border-radius: 14px; border: 1px solid #eee; padding: 20px; margin-bottom: 16px; }
+    .bloque h3 { font-size: 15px; font-weight: 700; color: #1a1a2e; margin-bottom: 6px; }
+    .bloque p { font-size: 13px; color: #666; line-height: 1.6; }
 
-    .extra-card { background: white; border-radius: 14px; border: 1px solid #eee; padding: 18px; margin-bottom: 12px; }
-    .extra-card.activo { border-left: 4px solid #27ae60; }
-    .extra-card.inactivo { border-left: 4px solid #ddd; }
-    .extra-header { display: flex; align-items: center; justify-content: space-between; margin-bottom: 8px; }
-    .extra-titulo { font-size: 14px; font-weight: 700; color: #1a1a2e; display: flex; align-items: center; gap: 8px; }
-    .extra-badge-activo { background: #e8faf0; color: #27ae60; font-size: 11px; font-weight: 700; padding: 3px 10px; border-radius: 20px; }
-    .extra-badge-inactivo { background: #f5f5f5; color: #888; font-size: 11px; font-weight: 700; padding: 3px 10px; border-radius: 20px; }
-    .extra-desc { font-size: 13px; color: #666; margin-bottom: 10px; line-height: 1.5; }
-    .extra-precio { font-size: 13px; color: #1565C0; font-weight: 600; }
+    .servicio-base-card { background: linear-gradient(135deg, #e3f2fd, #f0f8ff); border-radius: 14px; border: 1px solid #bbdefb; padding: 20px; margin-bottom: 16px; }
+    .servicio-base-header { display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 12px; }
+    .servicio-base-titulo { font-size: 15px; font-weight: 700; color: #1565C0; }
+    .servicio-expira { font-size: 12px; color: #666; margin-top: 4px; }
+    .badge-activo { background: #e8faf0; color: #27ae60; font-size: 11px; font-weight: 700; padding: 4px 12px; border-radius: 20px; }
+    .badge-caduca-pronto { background: #fff3e0; color: #e65100; font-size: 11px; font-weight: 700; padding: 4px 12px; border-radius: 20px; }
+    .badge-caducado { background: #fdecea; color: #c0392b; font-size: 11px; font-weight: 700; padding: 4px 12px; border-radius: 20px; }
 
-    .selector-dispositivo { background: white; border-radius: 14px; padding: 16px; border: 1px solid #eee; margin-bottom: 16px; }
-    .selector-dispositivo label { font-size: 12px; font-weight: 700; color: #888; text-transform: uppercase; letter-spacing: 0.5px; display: block; margin-bottom: 8px; }
+    .renovacion-opciones { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin: 14px 0; }
+    .renovacion-opcion { border: 2px solid #e8e8e8; border-radius: 10px; padding: 14px; text-align: center; cursor: pointer; transition: all 0.2s; }
+    .renovacion-opcion:hover { border-color: #1565C0; }
+    .renovacion-opcion.seleccionada { border-color: #1565C0; background: #e3f2fd; }
+    .renovacion-opcion-precio { font-size: 20px; font-weight: 700; color: #1565C0; }
+    .renovacion-opcion-label { font-size: 12px; color: #888; margin-top: 4px; }
+    .renovacion-opcion-ahorro { font-size: 11px; color: #27ae60; font-weight: 600; margin-top: 4px; }
+
+    .selector-dispositivo { margin-bottom: 14px; }
+    .selector-dispositivo label { display: block; font-size: 12px; font-weight: 700; color: #888; text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 8px; }
     .selector-dispositivo select { width: 100%; padding: 10px 14px; border: 1.5px solid #e8e8e8; border-radius: 8px; font-size: 14px; color: #333; }
 
-    .solicitud-form { background: white; border-radius: 14px; padding: 20px; border: 1px solid #eee; margin-top: 20px; }
-    .solicitud-form h3 { font-size: 15px; font-weight: 700; color: #1a1a2e; margin-bottom: 16px; }
+    .extras-activos-lista { display: grid; gap: 8px; margin-bottom: 4px; }
+    .extra-activo-item { display: flex; align-items: center; gap: 8px; font-size: 13px; color: #555; padding: 8px 12px; background: #f8f9fa; border-radius: 8px; }
+    .extra-activo-item .dot-verde { width: 8px; height: 8px; border-radius: 50%; background: #27ae60; flex-shrink: 0; }
+
     .extras-checklist { display: grid; gap: 10px; margin-bottom: 16px; }
     .extra-check { display: flex; align-items: flex-start; gap: 10px; padding: 12px; background: #f8f9fa; border-radius: 10px; cursor: pointer; border: 2px solid transparent; transition: border-color 0.2s; }
     .extra-check:hover { border-color: #1565C0; }
@@ -119,10 +126,12 @@
     .form-textarea { width: 100%; padding: 10px 14px; border: 1.5px solid #e8e8e8; border-radius: 8px; font-size: 13px; color: #333; resize: vertical; min-height: 70px; margin-bottom: 14px; font-family: inherit; }
     .btn-solicitar { width: 100%; padding: 13px; background: linear-gradient(135deg, #1565C0, #1976D2); color: white; border: none; border-radius: 10px; font-size: 15px; font-weight: 600; cursor: pointer; }
     .btn-solicitar:disabled { opacity: 0.5; cursor: not-allowed; }
+    .btn-renovar-base { width: 100%; padding: 12px; background: linear-gradient(135deg, #27ae60, #2ecc71); color: white; border: none; border-radius: 10px; font-size: 14px; font-weight: 600; cursor: pointer; margin-top: 4px; }
 
+    .exito-msg { background: #e8faf0; border: 1px solid #27ae60; color: #27ae60; padding: 14px; border-radius: 10px; text-align: center; font-size: 13px; font-weight: 600; display: none; margin-bottom: 16px; }
     .vacio { color: #aaa; font-size: 14px; text-align: center; padding: 24px 0; }
     .loading { color: #aaa; font-size: 14px; text-align: center; padding: 40px 0; }
-    .exito-msg { background: #e8faf0; border: 1px solid #27ae60; color: #27ae60; padding: 14px; border-radius: 10px; text-align: center; font-size: 13px; font-weight: 600; display: none; margin-bottom: 16px; }
+    .divider { border: none; border-top: 1px solid #eee; margin: 20px 0; }
   </style>
 </head>
 <body>
@@ -163,7 +172,7 @@
 <div id="pantalla-panel">
   <div class="nav-tabs">
     <div class="nav-tab active" onclick="cambiarTab('inicio', this)">Mis dispositivos</div>
-    <div class="nav-tab" onclick="cambiarTab('extras', this)">Extras y servicios</div>
+    <div class="nav-tab" onclick="cambiarTab('extras', this)">Renovación y extras</div>
   </div>
 
   <div class="container">
@@ -193,29 +202,58 @@
 
     <!-- TAB EXTRAS -->
     <div id="tab-extras" class="tab-content">
-      <div class="extras-intro">
-        <h3>⚡ Amplía tu servicio AlertaLuz</h3>
-        <p>Contrata servicios adicionales para recibir alertas por más canales o añadir más destinatarios. Una vez que selecciones los extras que quieres, recibirás un presupuesto y nos pondremos en contacto contigo para gestionar el pago.</p>
-      </div>
 
       <div class="selector-dispositivo">
         <label>Selecciona el dispositivo</label>
-        <select id="selector-chip" onchange="actualizarExtrasActivos()">
+        <select id="selector-chip" onchange="actualizarTabExtras()">
           <option value="">Cargando...</option>
         </select>
       </div>
 
-      <div class="section-title">Extras activos en este dispositivo</div>
-      <div id="extras-activos"><p class="loading">Cargando...</p></div>
+      <!-- RENOVACIÓN BASE -->
+      <div class="section-title">Servicio base</div>
+      <div class="servicio-base-card" id="servicio-base-card">
+        <div class="servicio-base-header">
+          <div>
+            <div class="servicio-base-titulo">⚡ AlertaLuz — Servicio base</div>
+            <div class="servicio-expira" id="servicio-expira-texto">Cargando...</div>
+          </div>
+          <span id="badge-estado-base" class="badge-activo">Activo</span>
+        </div>
+        <p style="font-size:13px;color:#666;margin-bottom:14px">Incluye: monitoreo 24h, alertas por email, panel web, detección luz/internet.</p>
+        <div class="renovacion-opciones">
+          <div class="renovacion-opcion seleccionada" id="opcion-anual" onclick="seleccionarRenovacion('anual')">
+            <div class="renovacion-opcion-precio">15€</div>
+            <div class="renovacion-opcion-label">Renovación anual</div>
+            <div class="renovacion-opcion-ahorro">Recomendado</div>
+          </div>
+          <div class="renovacion-opcion" id="opcion-mensual" onclick="seleccionarRenovacion('mensual')">
+            <div class="renovacion-opcion-precio">1,50€</div>
+            <div class="renovacion-opcion-label">Renovación mensual</div>
+            <div class="renovacion-opcion-ahorro">Más flexible</div>
+          </div>
+        </div>
+        <button class="btn-renovar-base" onclick="solicitarRenovacionBase()">
+          Solicitar renovación del servicio
+        </button>
+      </div>
 
-      <br>
-      <div class="solicitud-form">
+      <hr class="divider">
+
+      <!-- EXTRAS ACTIVOS -->
+      <div class="section-title">Extras activos</div>
+      <div id="extras-activos" style="margin-bottom:20px"><p class="vacio">Sin extras activos</p></div>
+
+      <hr class="divider">
+
+      <!-- CONTRATAR EXTRAS -->
+      <div class="bloque">
         <h3>🛒 Contratar extras</h3>
-        <p style="font-size:13px;color:#666;margin-bottom:16px">Selecciona los extras que quieres añadir a tu dispositivo:</p>
+        <p style="margin-bottom:16px">Selecciona los servicios adicionales que quieres añadir. Te enviaremos un presupuesto y nos pondremos en contacto para gestionar el pago.</p>
 
         <div class="extras-checklist" id="extras-checklist"></div>
 
-        <div class="section-title" style="margin-top:16px">Periodicidad de pago</div>
+        <div class="section-title">Periodicidad</div>
         <div class="periodicidad-selector">
           <div class="periodo-btn activo" onclick="seleccionarPeriodo('anual', this)">Anual<br><small style="font-weight:400;font-size:11px">Ahorra 2 meses</small></div>
           <div class="periodo-btn" onclick="seleccionarPeriodo('mensual', this)">Mensual<br><small style="font-weight:400;font-size:11px">Más flexible</small></div>
@@ -226,16 +264,12 @@
           <span class="resumen-precio-total" id="resumen-total"></span>
         </div>
 
-        <textarea class="form-textarea" id="solicitud-mensaje" placeholder="¿Tienes alguna pregunta o comentario? (opcional)"></textarea>
-
+        <textarea class="form-textarea" id="solicitud-mensaje" placeholder="¿Alguna pregunta o comentario? (opcional)"></textarea>
         <div class="exito-msg" id="exito-solicitud">✅ ¡Solicitud enviada! Nos pondremos en contacto contigo en breve.</div>
-
-        <button class="btn-solicitar" id="btn-solicitar" onclick="enviarSolicitud()" disabled>
-          Enviar solicitud de presupuesto
-        </button>
+        <button class="btn-solicitar" id="btn-solicitar" onclick="enviarSolicitud()" disabled>Enviar solicitud</button>
       </div>
-    </div>
 
+    </div>
   </div>
 </div>
 
@@ -244,13 +278,14 @@
   let sesionEmail = null;
   let dispositivosData = [];
   let periodoSeleccionado = 'anual';
+  let renovacionSeleccionada = 'anual';
 
   const EXTRAS = [
     { id: 'email_multiple', nombre: 'Email múltiple', desc: 'Recibe alertas en hasta 3 emails distintos', precio_anual: 5, precio_mensual: 0.50, campo: 'extra_email_multiple' },
     { id: 'telegram_multiple', nombre: 'Telegram múltiple', desc: 'Recibe alertas en hasta 3 cuentas de Telegram', precio_anual: 5, precio_mensual: 0.50, campo: 'extra_telegram_multiple' },
-    { id: 'push', nombre: 'Push notifications', desc: 'Notificaciones instantáneas en tu móvil aunque no tengas la app abierta', precio_anual: 5, precio_mensual: 0.50, campo: 'extra_push' },
-    { id: 'sms', nombre: 'SMS de alerta', desc: 'Recibe un SMS cuando se detecte un corte. Máx. 10 SMS/mes', precio_anual: 10, precio_mensual: 1.00, campo: 'extra_sms' },
-    { id: 'llamada', nombre: 'Llamada telefónica', desc: 'Llamada automática si el dispositivo lleva más de 15 min sin señal. Máx. 5 llamadas/mes', precio_anual: 15, precio_mensual: 1.50, campo: 'extra_llamada' },
+    { id: 'push', nombre: 'Push notifications', desc: 'Notificaciones instantáneas en tu móvil', precio_anual: 5, precio_mensual: 0.50, campo: 'extra_push' },
+    { id: 'sms', nombre: 'SMS de alerta', desc: 'SMS cuando se detecte un corte. Máx. 10/mes', precio_anual: 10, precio_mensual: 1.00, campo: 'extra_sms' },
+    { id: 'llamada', nombre: 'Llamada telefónica', desc: 'Llamada automática si lleva +15 min sin señal. Máx. 5/mes', precio_anual: 15, precio_mensual: 1.50, campo: 'extra_llamada' },
   ];
 
   window.onload = () => {
@@ -276,13 +311,8 @@
         body: JSON.stringify({ email, password })
       });
       const data = await res.json();
-      if (data.ok) {
-        sesionEmail = email;
-        localStorage.setItem('alertaluz_email', email);
-        mostrarPanel();
-      } else {
-        document.getElementById('login-error').style.display = 'block';
-      }
+      if (data.ok) { sesionEmail = email; localStorage.setItem('alertaluz_email', email); mostrarPanel(); }
+      else document.getElementById('login-error').style.display = 'block';
     } catch(e) { document.getElementById('login-error').style.display = 'block'; }
   }
 
@@ -310,11 +340,13 @@
       const data = await res.json();
       dispositivosData = data.dispositivos || [];
       const contenedor = document.getElementById('lista-dispositivos');
+
       if (!dispositivosData.length) {
         contenedor.innerHTML = '<p class="vacio">No tienes dispositivos registrados</p>';
         document.getElementById('stat-online').textContent = '0';
         return;
       }
+
       document.getElementById('stat-online').textContent = dispositivosData.filter(d => d.estado === 'online').length;
       contenedor.innerHTML = dispositivosData.map(d => `
         <div class="device-card ${d.estado === 'offline' ? 'offline' : ''}">
@@ -324,42 +356,82 @@
           </div>
           <div class="device-info">
             <div class="device-name">${d.nombre || d.chip_id}</div>
-            <div class="device-detail">Último ping: ${formatearFecha(d.ultimo_ping)}</div>
+            <div class="device-detail">Último ping: ${formatearFecha(d.ultimo_ping)} · Expira: ${d.fecha_expiracion ? formatearFechaSolo(d.fecha_expiracion) : 'sin fecha'}</div>
           </div>
           <span class="device-badge ${d.estado}">${d.estado === 'online' ? 'Online' : 'Sin señal'}</span>
         </div>
       `).join('');
 
-      // Actualizar selector de dispositivos en tab extras
       const sel = document.getElementById('selector-chip');
       sel.innerHTML = dispositivosData.map(d => `<option value="${d.chip_id}">${d.nombre || d.chip_id}</option>`).join('');
-      actualizarExtrasActivos();
+      actualizarTabExtras();
     } catch(e) {
       document.getElementById('lista-dispositivos').innerHTML = '<p class="vacio">Error al cargar</p>';
     }
   }
 
-  function actualizarExtrasActivos() {
+  function actualizarTabExtras() {
     const chipId = document.getElementById('selector-chip').value;
     const disp = dispositivosData.find(d => d.chip_id === chipId);
     if (!disp) return;
 
+    // Estado del servicio base
+    const hoy = new Date();
+    const badgeEl = document.getElementById('badge-estado-base');
+    const expiraTexto = document.getElementById('servicio-expira-texto');
+
+    if (disp.fecha_expiracion) {
+      const exp = new Date(disp.fecha_expiracion);
+      const dias = Math.ceil((exp - hoy) / (1000*60*60*24));
+      expiraTexto.textContent = `Servicio activo hasta: ${formatearFechaSolo(disp.fecha_expiracion)}`;
+      if (dias < 0) { badgeEl.className = 'badge-caducado'; badgeEl.textContent = 'Caducado'; }
+      else if (dias <= 30) { badgeEl.className = 'badge-caduca-pronto'; badgeEl.textContent = `Caduca en ${dias} días`; }
+      else { badgeEl.className = 'badge-activo'; badgeEl.textContent = 'Activo'; }
+    } else {
+      expiraTexto.textContent = 'Sin fecha de expiración';
+    }
+
+    // Extras activos
     const activos = EXTRAS.filter(e => disp[e.campo]);
     const contenedor = document.getElementById('extras-activos');
-
     if (activos.length === 0) {
       contenedor.innerHTML = '<p class="vacio">No tienes extras activos en este dispositivo</p>';
     } else {
-      contenedor.innerHTML = activos.map(e => `
-        <div class="extra-card activo">
-          <div class="extra-header">
-            <div class="extra-titulo">✓ ${e.nombre}</div>
-            <span class="extra-badge-activo">Activo</span>
-          </div>
-          <div class="extra-desc">${e.desc}</div>
-        </div>
-      `).join('');
+      contenedor.innerHTML = `<div class="extras-activos-lista">${activos.map(e => `
+        <div class="extra-activo-item"><span class="dot-verde"></span>${e.nombre}</div>
+      `).join('')}</div>`;
     }
+  }
+
+  function seleccionarRenovacion(tipo) {
+    renovacionSeleccionada = tipo;
+    document.getElementById('opcion-anual').classList.toggle('seleccionada', tipo === 'anual');
+    document.getElementById('opcion-mensual').classList.toggle('seleccionada', tipo === 'mensual');
+  }
+
+  async function solicitarRenovacionBase() {
+    const chipId = document.getElementById('selector-chip').value;
+    if (!chipId) { alert('Selecciona un dispositivo'); return; }
+
+    const precio = renovacionSeleccionada === 'anual' ? 15 : 1.50;
+    const disp = dispositivosData.find(d => d.chip_id === chipId);
+
+    try {
+      const res = await fetch(`${BACKEND}/solicitar-extras`, {
+        method: 'POST', headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          email: sesionEmail,
+          chip_id: chipId,
+          extras: JSON.stringify([`Renovación servicio base (${renovacionSeleccionada})`]),
+          periodicidad: renovacionSeleccionada,
+          precio_total: precio.toFixed(2),
+          mensaje: `Solicitud de renovación del servicio base para ${disp?.nombre || chipId}`
+        })
+      });
+      const data = await res.json();
+      if (data.ok) alert('✅ Solicitud de renovación enviada. Nos pondremos en contacto contigo para gestionar el pago.');
+      else alert('Error al enviar. Inténtalo de nuevo.');
+    } catch(e) { alert('Error de conexión.'); }
   }
 
   function renderChecklist() {
@@ -368,7 +440,7 @@
         <input type="checkbox" id="cb-${e.id}" onclick="event.stopPropagation()">
         <div class="extra-check-info">
           <div class="extra-check-titulo">${e.nombre}</div>
-          <div class="extra-check-precio" id="precio-${e.id}">${e.precio_anual}€/año · ${e.precio_mensual.toFixed(2)}€/mes</div>
+          <div class="extra-check-precio">${e.precio_anual}€/año · ${e.precio_mensual.toFixed(2)}€/mes</div>
           <div class="extra-check-desc">${e.desc}</div>
         </div>
       </div>
@@ -392,68 +464,45 @@
   function calcularPrecio() {
     const seleccionados = EXTRAS.filter(e => document.getElementById(`cb-${e.id}`)?.checked);
     const btn = document.getElementById('btn-solicitar');
-    const resumenLabel = document.getElementById('resumen-label');
-    const resumenTotal = document.getElementById('resumen-precio-total') || document.getElementById('resumen-total');
-
     if (seleccionados.length === 0) {
-      resumenLabel.textContent = 'Selecciona extras para ver el precio';
-      resumenTotal.textContent = '';
+      document.getElementById('resumen-label').textContent = 'Selecciona extras para ver el precio';
+      document.getElementById('resumen-total').textContent = '';
       btn.disabled = true;
       return;
     }
-
     const total = seleccionados.reduce((sum, e) => sum + (periodoSeleccionado === 'anual' ? e.precio_anual : e.precio_mensual), 0);
-    const nombres = seleccionados.map(e => e.nombre).join(', ');
-    resumenLabel.textContent = `${seleccionados.length} extra${seleccionados.length > 1 ? 's' : ''}: ${nombres}`;
-    resumenTotal.textContent = `${total.toFixed(2)}€/${periodoSeleccionado === 'anual' ? 'año' : 'mes'}`;
+    document.getElementById('resumen-label').textContent = `${seleccionados.length} extra${seleccionados.length > 1 ? 's' : ''} seleccionados`;
+    document.getElementById('resumen-total').textContent = `${total.toFixed(2)}€/${periodoSeleccionado === 'anual' ? 'año' : 'mes'}`;
     btn.disabled = false;
   }
 
   async function enviarSolicitud() {
     const chipId = document.getElementById('selector-chip').value;
     if (!chipId) { alert('Selecciona un dispositivo'); return; }
-
     const seleccionados = EXTRAS.filter(e => document.getElementById(`cb-${e.id}`)?.checked);
-    if (seleccionados.length === 0) { alert('Selecciona al menos un extra'); return; }
-
+    if (!seleccionados.length) { alert('Selecciona al menos un extra'); return; }
     const total = seleccionados.reduce((sum, e) => sum + (periodoSeleccionado === 'anual' ? e.precio_anual : e.precio_mensual), 0);
-    const mensaje = document.getElementById('solicitud-mensaje').value;
-
     const btn = document.getElementById('btn-solicitar');
-    btn.disabled = true;
-    btn.textContent = 'Enviando...';
-
+    btn.disabled = true; btn.textContent = 'Enviando...';
     try {
       const res = await fetch(`${BACKEND}/solicitar-extras`, {
         method: 'POST', headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
-          email: sesionEmail,
-          chip_id: chipId,
+          email: sesionEmail, chip_id: chipId,
           extras: JSON.stringify(seleccionados.map(e => e.nombre)),
           periodicidad: periodoSeleccionado,
           precio_total: total.toFixed(2),
-          mensaje
+          mensaje: document.getElementById('solicitud-mensaje').value
         })
       });
       const data = await res.json();
       if (data.ok) {
         document.getElementById('exito-solicitud').style.display = 'block';
         btn.textContent = '✅ Solicitud enviada';
-        EXTRAS.forEach(e => {
-          const cb = document.getElementById(`cb-${e.id}`);
-          if (cb) { cb.checked = false; document.getElementById(`check-${e.id}`).classList.remove('seleccionado'); }
-        });
+        EXTRAS.forEach(e => { const cb = document.getElementById(`cb-${e.id}`); if (cb) { cb.checked = false; document.getElementById(`check-${e.id}`).classList.remove('seleccionado'); } });
         calcularPrecio();
-      } else {
-        alert('Error al enviar. Inténtalo de nuevo.');
-        btn.disabled = false;
-        btn.textContent = 'Enviar solicitud de presupuesto';
-      }
-    } catch(e) {
-      alert('Error de conexión. Inténtalo de nuevo.');
-      btn.disabled = false;
-      btn.textContent = 'Enviar solicitud de presupuesto';
-    }
+      } else { alert('Error. Inténtalo de nuevo.'); btn.disabled = false; btn.textContent = 'Enviar solicitud'; }
+    } catch(e) { alert('Error de conexión.'); btn.disabled = false; btn.textContent = 'Enviar solicitud'; }
   }
 
   async function cargarAlertas() {
@@ -461,15 +510,14 @@
       const res = await fetch(`${BACKEND}/alertas?email=${encodeURIComponent(sesionEmail)}`);
       const data = await res.json();
       const contenedor = document.getElementById('lista-alertas');
-      if (!data.alertas || data.alertas.length === 0) {
+      if (!data.alertas || !data.alertas.length) {
         contenedor.innerHTML = '<p class="vacio">Sin alertas recientes</p>';
         document.getElementById('stat-alertas').textContent = '0';
         return;
       }
       const esteMes = data.alertas.filter(a => {
-        const fecha = new Date(a.created_at + 'Z');
-        const ahora = new Date();
-        return fecha.getMonth() === ahora.getMonth() && fecha.getFullYear() === ahora.getFullYear();
+        const f = new Date(a.created_at + 'Z'); const n = new Date();
+        return f.getMonth() === n.getMonth() && f.getFullYear() === n.getFullYear();
       }).length;
       document.getElementById('stat-alertas').textContent = esteMes;
       contenedor.innerHTML = data.alertas.map(a => `
@@ -479,24 +527,16 @@
           <span class="hist-time">${formatearFecha(a.created_at)}</span>
         </div>
       `).join('');
-    } catch(e) {
-      document.getElementById('lista-alertas').innerHTML = '<p class="vacio">Error al cargar</p>';
-    }
+    } catch(e) { document.getElementById('lista-alertas').innerHTML = '<p class="vacio">Error al cargar</p>'; }
   }
 
-  function formatearMensaje(mensaje) {
-    return mensaje.replace(/\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}(\.\d+)?/g, f => formatearFecha(f));
+  function formatearMensaje(m) { return m.replace(/\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}(\.\d+)?/g, f => formatearFecha(f)); }
+  function formatearFecha(iso) {
+    if (!iso) return 'desconocida';
+    const s = iso.endsWith('Z') ? iso : iso + 'Z';
+    return new Date(s).toLocaleString('es-ES', { timeZone: 'Europe/Madrid', day: '2-digit', month: '2-digit', year: 'numeric', hour: '2-digit', minute: '2-digit' });
   }
-
-  function formatearFecha(isoString) {
-    if (!isoString) return 'desconocida';
-    const iso = isoString.endsWith('Z') ? isoString : isoString + 'Z';
-    return new Date(iso).toLocaleString('es-ES', {
-      timeZone: 'Europe/Madrid',
-      day: '2-digit', month: '2-digit', year: 'numeric',
-      hour: '2-digit', minute: '2-digit'
-    });
-  }
+  function formatearFechaSolo(d) { if (!d) return '—'; const [y,m,dd] = d.split('-'); return `${dd}/${m}/${y}`; }
 </script>
 </body>
 </html>
