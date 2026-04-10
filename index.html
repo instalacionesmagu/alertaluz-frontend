@@ -129,6 +129,23 @@
     .btn-renovar-base { width: 100%; padding: 12px; background: linear-gradient(135deg, #27ae60, #2ecc71); color: white; border: none; border-radius: 10px; font-size: 14px; font-weight: 600; cursor: pointer; margin-top: 4px; }
 
     .exito-msg { background: #e8faf0; border: 1px solid #27ae60; color: #27ae60; padding: 14px; border-radius: 10px; text-align: center; font-size: 13px; font-weight: 600; display: none; margin-bottom: 16px; }
+
+    .config-card { background: white; border-radius: 14px; border: 1px solid #eee; padding: 20px; margin-bottom: 16px; }
+    .config-card h3 { font-size: 15px; font-weight: 700; color: #1a1a2e; margin-bottom: 4px; }
+    .config-card p { font-size: 13px; color: #666; margin-bottom: 16px; line-height: 1.5; }
+    .config-grupo { margin-bottom: 14px; }
+    .config-label { display: block; font-size: 12px; font-weight: 600; color: #555; margin-bottom: 6px; text-transform: uppercase; letter-spacing: 0.5px; }
+    .config-input { width: 100%; padding: 10px 14px; border: 1.5px solid #e8e8e8; border-radius: 8px; font-size: 14px; color: #333; margin-bottom: 6px; }
+    .config-input:focus { outline: none; border-color: #1976D2; }
+    .config-select { width: 100%; padding: 10px 14px; border: 1.5px solid #e8e8e8; border-radius: 8px; font-size: 14px; color: #333; background: white; margin-bottom: 6px; }
+    .config-fila { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+    .btn-guardar-config { width: 100%; padding: 12px; background: linear-gradient(135deg, #1565C0, #1976D2); color: white; border: none; border-radius: 10px; font-size: 14px; font-weight: 600; cursor: pointer; margin-top: 4px; }
+    .config-exito { background: #e8faf0; border: 1px solid #27ae60; color: #27ae60; padding: 10px 14px; border-radius: 8px; font-size: 13px; font-weight: 600; display: none; margin-bottom: 12px; text-align: center; }
+    .info-box { background: #e3f2fd; border-radius: 10px; padding: 14px; margin-bottom: 12px; font-size: 13px; color: #1565C0; line-height: 1.6; }
+    .info-box b { display: block; margin-bottom: 4px; }
+    .uso-bar { background: #f0f0f0; border-radius: 20px; height: 6px; margin-top: 6px; }
+    .uso-bar-fill { background: #1565C0; border-radius: 20px; height: 6px; transition: width 0.3s; }
+    .uso-texto { font-size: 11px; color: #888; margin-top: 4px; }
     .vacio { color: #aaa; font-size: 14px; text-align: center; padding: 24px 0; }
     .loading { color: #aaa; font-size: 14px; text-align: center; padding: 40px 0; }
     .divider { border: none; border-top: 1px solid #eee; margin: 20px 0; }
@@ -173,6 +190,7 @@
   <div class="nav-tabs">
     <div class="nav-tab active" onclick="cambiarTab('inicio', this)">Mis dispositivos</div>
     <div class="nav-tab" onclick="cambiarTab('extras', this)">Renovación y extras</div>
+    <div class="nav-tab" onclick="cambiarTab('config', this)">Mi configuración</div>
   </div>
 
   <div class="container">
@@ -270,6 +288,122 @@
       </div>
 
     </div>
+
+    <!-- TAB CONFIGURACIÓN -->
+    <div id="tab-config" class="tab-content">
+
+      <div class="selector-dispositivo" style="background:white;border-radius:14px;padding:16px;border:1px solid #eee;margin-bottom:16px">
+        <label style="display:block;font-size:12px;font-weight:700;color:#888;text-transform:uppercase;letter-spacing:0.5px;margin-bottom:8px">Selecciona el dispositivo</label>
+        <select id="selector-chip-config" onchange="cargarConfigDispositivo()">
+          <option value="">Cargando...</option>
+        </select>
+      </div>
+
+      <!-- EMAILS EXTRA -->
+      <div class="config-card" id="cfg-email-card" style="display:none">
+        <h3>📧 Emails adicionales</h3>
+        <p>Añade hasta 3 emails que recibirán las mismas alertas que tú.</p>
+        <div class="config-exito" id="cfg-email-exito">✅ Guardado correctamente</div>
+        <div class="config-grupo">
+          <label class="config-label">Email extra 1</label>
+          <input class="config-input" id="cfg-email1" type="email" placeholder="extra1@email.com">
+          <label class="config-label">Email extra 2</label>
+          <input class="config-input" id="cfg-email2" type="email" placeholder="extra2@email.com">
+          <label class="config-label">Email extra 3</label>
+          <input class="config-input" id="cfg-email3" type="email" placeholder="extra3@email.com">
+        </div>
+        <button class="btn-guardar-config" onclick="guardarEmails()">Guardar emails</button>
+      </div>
+
+      <!-- TELEGRAM EXTRA -->
+      <div class="config-card" id="cfg-telegram-card" style="display:none">
+        <h3>📱 Telegram adicionales</h3>
+        <p>Añade hasta 3 cuentas de Telegram que recibirán las alertas.</p>
+        <div class="info-box">
+          <b>¿Cómo obtener tu Chat ID?</b>
+          1. Abre Telegram y busca <b>@userinfobot</b><br>
+          2. Escribe /start — te responderá con tu ID numérico<br>
+          3. Copia ese número y pégalo aquí
+        </div>
+        <div class="config-exito" id="cfg-telegram-exito">✅ Guardado correctamente</div>
+        <div class="config-grupo">
+          <label class="config-label">Chat ID extra 1</label>
+          <input class="config-input" id="cfg-tg1" placeholder="123456789">
+          <label class="config-label">Chat ID extra 2</label>
+          <input class="config-input" id="cfg-tg2" placeholder="123456789">
+          <label class="config-label">Chat ID extra 3</label>
+          <input class="config-input" id="cfg-tg3" placeholder="123456789">
+        </div>
+        <button class="btn-guardar-config" onclick="guardarTelegrams()">Guardar Telegrams</button>
+      </div>
+
+      <!-- SMS -->
+      <div class="config-card" id="cfg-sms-card" style="display:none">
+        <h3>💬 Configuración SMS</h3>
+        <p>Configura el teléfono y el tiempo de espera antes de recibir el SMS.</p>
+        <div class="config-exito" id="cfg-sms-exito">✅ Guardado correctamente</div>
+        <div class="config-grupo">
+          <label class="config-label">Teléfono para SMS</label>
+          <input class="config-input" id="cfg-sms-tel" type="tel" placeholder="+34 600 000 000">
+          <label class="config-label">Enviar SMS después de</label>
+          <select class="config-select" id="cfg-sms-tiempo">
+            <option value="0">Inmediatamente al detectar el corte</option>
+            <option value="15">15 minutos sin señal</option>
+            <option value="30">30 minutos sin señal</option>
+            <option value="60">60 minutos sin señal</option>
+          </select>
+        </div>
+        <div id="cfg-sms-uso-wrap">
+          <div class="uso-texto" id="cfg-sms-uso-texto"></div>
+          <div class="uso-bar"><div class="uso-bar-fill" id="cfg-sms-uso-bar" style="width:0%"></div></div>
+        </div>
+        <button class="btn-guardar-config" style="margin-top:14px" onclick="guardarSMS()">Guardar configuración SMS</button>
+      </div>
+
+      <!-- LLAMADA -->
+      <div class="config-card" id="cfg-llamada-card" style="display:none">
+        <h3>📞 Configuración llamada telefónica</h3>
+        <p>Configura el teléfono y el tiempo de espera antes de recibir la llamada.</p>
+        <div class="config-exito" id="cfg-llamada-exito">✅ Guardado correctamente</div>
+        <div class="config-grupo">
+          <label class="config-label">Teléfono para llamadas</label>
+          <input class="config-input" id="cfg-llamada-tel" type="tel" placeholder="+34 600 000 000">
+          <label class="config-label">Llamar después de</label>
+          <select class="config-select" id="cfg-llamada-tiempo">
+            <option value="15">15 minutos sin señal</option>
+            <option value="30">30 minutos sin señal</option>
+            <option value="60">60 minutos sin señal</option>
+          </select>
+        </div>
+        <div id="cfg-llamada-uso-wrap">
+          <div class="uso-texto" id="cfg-llamada-uso-texto"></div>
+          <div class="uso-bar"><div class="uso-bar-fill" id="cfg-llamada-uso-bar" style="width:0%"></div></div>
+        </div>
+        <button class="btn-guardar-config" style="margin-top:14px" onclick="guardarLlamada()">Guardar configuración llamada</button>
+      </div>
+
+      <!-- PUSH -->
+      <div class="config-card" id="cfg-push-card" style="display:none">
+        <h3>🔔 Push notifications</h3>
+        <p>Recibe notificaciones instantáneas en tu móvil aunque no tengas el navegador abierto.</p>
+        <div class="info-box">
+          <b>¿Cómo activar las notificaciones push?</b>
+          1. Abre <b>alertaluz.es</b> en el navegador de tu móvil<br>
+          2. El navegador te pedirá permiso para enviar notificaciones<br>
+          3. Pulsa <b>"Permitir"</b><br>
+          4. Listo — recibirás las alertas aunque no tengas la página abierta<br><br>
+          <span style="color:#888">Si no te aparece el mensaje, ve a Ajustes del navegador → Notificaciones → alertaluz.es → Permitir</span>
+        </div>
+        <div id="push-estado-wrap" style="text-align:center;padding:10px 0">
+          <div id="push-estado-texto" style="font-size:13px;color:#888">Comprobando estado...</div>
+        </div>
+      </div>
+
+      <div id="cfg-sin-extras" style="display:none">
+        <p class="vacio">No tienes extras activos en este dispositivo.<br>Ve a "Renovación y extras" para contratar servicios adicionales.</p>
+      </div>
+
+    </div>
   </div>
 </div>
 
@@ -363,6 +497,8 @@
       `).join('');
 
       const sel = document.getElementById('selector-chip');
+      const selConfig = document.getElementById('selector-chip-config');
+      if (selConfig) selConfig.innerHTML = dispositivosData.map(d => `<option value="${d.chip_id}">${d.nombre || d.chip_id}</option>`).join('');
       sel.innerHTML = dispositivosData.map(d => `<option value="${d.chip_id}">${d.nombre || d.chip_id}</option>`).join('');
       actualizarTabExtras();
     } catch(e) {
@@ -535,6 +671,120 @@
     if (!iso) return 'desconocida';
     const s = iso.endsWith('Z') ? iso : iso + 'Z';
     return new Date(s).toLocaleString('es-ES', { timeZone: 'Europe/Madrid', day: '2-digit', month: '2-digit', year: 'numeric', hour: '2-digit', minute: '2-digit' });
+  }
+
+  function cargarConfigDispositivo() {
+    const chipId = document.getElementById('selector-chip-config').value;
+    const disp = dispositivosData.find(d => d.chip_id === chipId);
+    if (!disp) return;
+
+    const tieneEmailExtra = disp.extra_email_multiple;
+    const tieneTelegramExtra = disp.extra_telegram_multiple;
+    const tieneSMS = disp.extra_sms;
+    const tieneLlamada = disp.extra_llamada;
+    const tienePush = disp.extra_push;
+    const tieneAlgo = tieneEmailExtra || tieneTelegramExtra || tieneSMS || tieneLlamada || tienePush;
+
+    document.getElementById('cfg-email-card').style.display = tieneEmailExtra ? 'block' : 'none';
+    document.getElementById('cfg-telegram-card').style.display = tieneTelegramExtra ? 'block' : 'none';
+    document.getElementById('cfg-sms-card').style.display = tieneSMS ? 'block' : 'none';
+    document.getElementById('cfg-llamada-card').style.display = tieneLlamada ? 'block' : 'none';
+    document.getElementById('cfg-push-card').style.display = tienePush ? 'block' : 'none';
+    document.getElementById('cfg-sin-extras').style.display = tieneAlgo ? 'none' : 'block';
+
+    if (tieneEmailExtra) {
+      const emails = (disp.extra_emails || '').split(',').map(e => e.trim());
+      document.getElementById('cfg-email1').value = emails[0] || '';
+      document.getElementById('cfg-email2').value = emails[1] || '';
+      document.getElementById('cfg-email3').value = emails[2] || '';
+    }
+    if (tieneTelegramExtra) {
+      const ids = (disp.extra_telegram_ids || '').split(',').map(e => e.trim());
+      document.getElementById('cfg-tg1').value = ids[0] || '';
+      document.getElementById('cfg-tg2').value = ids[1] || '';
+      document.getElementById('cfg-tg3').value = ids[2] || '';
+    }
+    if (tieneSMS) {
+      document.getElementById('cfg-sms-tel').value = disp.extra_sms_telefono || '';
+      document.getElementById('cfg-sms-tiempo').value = disp.extra_sms_tiempo || 0;
+      const usados = disp.extra_sms_usados || 0;
+      const limite = disp.extra_sms_limite || 10;
+      const pct = Math.min(100, Math.round(usados / limite * 100));
+      document.getElementById('cfg-sms-uso-texto').textContent = `SMS usados este mes: ${usados} de ${limite}`;
+      document.getElementById('cfg-sms-uso-bar').style.width = pct + '%';
+      document.getElementById('cfg-sms-uso-bar').style.background = pct > 80 ? '#e74c3c' : '#1565C0';
+    }
+    if (tieneLlamada) {
+      document.getElementById('cfg-llamada-tel').value = disp.extra_llamada_telefono || '';
+      document.getElementById('cfg-llamada-tiempo').value = disp.extra_llamada_tiempo || 15;
+      const usadas = disp.extra_llamada_usadas || 0;
+      const limite = disp.extra_llamada_limite || 5;
+      const pct = Math.min(100, Math.round(usadas / limite * 100));
+      document.getElementById('cfg-llamada-uso-texto').textContent = `Llamadas usadas este mes: ${usadas} de ${limite}`;
+      document.getElementById('cfg-llamada-uso-bar').style.width = pct + '%';
+      document.getElementById('cfg-llamada-uso-bar').style.background = pct > 80 ? '#e74c3c' : '#1565C0';
+    }
+    if (tienePush) {
+      const pushEl = document.getElementById('push-estado-texto');
+      if ('Notification' in window) {
+        if (Notification.permission === 'granted') pushEl.innerHTML = '<span style="color:#27ae60;font-weight:600">✅ Notificaciones activadas</span>';
+        else if (Notification.permission === 'denied') pushEl.innerHTML = '<span style="color:#e74c3c">❌ Notificaciones bloqueadas. Ve a ajustes del navegador para permitirlas.</span>';
+        else pushEl.innerHTML = '<span style="color:#e67e22">⚠️ Pendiente de activar. Recarga la página y acepta el permiso de notificaciones.</span>';
+      } else {
+        pushEl.innerHTML = '<span style="color:#888">Tu navegador no soporta notificaciones push.</span>';
+      }
+    }
+  }
+
+  async function guardarConfigCliente(datos, exitoId) {
+    const chipId = document.getElementById('selector-chip-config').value;
+    if (!chipId) return;
+    try {
+      const res = await fetch(`${BACKEND}/configurar-dispositivo`, {
+        method: 'POST', headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ email: sesionEmail, chip_id: chipId, ...datos })
+      });
+      const data = await res.json();
+      if (data.ok) {
+        const el = document.getElementById(exitoId);
+        el.style.display = 'block';
+        setTimeout(() => el.style.display = 'none', 3000);
+        await cargarDispositivos();
+        cargarConfigDispositivo();
+      } else alert('Error al guardar');
+    } catch(e) { alert('Error de conexión'); }
+  }
+
+  function guardarEmails() {
+    const emails = [
+      document.getElementById('cfg-email1').value.trim(),
+      document.getElementById('cfg-email2').value.trim(),
+      document.getElementById('cfg-email3').value.trim(),
+    ].filter(Boolean).join(',');
+    guardarConfigCliente({ extra_emails: emails }, 'cfg-email-exito');
+  }
+
+  function guardarTelegrams() {
+    const ids = [
+      document.getElementById('cfg-tg1').value.trim(),
+      document.getElementById('cfg-tg2').value.trim(),
+      document.getElementById('cfg-tg3').value.trim(),
+    ].filter(Boolean).join(',');
+    guardarConfigCliente({ extra_telegram_ids: ids }, 'cfg-telegram-exito');
+  }
+
+  function guardarSMS() {
+    guardarConfigCliente({
+      extra_sms_telefono: document.getElementById('cfg-sms-tel').value.trim(),
+      extra_sms_tiempo: parseInt(document.getElementById('cfg-sms-tiempo').value)
+    }, 'cfg-sms-exito');
+  }
+
+  function guardarLlamada() {
+    guardarConfigCliente({
+      extra_llamada_telefono: document.getElementById('cfg-llamada-tel').value.trim(),
+      extra_llamada_tiempo: parseInt(document.getElementById('cfg-llamada-tiempo').value)
+    }, 'cfg-llamada-exito');
   }
   function formatearFechaSolo(d) { if (!d) return '—'; const [y,m,dd] = d.split('-'); return `${dd}/${m}/${y}`; }
 </script>

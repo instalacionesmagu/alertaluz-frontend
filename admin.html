@@ -111,6 +111,22 @@
     .solicitud-acciones { display: flex; gap: 8px; }
     .btn-aprobar-grande { background: #27ae60; color: white; border: none; padding: 8px 20px; border-radius: 8px; font-size: 13px; font-weight: 600; cursor: pointer; }
     .btn-rechazar-grande { background: #e74c3c; color: white; border: none; padding: 8px 20px; border-radius: 8px; font-size: 13px; font-weight: 600; cursor: pointer; }
+
+    .modal-overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.5); display: flex; align-items: center; justify-content: center; z-index: 1000; padding: 16px; }
+    .modal-box { background: white; border-radius: 16px; padding: 24px; width: 100%; max-width: 540px; max-height: 90vh; overflow-y: auto; }
+    .modal-titulo { font-size: 16px; font-weight: 700; color: #1a1a2e; margin-bottom: 4px; }
+    .modal-sub { font-size: 12px; color: #888; margin-bottom: 20px; }
+    .modal-seccion { font-size: 11px; font-weight: 700; color: #888; text-transform: uppercase; letter-spacing: 0.5px; margin: 16px 0 8px; }
+    .modal-input { width: 100%; padding: 9px 12px; border: 1.5px solid #e8e8e8; border-radius: 8px; font-size: 13px; color: #333; margin-bottom: 8px; }
+    .modal-input:focus { outline: none; border-color: #1565C0; }
+    .modal-select { width: 100%; padding: 9px 12px; border: 1.5px solid #e8e8e8; border-radius: 8px; font-size: 13px; color: #333; margin-bottom: 8px; background: white; }
+    .modal-fila { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; }
+    .modal-label { font-size: 12px; color: #555; margin-bottom: 4px; display: block; }
+    .modal-footer { display: flex; gap: 10px; margin-top: 20px; }
+    .btn-guardar-modal { flex: 1; padding: 11px; background: linear-gradient(135deg, #1565C0, #1976D2); color: white; border: none; border-radius: 8px; font-size: 14px; font-weight: 600; cursor: pointer; }
+    .btn-cancelar-modal { padding: 11px 20px; background: #f5f5f5; color: #666; border: none; border-radius: 8px; font-size: 14px; font-weight: 600; cursor: pointer; }
+    .contador-info { background: #f8f9fa; border-radius: 8px; padding: 10px 12px; font-size: 12px; color: #555; margin-bottom: 8px; display: flex; justify-content: space-between; }
+    .contador-info b { color: #1565C0; }
   </style>
 </head>
 <body>
@@ -379,6 +395,7 @@
                     <input type="date" id="fecha-${d.chip_id}" value="${d.fecha_expiracion || ''}">
                     <button class="btn-renovar-ok" onclick="renovar('${d.chip_id}')">Renovar</button>
                   </div>
+                  <button class="btn-accion" style="background:#e3f2fd;color:#1565C0" onclick="abrirModal('${d.chip_id}')">Configurar</button>
                   <button class="btn-accion btn-eliminar" onclick="eliminarDispositivo('${d.chip_id}', '${d.nombre || d.chip_id}')">Eliminar</button>
                 </div>
               </td>
@@ -568,7 +585,155 @@
     return `${d}/${m}/${y}`;
   }
 
+
+  let chipIdModal = null;
+
+  function abrirModal(chip_id) {
+    const d = datosDispositivos.find(x => x.chip_id === chip_id);
+    if (!d) return;
+    chipIdModal = chip_id;
+    document.getElementById('modal-nombre-dispositivo').textContent = d.nombre || chip_id;
+    document.getElementById('modal-chip-id-texto').textContent = 'Chip ID: ' + chip_id;
+
+    const emails = (d.extra_emails || '').split(',').map(e => e.trim());
+    document.getElementById('cfg-email1').value = emails[0] || '';
+    document.getElementById('cfg-email2').value = emails[1] || '';
+    document.getElementById('cfg-email3').value = emails[2] || '';
+
+    const tgIds = (d.extra_telegram_ids || '').split(',').map(e => e.trim());
+    document.getElementById('cfg-tg1').value = tgIds[0] || '';
+    document.getElementById('cfg-tg2').value = tgIds[1] || '';
+    document.getElementById('cfg-tg3').value = tgIds[2] || '';
+
+    document.getElementById('cfg-sms-tel').value = d.extra_sms_telefono || '';
+    document.getElementById('cfg-sms-tiempo').value = d.extra_sms_tiempo || 0;
+    document.getElementById('cfg-sms-limite').value = d.extra_sms_limite || 10;
+    document.getElementById('cfg-sms-usados').textContent = d.extra_sms_usados || 0;
+
+    document.getElementById('cfg-llamada-tel').value = d.extra_llamada_telefono || '';
+    document.getElementById('cfg-llamada-tiempo').value = d.extra_llamada_tiempo || 15;
+    document.getElementById('cfg-llamada-limite').value = d.extra_llamada_limite || 5;
+    document.getElementById('cfg-llamada-usadas').textContent = d.extra_llamada_usadas || 0;
+
+    document.getElementById('modal-config').style.display = 'flex';
+  }
+
+  function cerrarModal() {
+    document.getElementById('modal-config').style.display = 'none';
+    chipIdModal = null;
+  }
+
+  async function guardarConfiguracion() {
+    if (!chipIdModal) return;
+
+    const emails = [
+      document.getElementById('cfg-email1').value.trim(),
+      document.getElementById('cfg-email2').value.trim(),
+      document.getElementById('cfg-email3').value.trim(),
+    ].filter(Boolean).join(',');
+
+    const tgIds = [
+      document.getElementById('cfg-tg1').value.trim(),
+      document.getElementById('cfg-tg2').value.trim(),
+      document.getElementById('cfg-tg3').value.trim(),
+    ].filter(Boolean).join(',');
+
+    const updates = {
+      extra_emails: emails,
+      extra_telegram_ids: tgIds,
+      extra_sms_telefono: document.getElementById('cfg-sms-tel').value.trim(),
+      extra_sms_tiempo: parseInt(document.getElementById('cfg-sms-tiempo').value),
+      extra_sms_limite: parseInt(document.getElementById('cfg-sms-limite').value),
+      extra_llamada_telefono: document.getElementById('cfg-llamada-tel').value.trim(),
+      extra_llamada_tiempo: parseInt(document.getElementById('cfg-llamada-tiempo').value),
+      extra_llamada_limite: parseInt(document.getElementById('cfg-llamada-limite').value),
+    };
+
+    const res = await fetch(`${BACKEND}/admin/dispositivo/configurar`, {
+      method: 'POST', headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ clave: adminClave, chip_id: chipIdModal, updates })
+    });
+    const data = await res.json();
+    if (data.ok) { alert('✅ Configuración guardada'); cerrarModal(); cargarTodo(); }
+    else alert('Error al guardar');
+  }
   setInterval(() => { if (adminClave) cargarTodo(); }, 60000);
 </script>
+
+<div id="modal-config" class="modal-overlay" style="display:none" onclick="if(event.target===this)cerrarModal()">
+  <div class="modal-box">
+    <div class="modal-titulo" id="modal-nombre-dispositivo">Configurar dispositivo</div>
+    <div class="modal-sub" id="modal-chip-id-texto"></div>
+
+    <div class="modal-seccion">Email adicionales (hasta 3)</div>
+    <input class="modal-input" id="cfg-email1" placeholder="Email extra 1" type="email">
+    <input class="modal-input" id="cfg-email2" placeholder="Email extra 2" type="email">
+    <input class="modal-input" id="cfg-email3" placeholder="Email extra 3" type="email">
+
+    <div class="modal-seccion">Telegram adicionales (hasta 3 Chat IDs)</div>
+    <input class="modal-input" id="cfg-tg1" placeholder="Chat ID Telegram extra 1">
+    <input class="modal-input" id="cfg-tg2" placeholder="Chat ID Telegram extra 2">
+    <input class="modal-input" id="cfg-tg3" placeholder="Chat ID Telegram extra 3">
+
+    <div class="modal-seccion">SMS</div>
+    <label class="modal-label">Teléfono para SMS</label>
+    <input class="modal-input" id="cfg-sms-tel" placeholder="+34 600 000 000">
+    <div class="modal-fila">
+      <div>
+        <label class="modal-label">Tiempo de espera</label>
+        <select class="modal-select" id="cfg-sms-tiempo">
+          <option value="0">Instantáneo</option>
+          <option value="15">15 minutos</option>
+          <option value="30">30 minutos</option>
+          <option value="60">60 minutos</option>
+        </select>
+      </div>
+      <div>
+        <label class="modal-label">Límite mensual</label>
+        <select class="modal-select" id="cfg-sms-limite">
+          <option value="5">5 SMS/mes</option>
+          <option value="10">10 SMS/mes</option>
+          <option value="20">20 SMS/mes</option>
+          <option value="30">30 SMS/mes</option>
+        </select>
+      </div>
+    </div>
+    <div class="contador-info">
+      <span>SMS usados este mes:</span>
+      <b id="cfg-sms-usados">0</b>
+    </div>
+
+    <div class="modal-seccion">Llamada telefónica</div>
+    <label class="modal-label">Teléfono para llamadas</label>
+    <input class="modal-input" id="cfg-llamada-tel" placeholder="+34 600 000 000">
+    <div class="modal-fila">
+      <div>
+        <label class="modal-label">Esperar antes de llamar</label>
+        <select class="modal-select" id="cfg-llamada-tiempo">
+          <option value="15">15 minutos</option>
+          <option value="30">30 minutos</option>
+          <option value="60">60 minutos</option>
+        </select>
+      </div>
+      <div>
+        <label class="modal-label">Límite mensual</label>
+        <select class="modal-select" id="cfg-llamada-limite">
+          <option value="3">3 llamadas/mes</option>
+          <option value="5">5 llamadas/mes</option>
+          <option value="10">10 llamadas/mes</option>
+        </select>
+      </div>
+    </div>
+    <div class="contador-info">
+      <span>Llamadas usadas este mes:</span>
+      <b id="cfg-llamada-usadas">0</b>
+    </div>
+
+    <div class="modal-footer">
+      <button class="btn-cancelar-modal" onclick="cerrarModal()">Cancelar</button>
+      <button class="btn-guardar-modal" onclick="guardarConfiguracion()">Guardar cambios</button>
+    </div>
+  </div>
+</div>
 </body>
 </html>
