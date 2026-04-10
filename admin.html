@@ -424,7 +424,7 @@
       return;
     }
 
-    contenedor.innerHTML = datosSolicitudes.map(s => {
+    contenedor.innerHTML = datosSolicitudes.map((s, idx) => {
       let extrasTexto = s.extras_solicitados;
       try { extrasTexto = JSON.parse(s.extras_solicitados).join(', '); } catch(e) {}
 
@@ -447,13 +447,19 @@
           ${s.mensaje ? `<div class="solicitud-extras"><b>Mensaje:</b> ${s.mensaje}</div>` : ''}
           ${s.estado === 'pendiente' ? `
             <div class="solicitud-acciones">
-              <button class="btn-aprobar-grande" onclick="gestionarSolicitud('${s.id}', 'aprobada', '${s.chip_id}', '${s.email_cliente}', '${s.extras_solicitados.replace(/'/g, "\\'")}')">✅ Aprobar y activar</button>
+              <button class="btn-aprobar-grande" onclick="aprobarSolicitud(${idx})">✅ Aprobar y activar</button>
               <button class="btn-rechazar-grande" onclick="gestionarSolicitud('${s.id}', 'rechazada', '${s.chip_id}', '${s.email_cliente}', null)">✗ Rechazar</button>
             </div>
           ` : ''}
         </div>
       `;
     }).join('');
+  }
+
+  function aprobarSolicitud(idx) {
+    const s = datosSolicitudes[idx];
+    if (!s) return;
+    gestionarSolicitud(s.id, 'aprobada', s.chip_id, s.email_cliente, s.extras_solicitados);
   }
 
   async function gestionarSolicitud(id, estado, chip_id, email_cliente, extrasJson) {
