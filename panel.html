@@ -150,6 +150,18 @@
     .loading { color: #aaa; font-size: 14px; text-align: center; padding: 40px 0; }
     .divider { border: none; border-top: 1px solid #eee; margin: 20px 0; }
   </style>
+  <script src="https://cdn.onesignal.com/sdks/web/v16/OneSignalSDK.page.js" defer></script>
+  <script>
+    window.OneSignalDeferred = window.OneSignalDeferred || [];
+    OneSignalDeferred.push(async function(OneSignal) {
+      await OneSignal.init({
+        appId: "462db3a9-8b2c-4146-9d65-35bc04d5529c",
+        safari_web_id: "web.onesignal.auto.54cd441e-7f12-4aed-9845-f98eb5c10ecb",
+        notifyButton: { enable: false },
+        welcomeNotification: { disable: true }
+      });
+    });
+  </script>
 </head>
 <body>
 
@@ -468,7 +480,29 @@
     document.getElementById('header-email').textContent = sesionEmail;
     await cargarDispositivos();
     await cargarAlertas();
+    setTimeout(registrarPush, 2000);
     setInterval(async () => { await cargarDispositivos(); await cargarAlertas(); }, 30000);
+  }
+
+  async function registrarPush() {
+    try {
+      if (!window.OneSignal) return;
+      window.OneSignalDeferred = window.OneSignalDeferred || [];
+      OneSignalDeferred.push(async function(OneSignal) {
+        const permission = await OneSignal.Notifications.requestPermission();
+        if (!permission) return;
+        const playerId = await OneSignal.User.PushSubscription.id;
+        if (!playerId || !sesionEmail) return;
+        await fetch(`${BACKEND}/onesignal/registrar`, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ email: sesionEmail, player_id: playerId })
+        });
+        console.log('Push registrado:', playerId);
+      });
+    } catch(e) {
+      console.log('Push no disponible:', e.message);
+    }
   }
 
   async function cargarDispositivos() {
@@ -733,11 +767,18 @@
     if (tienePush) {
       const pushEl = document.getElementById('push-estado-texto');
       if ('Notification' in window) {
-        if (Notification.permission === 'granted') pushEl.innerHTML = '<span style="color:#27ae60;font-weight:600">✅ Notificaciones activadas</span>';
-        else if (Notification.permission === 'denied') pushEl.innerHTML = '<span style="color:#e74c3c">❌ Notificaciones bloqueadas. Ve a ajustes del navegador para permitirlas.</span>';
-        else pushEl.innerHTML = '<span style="color:#e67e22">⚠️ Pendiente de activar. Recarga la página y acepta el permiso de notificaciones.</span>';
+        if (Notification.permission === 'granted') {
+          pushEl.innerHTML = '<span style="color:#27ae60;font-weight:600">✅ Notificaciones activadas en este dispositivo</span>';
+        } else if (Notification.permission === 'denied') {
+          pushEl.innerHTML = '<span style="color:#e74c3c">❌ Bloqueadas. Ve a Ajustes del navegador → Notificaciones → alertaluz.es → Permitir</span>';
+        } else {
+          pushEl.innerHTML = `<span style="color:#e67e22">⚠️ Pendiente de activar</span><br>
+            <button onclick="registrarPush()" style="margin-top:10px;background:#1565C0;color:white;border:none;padding:9px 20px;border-radius:8px;font-size:13px;font-weight:600;cursor:pointer;width:100%">
+              Activar notificaciones push
+            </button>`;
+        }
       } else {
-        pushEl.innerHTML = '<span style="color:#888">Tu navegador no soporta notificaciones push.</span>';
+        pushEl.innerHTML = '<span style="color:#888">Tu navegador no soporta notificaciones push. Prueba con Chrome o Firefox.</span>';
       }
     }
   }
