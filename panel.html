@@ -494,18 +494,44 @@
           console.log('Push: permiso denegado');
           return;
         }
-        // Login con email — esto vincula el external_id automáticamente en OneSignal
-        await OneSignal.login(sesionEmail);
-        console.log('OneSignal login OK para:', sesionEmail);
 
-        // Esperar a que el SDK procese el login
-        setTimeout(async () => {
-          const subId = OneSignal.User.PushSubscription.id;
-          console.log('Push subscription ID:', subId);
-          // Actualizar UI
-          const pushEl = document.getElementById('push-estado-texto');
-          if (pushEl) pushEl.innerHTML = '<span style="color:#27ae60;font-weight:600">✅ Notificaciones activadas en este dispositivo</span>';
-        }, 1500);
+        // Esperar a que el SDK tenga el subscription ID
+        let subId = null;
+        for (let i = 0; i < 10; i++) {
+          subId = OneSignal.User.PushSubscription.id;
+          if (subId) break;
+          await new Promise(r => setTimeout(r, 500));
+        }
+
+        if (!subId) {
+          console.log('Push: no se pudo obtener subscription ID');
+          return;
+        }
+
+        console.log('Push subscription ID:', subId);
+
+        // Guardar subscription_id en el backend asociado al dispositivo del cliente
+        const chipId = document.getElementById('selector-chip-config')?.value;
+        if (!chipId) {
+          console.log('Push: no hay dispositivo seleccionado');
+          return;
+        }
+
+        const res = await fetch(`${BACKEND}/onesignal/registrar`, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ email: sesionEmail, chip_id: chipId, subscription_id: subId })
+        });
+        const data = await res.json();
+        console.log('Push registrado:', data);
+
+        // Actualizar UI
+        const pushEl = document.getElementById('push-estado-texto');
+        if (pushEl) pushEl.innerHTML = '<span style="color:#27ae60;font-weight:600">✅ Notificaciones activadas en este dispositivo</span>';
+
+        // Recargar datos del dispositivo
+        await cargarDispositivos();
+        cargarConfigDispositivo();
       });
     } catch(e) {
       console.log('Push no disponible:', e.message);
