@@ -489,52 +489,26 @@
       if (!window.OneSignalDeferred) return;
       OneSignalDeferred.push(async function(OneSignal) {
         // Pedir permiso
-        await OneSignal.Notifications.requestPermission();
-        if (!OneSignal.Notifications.permission) {
+        const permiso = await OneSignal.Notifications.requestPermission();
+        if (!permiso) {
           console.log('Push: permiso denegado');
           return;
         }
-        // Asignar external_user_id = email del cliente
+        // Login con email — esto vincula el external_id automáticamente en OneSignal
         await OneSignal.login(sesionEmail);
-        // Obtener subscription id
-        const subId = OneSignal.User.PushSubscription.id;
-        console.log('Push subscription ID:', subId);
-        if (!subId) {
-          // Esperar un momento y reintentar
-          setTimeout(() => registrarPushConId(OneSignal), 2000);
-          return;
-        }
-        await enviarIdAlBackend(subId);
+        console.log('OneSignal login OK para:', sesionEmail);
+
+        // Esperar a que el SDK procese el login
+        setTimeout(async () => {
+          const subId = OneSignal.User.PushSubscription.id;
+          console.log('Push subscription ID:', subId);
+          // Actualizar UI
+          const pushEl = document.getElementById('push-estado-texto');
+          if (pushEl) pushEl.innerHTML = '<span style="color:#27ae60;font-weight:600">✅ Notificaciones activadas en este dispositivo</span>';
+        }, 1500);
       });
     } catch(e) {
       console.log('Push no disponible:', e.message);
-    }
-  }
-
-  async function registrarPushConId(OneSignal) {
-    try {
-      const subId = OneSignal.User.PushSubscription.id;
-      if (!subId) { console.log('Push: sin subscription ID'); return; }
-      await enviarIdAlBackend(subId);
-    } catch(e) {
-      console.log('Error registrar push:', e.message);
-    }
-  }
-
-  async function enviarIdAlBackend(subId) {
-    try {
-      const res = await fetch(`${BACKEND}/onesignal/registrar`, {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ email: sesionEmail, player_id: subId })
-      });
-      const data = await res.json();
-      console.log('Push registrado en backend:', data);
-      // Actualizar UI
-      const pushEl = document.getElementById('push-estado-texto');
-      if (pushEl) pushEl.innerHTML = '<span style="color:#27ae60;font-weight:600">✅ Notificaciones activadas en este dispositivo</span>';
-    } catch(e) {
-      console.log('Error enviando ID al backend:', e.message);
     }
   }
 
