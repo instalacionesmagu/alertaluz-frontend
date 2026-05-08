@@ -20,6 +20,8 @@
     .nav-links a:hover { color: #1565C0; }
     .btn-nav { background: #1565C0; color: white !important; padding: 8px 20px; border-radius: 8px; font-weight: 600 !important; }
     .btn-nav:hover { background: #1976D2 !important; opacity: 1 !important; }
+    .btn-nav-movil { display: none; background: white; color: #1565C0; padding: 8px 16px; border-radius: 8px; font-size: 13px; font-weight: 700; text-decoration: none; border: 2px solid white; }
+    @media (max-width: 768px) { .btn-nav-movil { display: inline-block; } }
 
     /* HERO */
     .hero { background: linear-gradient(135deg, #1a1a2e 0%, #1565C0 60%, #1976D2 100%); padding: 80px 24px; text-align: center; }
@@ -332,6 +334,32 @@
     </div>
   </div>
 </footer>
+
+<a href="/panel.html" style="
+  display: none;
+  position: fixed;
+  bottom: 20px;
+  right: 20px;
+  background: linear-gradient(135deg, #1565C0, #1976D2);
+  color: white;
+  padding: 14px 22px;
+  border-radius: 50px;
+  font-size: 14px;
+  font-weight: 700;
+  text-decoration: none;
+  box-shadow: 0 4px 20px rgba(21,101,192,0.4);
+  z-index: 999;
+  align-items: center;
+  gap: 8px;
+  " id="btn-flotante">
+  🔌 Mis dispositivos
+</a>
+
+<style>
+@media (max-width: 768px) {
+  #btn-flotante { display: flex !important; }
+}
+</style>
 
 </body>
 </html>
