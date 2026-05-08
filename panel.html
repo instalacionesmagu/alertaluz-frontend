@@ -73,6 +73,8 @@
     .hist-badge { font-size: 10px; font-weight: 700; padding: 3px 8px; border-radius: 8px; flex-shrink: 0; }
     .hist-badge.offline { background: #fdecea; color: #c0392b; }
     .hist-badge.online { background: #e8faf0; color: #27ae60; }
+    .hist-badge.corte_luz { background: #fff3e0; color: #e65100; }
+    .hist-badge.corte_internet { background: #e3f2fd; color: #1565C0; }
     .hist-msg { flex: 1; color: #555; word-break: break-word; }
     .hist-time { color: #bbb; flex-shrink: 0; }
 
@@ -150,18 +152,6 @@
     .loading { color: #aaa; font-size: 14px; text-align: center; padding: 40px 0; }
     .divider { border: none; border-top: 1px solid #eee; margin: 20px 0; }
   </style>
-  <script src="https://cdn.onesignal.com/sdks/web/v16/OneSignalSDK.page.js" defer></script>
-  <script>
-    window.OneSignalDeferred = window.OneSignalDeferred || [];
-    OneSignalDeferred.push(async function(OneSignal) {
-      await OneSignal.init({
-        appId: "462db3a9-8b2c-4146-9d65-35bc04d5529c",
-        safari_web_id: "web.onesignal.auto.54cd441e-7f12-4aed-9845-f98eb5c10ecb",
-        notifyButton: { enable: false },
-        welcomeNotification: { disable: true }
-      });
-    });
-  </script>
 </head>
 <body>
 
@@ -309,6 +299,35 @@
         <select id="selector-chip-config" onchange="cargarConfigDispositivo()">
           <option value="">Cargando...</option>
         </select>
+      </div>
+
+      <!-- DATOS DEL DISPOSITIVO -->
+      <div class="config-card" id="cfg-datos-card" style="display:none">
+        <h3>⚙️ Datos del dispositivo</h3>
+        <p style="margin-bottom:14px">Cambia el nombre del dispositivo o tu contraseña de acceso al panel.</p>
+        <div class="config-exito" id="cfg-datos-exito">✅ Guardado correctamente</div>
+        <div class="config-grupo">
+          <label class="config-label">Nombre del dispositivo</label>
+          <input class="config-input" id="cfg-nuevo-nombre" placeholder="ej: Casa, Oficina, Almacén">
+          <label class="config-label">Nueva contraseña del panel</label>
+          <input class="config-input" id="cfg-nuevo-password" type="password" placeholder="Dejar vacío para no cambiarla">
+        </div>
+        <button class="btn-guardar-config" onclick="guardarDatosDispositivo()">Guardar cambios</button>
+      </div>
+
+      <!-- RESET WIFI -->
+      <div class="config-card" id="cfg-wifi-card" style="display:none">
+        <h3>📶 Cambiar red WiFi</h3>
+        <p>Si has cambiado de router o contraseña WiFi, usa esta opción para reconectar el dispositivo.</p>
+        <div style="background:#fff3e0;border-radius:10px;padding:14px;margin:12px 0;font-size:13px;color:#e65100;line-height:1.6">
+          <b>⚠️ Importante:</b> Al pulsar este botón, en el próximo ping el dispositivo entrará en modo configuración y aparecerá la red <b>AlertaLuz-Config</b> en tu WiFi. Conéctate y configura la nueva red.
+        </div>
+        <button onclick="solicitarResetWifi()" style="background:#e67e22;color:white;border:none;padding:12px 20px;border-radius:10px;font-size:14px;font-weight:600;cursor:pointer;width:100%">
+          Preparar cambio de WiFi
+        </button>
+        <div id="cfg-wifi-exito" style="display:none;margin-top:10px;background:#e8faf0;border:1px solid #27ae60;color:#27ae60;padding:10px;border-radius:8px;font-size:13px;font-weight:600;text-align:center">
+          ✅ Listo. En el próximo minuto busca la red AlertaLuz-Config en tu WiFi.
+        </div>
       </div>
 
       <!-- EMAILS EXTRA -->
@@ -480,62 +499,7 @@
     document.getElementById('header-email').textContent = sesionEmail;
     await cargarDispositivos();
     await cargarAlertas();
-    setTimeout(registrarPush, 2000);
     setInterval(async () => { await cargarDispositivos(); await cargarAlertas(); }, 30000);
-  }
-
-  async function registrarPush() {
-    try {
-      if (!window.OneSignalDeferred) return;
-      OneSignalDeferred.push(async function(OneSignal) {
-        // Pedir permiso
-        const permiso = await OneSignal.Notifications.requestPermission();
-        if (!permiso) {
-          console.log('Push: permiso denegado');
-          return;
-        }
-
-        // Esperar a que el SDK tenga el subscription ID
-        let subId = null;
-        for (let i = 0; i < 10; i++) {
-          subId = OneSignal.User.PushSubscription.id;
-          if (subId) break;
-          await new Promise(r => setTimeout(r, 500));
-        }
-
-        if (!subId) {
-          console.log('Push: no se pudo obtener subscription ID');
-          return;
-        }
-
-        console.log('Push subscription ID:', subId);
-
-        // Guardar subscription_id en el backend asociado al dispositivo del cliente
-        const chipId = document.getElementById('selector-chip-config')?.value;
-        if (!chipId) {
-          console.log('Push: no hay dispositivo seleccionado');
-          return;
-        }
-
-        const res = await fetch(`${BACKEND}/onesignal/registrar`, {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({ email: sesionEmail, chip_id: chipId, subscription_id: subId })
-        });
-        const data = await res.json();
-        console.log('Push registrado:', data);
-
-        // Actualizar UI
-        const pushEl = document.getElementById('push-estado-texto');
-        if (pushEl) pushEl.innerHTML = '<span style="color:#27ae60;font-weight:600">✅ Notificaciones activadas en este dispositivo</span>';
-
-        // Recargar datos del dispositivo
-        await cargarDispositivos();
-        cargarConfigDispositivo();
-      });
-    } catch(e) {
-      console.log('Push no disponible:', e.message);
-    }
   }
 
   async function cargarDispositivos() {
@@ -731,7 +695,7 @@
       document.getElementById('stat-alertas').textContent = esteMes;
       contenedor.innerHTML = data.alertas.map(a => `
         <div class="hist-row">
-          <span class="hist-badge ${a.tipo}">${a.tipo === 'offline' ? 'Sin señal' : 'Reconectado'}</span>
+          <span class="hist-badge ${getBadgeClass(a.tipo)}">${getBadgeLabel(a.tipo)}</span>
           <span class="hist-msg">${formatearMensaje(a.mensaje)}</span>
           <span class="hist-time">${formatearFecha(a.created_at)}</span>
         </div>
@@ -797,21 +761,17 @@
       document.getElementById('cfg-llamada-uso-bar').style.width = pct + '%';
       document.getElementById('cfg-llamada-uso-bar').style.background = pct > 80 ? '#e74c3c' : '#1565C0';
     }
+    // Siempre mostrar datos y wifi
+    cargarDatosDispositivo();
+
     if (tienePush) {
       const pushEl = document.getElementById('push-estado-texto');
       if ('Notification' in window) {
-        if (Notification.permission === 'granted') {
-          pushEl.innerHTML = '<span style="color:#27ae60;font-weight:600">✅ Notificaciones activadas en este dispositivo</span>';
-        } else if (Notification.permission === 'denied') {
-          pushEl.innerHTML = '<span style="color:#e74c3c">❌ Bloqueadas. Ve a Ajustes del navegador → Notificaciones → alertaluz.es → Permitir</span>';
-        } else {
-          pushEl.innerHTML = `<span style="color:#e67e22">⚠️ Pendiente de activar</span><br>
-            <button onclick="registrarPush()" style="margin-top:10px;background:#1565C0;color:white;border:none;padding:9px 20px;border-radius:8px;font-size:13px;font-weight:600;cursor:pointer;width:100%">
-              Activar notificaciones push
-            </button>`;
-        }
+        if (Notification.permission === 'granted') pushEl.innerHTML = '<span style="color:#27ae60;font-weight:600">✅ Notificaciones activadas</span>';
+        else if (Notification.permission === 'denied') pushEl.innerHTML = '<span style="color:#e74c3c">❌ Notificaciones bloqueadas. Ve a ajustes del navegador para permitirlas.</span>';
+        else pushEl.innerHTML = '<span style="color:#e67e22">⚠️ Pendiente de activar. Recarga la página y acepta el permiso de notificaciones.</span>';
       } else {
-        pushEl.innerHTML = '<span style="color:#888">Tu navegador no soporta notificaciones push. Prueba con Chrome o Firefox.</span>';
+        pushEl.innerHTML = '<span style="color:#888">Tu navegador no soporta notificaciones push.</span>';
       }
     }
   }
@@ -860,6 +820,57 @@
     }, 'cfg-sms-exito');
   }
 
+  function cargarDatosDispositivo() {
+    const chipId = document.getElementById('selector-chip-config').value;
+    const disp = dispositivosData.find(d => d.chip_id === chipId);
+    if (!disp) return;
+    document.getElementById('cfg-datos-card').style.display = 'block';
+    document.getElementById('cfg-wifi-card').style.display = 'block';
+    document.getElementById('cfg-nuevo-nombre').value = disp.nombre || '';
+    document.getElementById('cfg-nuevo-password').value = '';
+  }
+
+  async function guardarDatosDispositivo() {
+    const chipId = document.getElementById('selector-chip-config').value;
+    const nuevoNombre = document.getElementById('cfg-nuevo-nombre').value.trim();
+    const nuevoPassword = document.getElementById('cfg-nuevo-password').value.trim();
+    if (!chipId) return;
+    try {
+      const res = await fetch(`${BACKEND}/actualizar-config`, {
+        method: 'POST', headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ email: sesionEmail, chip_id: chipId, nuevo_nombre: nuevoNombre, nuevo_password: nuevoPassword || undefined })
+      });
+      const data = await res.json();
+      if (data.ok) {
+        const el = document.getElementById('cfg-datos-exito');
+        el.style.display = 'block';
+        setTimeout(() => el.style.display = 'none', 3000);
+        await cargarDispositivos();
+      } else alert('Error al guardar');
+    } catch(e) { alert('Error de conexión'); }
+  }
+
+  async function solicitarResetWifi() {
+    const chipId = document.getElementById('selector-chip-config').value;
+    if (!chipId) return;
+    if (!confirm('¿Confirmas que quieres preparar el cambio de WiFi? El dispositivo entrará en modo configuración en el próximo minuto.')) return;
+    try {
+      const res = await fetch(`${BACKEND}/admin/dispositivo/comando`, {
+        method: 'POST', headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ clave: 'cliente_' + sesionEmail, chip_id: chipId, comando: 'reset_wifi' })
+      });
+      // Usamos endpoint propio del cliente
+      const res2 = await fetch(`${BACKEND}/solicitar-reset-wifi`, {
+        method: 'POST', headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ email: sesionEmail, chip_id: chipId })
+      });
+      const data = await res2.json();
+      if (data.ok) {
+        document.getElementById('cfg-wifi-exito').style.display = 'block';
+      } else alert('Error al enviar comando');
+    } catch(e) { alert('Error de conexión'); }
+  }
+
   function guardarLlamada() {
     guardarConfigCliente({
       extra_llamada_telefono: document.getElementById('cfg-llamada-tel').value.trim(),
@@ -867,6 +878,20 @@
     }, 'cfg-llamada-exito');
   }
   function formatearFechaSolo(d) { if (!d) return '—'; const [y,m,dd] = d.split('-'); return `${dd}/${m}/${y}`; }
+
+  function getBadgeClass(tipo) {
+    if (tipo === 'offline') return 'offline';
+    if (tipo === 'corte_luz') return 'corte_luz';
+    if (tipo === 'corte_internet') return 'corte_internet';
+    return 'online';
+  }
+
+  function getBadgeLabel(tipo) {
+    if (tipo === 'offline') return 'Sin señal';
+    if (tipo === 'corte_luz') return '⚡ Corte de luz';
+    if (tipo === 'corte_internet') return '📡 Corte de internet';
+    return '✅ Reconectado';
+  }
 </script>
 </body>
 </html>

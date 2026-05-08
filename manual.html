@@ -13,26 +13,21 @@
     .nav-logo-texto { font-size: 17px; font-weight: 700; color: #1a1a2e; }
     .nav-logo-sub { font-size: 10px; color: #1565C0; font-weight: 600; }
     .btn-volver { background: #f0f4ff; color: #1565C0; padding: 8px 18px; border-radius: 8px; font-size: 13px; font-weight: 600; text-decoration: none; }
-
     .hero-manual { background: linear-gradient(135deg, #1565C0, #1976D2); padding: 48px 24px; text-align: center; }
     .hero-manual h1 { color: white; font-size: 32px; font-weight: 800; margin-bottom: 8px; }
     .hero-manual p { color: rgba(255,255,255,0.8); font-size: 16px; }
-
     .container { max-width: 800px; margin: 0 auto; padding: 40px 16px; }
     .seccion { background: white; border-radius: 14px; padding: 28px; border: 1px solid #eee; margin-bottom: 16px; }
     .seccion h2 { font-size: 18px; font-weight: 700; color: #1a1a2e; margin-bottom: 16px; display: flex; align-items: center; gap: 10px; }
     .seccion p { font-size: 14px; color: #555; line-height: 1.7; margin-bottom: 12px; }
     .seccion p:last-child { margin-bottom: 0; }
-
     .paso { display: flex; gap: 14px; margin-bottom: 16px; align-items: flex-start; }
     .paso-num { width: 32px; height: 32px; background: #1565C0; color: white; border-radius: 10px; display: flex; align-items: center; justify-content: center; font-size: 14px; font-weight: 700; flex-shrink: 0; }
     .paso-info h3 { font-size: 14px; font-weight: 700; color: #1a1a2e; margin-bottom: 4px; }
     .paso-info p { font-size: 13px; color: #666; line-height: 1.6; margin: 0; }
-
     .info-box { background: #e3f2fd; border-radius: 10px; padding: 14px; margin: 12px 0; font-size: 13px; color: #1565C0; line-height: 1.6; }
     .warn-box { background: #fff3e0; border-radius: 10px; padding: 14px; margin: 12px 0; font-size: 13px; color: #e65100; line-height: 1.6; }
     .code-box { background: #1a1a2e; color: #4ade80; font-family: monospace; font-size: 13px; padding: 12px 16px; border-radius: 8px; margin: 8px 0; }
-
     footer { background: #1a1a2e; padding: 24px; text-align: center; }
     footer p { font-size: 12px; color: rgba(255,255,255,0.4); }
     footer a { color: rgba(255,255,255,0.6); text-decoration: none; }
@@ -105,21 +100,30 @@
 
   <div class="seccion">
     <h2>🌐 Tu panel web</h2>
-    <p>Accede a tu panel en cualquier momento desde <a href="https://alertaluz.es/panel.html" style="color:#1565C0;font-weight:600">alertaluz.es</a> con el email y contraseña que configuraste.</p>
-    <p>En el panel podrás ver el estado actual de tus dispositivos, el historial de alertas, gestionar tus extras y solicitar la renovación del servicio.</p>
+    <p>Accede a tu panel en cualquier momento desde <a href="https://alertaluz.es/panel.html" style="color:#1565C0;font-weight:600">alertaluz.es/panel.html</a> con el email y contraseña que configuraste.</p>
+    <p>El panel tiene 3 secciones:</p>
+    <p><strong>Mis dispositivos</strong> — Estado en tiempo real e historial de alertas con el motivo de cada corte.</p>
+    <p><strong>Renovación y extras</strong> — Gestiona tu suscripción y contrata servicios adicionales.</p>
+    <p><strong>Mi configuración</strong> — Cambia el nombre del dispositivo, contraseña del panel, emails adicionales, Telegram, SMS, llamadas y WiFi.</p>
   </div>
 
   <div class="seccion">
-    <h2>🔄 Cómo funcionan las alertas</h2>
-    <p><strong>Corte de LUZ:</strong> El dispositivo se apaga. Al volver la corriente arranca de nuevo y te envía un aviso indicando que fue un corte de suministro eléctrico.</p>
-    <p><strong>Corte de INTERNET:</strong> El dispositivo sigue encendido pero sin conexión. Cuando vuelve internet te avisa indicando que fue un corte de red, no de luz.</p>
+    <h2>🔔 Cómo funcionan las alertas</h2>
+    <p><strong>⚡ Corte de LUZ:</strong> El dispositivo se apaga. Al volver la corriente arranca de nuevo y actualiza la alerta indicando que fue un corte de suministro eléctrico.</p>
+    <p><strong>📡 Corte de INTERNET:</strong> El dispositivo sigue encendido pero sin conexión. Cuando vuelve internet actualiza la alerta indicando que fue un corte de red, no de luz.</p>
+    <p><strong>Sin señal:</strong> Mientras el dispositivo está desconectado la alerta aparece como "Sin señal". Una vez que vuelve la conexión se actualiza automáticamente con el motivo real.</p>
     <div class="info-box">El sistema detecta la ausencia de señal después de <strong>2 minutos</strong> sin recibir ping del dispositivo.</div>
   </div>
 
   <div class="seccion">
     <h2>🔁 Cambiar la red WiFi</h2>
-    <p>Si cambias de router o contraseña WiFi necesitas reconfigurar el dispositivo:</p>
-    <div class="warn-box"><strong>3 reinicios rápidos = modo fábrica.</strong> Desenchufa y vuelve a enchufar el dispositivo 3 veces seguidas en menos de 10 segundos. El dispositivo entrará en modo configuración y aparecerá la red AlertaLuz-Config.</div>
+    <p>Si cambias de router o contraseña WiFi tienes dos opciones para reconfigurar el dispositivo:</p>
+
+    <p style="font-weight:700;margin:12px 0 6px">Opción 1 — Desde tu panel web (recomendado)</p>
+    <p>Entra en <a href="https://alertaluz.es/panel.html" style="color:#1565C0">alertaluz.es/panel.html</a> → pestaña <strong>Mi configuración</strong> → sección <strong>Cambiar red WiFi</strong> → pulsa <strong>"Preparar cambio de WiFi"</strong>. En el próximo minuto el dispositivo entrará en modo configuración automáticamente y aparecerá la red AlertaLuz-Config en tu WiFi.</p>
+
+    <p style="font-weight:700;margin:12px 0 6px">Opción 2 — Físicamente</p>
+    <div class="warn-box"><strong>6 reinicios rápidos = modo fábrica.</strong> Desenchufa y vuelve a enchufar el dispositivo 6 veces seguidas en menos de 15 segundos. El dispositivo entrará en modo configuración y aparecerá la red AlertaLuz-Config en tu WiFi.</div>
     <p>Sigue los mismos pasos de la instalación inicial para configurarlo de nuevo.</p>
   </div>
 
@@ -155,6 +159,8 @@
     <p><strong>¿Puedo tener varios dispositivos?</strong><br>Sí, puedes tener tantos dispositivos como quieras en el mismo panel con el mismo email.</p>
     <br>
     <p><strong>¿Necesito instalar alguna app?</strong><br>No. El panel es una web accesible desde cualquier navegador. Para Telegram solo necesitas la app de Telegram.</p>
+    <br>
+    <p><strong>¿El dispositivo se puede reconfigurar a distancia?</strong><br>Sí. Desde la sección Mi configuración del panel puedes cambiar el nombre, la contraseña y solicitar el cambio de red WiFi sin tocar el dispositivo físicamente.</p>
   </div>
 
   <div class="seccion">
