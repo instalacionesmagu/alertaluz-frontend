@@ -762,24 +762,6 @@
     }
   }
 
-  async function añadirLlamadas() {
-    if (!chipIdModal) return;
-    const d = datosDispositivos.find(x => x.chip_id === chipIdModal);
-    if (!d) return;
-    const nuevoLimite = (d.extra_llamada_limite || 5) + 5;
-    const res = await fetch('https://alertaluz-backend.onrender.com/admin/dispositivo/configurar', {
-      method: 'POST', headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ clave: adminClave, chip_id: chipIdModal, updates: { extra_llamada_limite: nuevoLimite } })
-    });
-    const data = await res.json();
-    if (data.ok) {
-      document.getElementById('cfg-llamada-limite').value = nuevoLimite;
-      document.getElementById('cfg-llamada-limite-txt').textContent = nuevoLimite;
-      d.extra_llamada_limite = nuevoLimite;
-      alert(`✅ Añadidas 5 llamadas. Nuevo límite: ${nuevoLimite} llamadas/mes`);
-    }
-  }
-
   async function cargarFirmwares() {
     try {
       const res = await fetch(`${BACKEND}/admin/ota/firmwares?clave=${encodeURIComponent(adminClave)}`);
@@ -999,44 +981,6 @@
       <div class="contador-info">
         <span>SMS usados este mes: <b id="cfg-sms-usados">0</b> / <b id="cfg-sms-limite-txt">10</b></span>
         <button onclick="añadirSMS()" style="background:#1565C0;color:white;border:none;padding:4px 10px;border-radius:6px;font-size:11px;font-weight:600;cursor:pointer">+ Añadir 10 SMS</button>
-      </div>
-    </div>
-
-    <!-- LLAMADA -->
-    <div style="background:#f8f9fa;border-radius:10px;padding:14px;margin-bottom:12px">
-      <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:10px">
-        <div style="display:flex;align-items:center;gap:8px">
-          <input type="checkbox" id="cfg-llamada-activo" style="width:16px;height:16px;accent-color:#1565C0">
-          <span style="font-size:13px;font-weight:700;color:#1a1a2e">📞 Llamada telefónica</span>
-        </div>
-        <div style="display:flex;align-items:center;gap:6px">
-          <label class="modal-label" style="margin:0;white-space:nowrap">Expira:</label>
-          <input type="date" class="modal-input" id="cfg-llamada-expira" style="margin:0;width:140px">
-        </div>
-      </div>
-      <label class="modal-label">Teléfono para llamadas</label>
-      <input class="modal-input" id="cfg-llamada-tel" placeholder="+34 600 000 000">
-      <div class="modal-fila">
-        <div>
-          <label class="modal-label">Esperar antes de llamar</label>
-          <select class="modal-select" id="cfg-llamada-tiempo">
-            <option value="15">15 minutos</option>
-            <option value="30">30 minutos</option>
-            <option value="60">60 minutos</option>
-          </select>
-        </div>
-        <div>
-          <label class="modal-label">Límite mensual</label>
-          <select class="modal-select" id="cfg-llamada-limite">
-            <option value="3">3 llamadas/mes</option>
-            <option value="5">5 llamadas/mes</option>
-            <option value="10">10 llamadas/mes</option>
-          </select>
-        </div>
-      </div>
-      <div class="contador-info">
-        <span>Llamadas usadas este mes: <b id="cfg-llamada-usadas">0</b> / <b id="cfg-llamada-limite-txt">5</b></span>
-        <button onclick="añadirLlamadas()" style="background:#1565C0;color:white;border:none;padding:4px 10px;border-radius:6px;font-size:11px;font-weight:600;cursor:pointer">+ Añadir 5 llamadas</button>
       </div>
     </div>
 

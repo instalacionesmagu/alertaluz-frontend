@@ -391,28 +391,6 @@
         <button class="btn-guardar-config" style="margin-top:14px" onclick="guardarSMS()">Guardar configuración SMS</button>
       </div>
 
-      <!-- LLAMADA -->
-      <div class="config-card" id="cfg-llamada-card" style="display:none">
-        <h3>📞 Configuración llamada telefónica</h3>
-        <p>Configura el teléfono y el tiempo de espera antes de recibir la llamada.</p>
-        <div class="config-exito" id="cfg-llamada-exito">✅ Guardado correctamente</div>
-        <div class="config-grupo">
-          <label class="config-label">Teléfono para llamadas</label>
-          <input class="config-input" id="cfg-llamada-tel" type="tel" placeholder="+34 600 000 000">
-          <label class="config-label">Llamar después de</label>
-          <select class="config-select" id="cfg-llamada-tiempo">
-            <option value="15">15 minutos sin señal</option>
-            <option value="30">30 minutos sin señal</option>
-            <option value="60">60 minutos sin señal</option>
-          </select>
-        </div>
-        <div id="cfg-llamada-uso-wrap">
-          <div class="uso-texto" id="cfg-llamada-uso-texto"></div>
-          <div class="uso-bar"><div class="uso-bar-fill" id="cfg-llamada-uso-bar" style="width:0%"></div></div>
-        </div>
-        <button class="btn-guardar-config" style="margin-top:14px" onclick="guardarLlamada()">Guardar configuración llamada</button>
-      </div>
-
       <!-- PUSH -->
       <div class="config-card" id="cfg-push-card" style="display:none">
         <h3>🔔 Push notifications</h3>
@@ -450,7 +428,7 @@
     { id: 'telegram_multiple', nombre: 'Telegram múltiple', desc: 'Recibe alertas en hasta 3 cuentas de Telegram', precio_anual: 5, precio_mensual: 0.50, campo: 'extra_telegram_multiple' },
     { id: 'push', nombre: 'Push notifications', desc: 'Notificaciones instantáneas en tu móvil', precio_anual: 5, precio_mensual: 0.50, campo: 'extra_push' },
     { id: 'sms', nombre: 'SMS de alerta', desc: 'SMS cuando se detecte un corte. Máx. 10/mes', precio_anual: 10, precio_mensual: 1.00, campo: 'extra_sms' },
-    { id: 'llamada', nombre: 'Llamada telefónica', desc: 'Llamada automática si lleva +15 min sin señal. Máx. 5/mes', precio_anual: 15, precio_mensual: 1.50, campo: 'extra_llamada' },
+
   ];
 
   window.onload = () => {
@@ -870,14 +848,6 @@
       } else alert('Error al enviar comando');
     } catch(e) { alert('Error de conexión'); }
   }
-
-  function guardarLlamada() {
-    guardarConfigCliente({
-      extra_llamada_telefono: document.getElementById('cfg-llamada-tel').value.trim(),
-      extra_llamada_tiempo: parseInt(document.getElementById('cfg-llamada-tiempo').value)
-    }, 'cfg-llamada-exito');
-  }
-  function formatearFechaSolo(d) { if (!d) return '—'; const [y,m,dd] = d.split('-'); return `${dd}/${m}/${y}`; }
 
   function getBadgeClass(tipo) {
     if (tipo === 'offline') return 'offline';
