@@ -475,17 +475,14 @@
     document.getElementById('pantalla-panel').style.display = 'block';
     document.getElementById('main-header').style.display = 'flex';
     document.getElementById('header-email').textContent = sesionEmail;
-    // Pequeño delay para que el backend esté listo
-    await new Promise(r => setTimeout(r, 500));
     await cargarDispositivos();
     await cargarAlertas();
     setInterval(async () => { await cargarDispositivos(); await cargarAlertas(); }, 30000);
   }
 
-  async function cargarDispositivos(intentos = 3) {
+  async function cargarDispositivos() {
     try {
       const res = await fetch(`${BACKEND}/dispositivos?email=${encodeURIComponent(sesionEmail)}`);
-      if (!res.ok) throw new Error('Error ' + res.status);
       const data = await res.json();
       dispositivosData = data.dispositivos || [];
       const contenedor = document.getElementById('lista-dispositivos');
@@ -520,12 +517,7 @@
       sel.innerHTML = dispositivosData.map(d => `<option value="${d.chip_id}">${d.nombre || d.chip_id}</option>`).join('');
       actualizarTabExtras();
     } catch(e) {
-      if (intentos > 1) {
-        document.getElementById('lista-dispositivos').innerHTML = '<p class="loading">Conectando...</p>';
-        setTimeout(() => cargarDispositivos(intentos - 1), 3000);
-      } else {
-        document.getElementById('lista-dispositivos').innerHTML = '<p class="vacio">Error al cargar. <a href="#" onclick="cargarDispositivos(3);return false;" style="color:#1565C0">Reintentar</a></p>';
-      }
+      document.getElementById('lista-dispositivos').innerHTML = '<p class="vacio">Error al cargar</p>';
     }
   }
 
@@ -704,14 +696,14 @@
     const tieneEmailExtra = disp.extra_email_multiple;
     const tieneTelegramExtra = disp.extra_telegram_multiple;
     const tieneSMS = disp.extra_sms;
-    const tieneLlamada = false;
+    const tieneLlamada = disp.extra_llamada;
     const tienePush = disp.extra_push;
-    const tieneAlgo = tieneEmailExtra || tieneTelegramExtra || tieneSMS || tienePush;
+    const tieneAlgo = tieneEmailExtra || tieneTelegramExtra || tieneSMS || tieneLlamada || tienePush;
 
     document.getElementById('cfg-email-card').style.display = tieneEmailExtra ? 'block' : 'none';
     document.getElementById('cfg-telegram-card').style.display = tieneTelegramExtra ? 'block' : 'none';
     document.getElementById('cfg-sms-card').style.display = tieneSMS ? 'block' : 'none';
-
+    document.getElementById('cfg-llamada-card').style.display = tieneLlamada ? 'block' : 'none';
     document.getElementById('cfg-push-card').style.display = tienePush ? 'block' : 'none';
     document.getElementById('cfg-sin-extras').style.display = tieneAlgo ? 'none' : 'block';
 
@@ -737,7 +729,16 @@
       document.getElementById('cfg-sms-uso-bar').style.width = pct + '%';
       document.getElementById('cfg-sms-uso-bar').style.background = pct > 80 ? '#e74c3c' : '#1565C0';
     }
-
+    if (tieneLlamada) {
+      document.getElementById('cfg-llamada-tel').value = disp.extra_llamada_telefono || '';
+      document.getElementById('cfg-llamada-tiempo').value = disp.extra_llamada_tiempo || 15;
+      const usadas = disp.extra_llamada_usadas || 0;
+      const limite = disp.extra_llamada_limite || 5;
+      const pct = Math.min(100, Math.round(usadas / limite * 100));
+      document.getElementById('cfg-llamada-uso-texto').textContent = `Llamadas usadas este mes: ${usadas} de ${limite}`;
+      document.getElementById('cfg-llamada-uso-bar').style.width = pct + '%';
+      document.getElementById('cfg-llamada-uso-bar').style.background = pct > 80 ? '#e74c3c' : '#1565C0';
+    }
     // Siempre mostrar datos y wifi
     cargarDatosDispositivo();
 
