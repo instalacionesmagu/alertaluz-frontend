@@ -673,15 +673,6 @@
     document.getElementById('cfg-sms-usados').textContent = d.extra_sms_usados || 0;
     document.getElementById('cfg-sms-limite-txt').textContent = d.extra_sms_limite || 10;
 
-    // Llamada
-    document.getElementById('cfg-llamada-activo').checked = d.extra_llamada || false;
-    document.getElementById('cfg-llamada-expira').value = d.extra_llamada_expira || '';
-    document.getElementById('cfg-llamada-tel').value = d.extra_llamada_telefono || '';
-    document.getElementById('cfg-llamada-tiempo').value = d.extra_llamada_tiempo || 15;
-    document.getElementById('cfg-llamada-limite').value = d.extra_llamada_limite || 5;
-    document.getElementById('cfg-llamada-usadas').textContent = d.extra_llamada_usadas || 0;
-    document.getElementById('cfg-llamada-limite-txt').textContent = d.extra_llamada_limite || 5;
-
     document.getElementById('modal-config').style.display = 'flex';
   }
 
@@ -721,11 +712,7 @@
       extra_sms_telefono: document.getElementById('cfg-sms-tel').value.trim(),
       extra_sms_tiempo: parseInt(document.getElementById('cfg-sms-tiempo').value),
       extra_sms_limite: parseInt(document.getElementById('cfg-sms-limite').value),
-      extra_llamada: document.getElementById('cfg-llamada-activo').checked,
-      extra_llamada_expira: document.getElementById('cfg-llamada-expira').value || null,
-      extra_llamada_telefono: document.getElementById('cfg-llamada-tel').value.trim(),
-      extra_llamada_tiempo: parseInt(document.getElementById('cfg-llamada-tiempo').value),
-      extra_llamada_limite: parseInt(document.getElementById('cfg-llamada-limite').value),
+
     };
 
     try {
