@@ -431,9 +431,7 @@
 
   ];
 
-  window.onload = async () => {
-    // Despertar el backend antes de hacer cualquier petición
-    try { await fetch(`${BACKEND}/ping?id=0&estado=online`); } catch(e) {}
+  window.onload = () => {
     const emailGuardado = localStorage.getItem('alertaluz_email');
     if (emailGuardado) { sesionEmail = emailGuardado; mostrarPanel(); }
     renderChecklist();
@@ -731,6 +729,7 @@
       document.getElementById('cfg-sms-uso-bar').style.width = pct + '%';
       document.getElementById('cfg-sms-uso-bar').style.background = pct > 80 ? '#e74c3c' : '#1565C0';
     }
+
     // Siempre mostrar datos y wifi
     cargarDatosDispositivo();
 
