@@ -432,8 +432,6 @@
   ];
 
   window.onload = () => {
-    const emailGuardado = localStorage.getItem('alertaluz_email');
-    if (emailGuardado) { sesionEmail = emailGuardado; setTimeout(mostrarPanel, 800); }
     renderChecklist();
   };
 
@@ -457,13 +455,12 @@
         body: JSON.stringify({ email, password })
       });
       const data = await res.json();
-      if (data.ok) { sesionEmail = email; localStorage.setItem('alertaluz_email', email); mostrarPanel(); }
+      if (data.ok) { sesionEmail = email; mostrarPanel(); }
       else document.getElementById('login-error').style.display = 'block';
     } catch(e) { document.getElementById('login-error').style.display = 'block'; }
   }
 
   function cerrarSesion() {
-    localStorage.removeItem('alertaluz_email');
     sesionEmail = null;
     document.getElementById('main-header').style.display = 'none';
     document.getElementById('pantalla-login').style.display = 'flex';
