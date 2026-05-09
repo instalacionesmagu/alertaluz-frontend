@@ -433,7 +433,7 @@
 
   window.onload = () => {
     const emailGuardado = localStorage.getItem('alertaluz_email');
-    if (emailGuardado) { sesionEmail = emailGuardado; mostrarPanel(); }
+    if (emailGuardado) { sesionEmail = emailGuardado; setTimeout(mostrarPanel, 800); }
     renderChecklist();
   };
 
@@ -696,14 +696,14 @@
     const tieneEmailExtra = disp.extra_email_multiple;
     const tieneTelegramExtra = disp.extra_telegram_multiple;
     const tieneSMS = disp.extra_sms;
-    const tieneLlamada = disp.extra_llamada;
+    const tieneLlamada = false;
     const tienePush = disp.extra_push;
-    const tieneAlgo = tieneEmailExtra || tieneTelegramExtra || tieneSMS || tieneLlamada || tienePush;
+    const tieneAlgo = tieneEmailExtra || tieneTelegramExtra || tieneSMS || tienePush;
 
     document.getElementById('cfg-email-card').style.display = tieneEmailExtra ? 'block' : 'none';
     document.getElementById('cfg-telegram-card').style.display = tieneTelegramExtra ? 'block' : 'none';
     document.getElementById('cfg-sms-card').style.display = tieneSMS ? 'block' : 'none';
-    document.getElementById('cfg-llamada-card').style.display = tieneLlamada ? 'block' : 'none';
+
     document.getElementById('cfg-push-card').style.display = tienePush ? 'block' : 'none';
     document.getElementById('cfg-sin-extras').style.display = tieneAlgo ? 'none' : 'block';
 
@@ -729,16 +729,7 @@
       document.getElementById('cfg-sms-uso-bar').style.width = pct + '%';
       document.getElementById('cfg-sms-uso-bar').style.background = pct > 80 ? '#e74c3c' : '#1565C0';
     }
-    if (tieneLlamada) {
-      document.getElementById('cfg-llamada-tel').value = disp.extra_llamada_telefono || '';
-      document.getElementById('cfg-llamada-tiempo').value = disp.extra_llamada_tiempo || 15;
-      const usadas = disp.extra_llamada_usadas || 0;
-      const limite = disp.extra_llamada_limite || 5;
-      const pct = Math.min(100, Math.round(usadas / limite * 100));
-      document.getElementById('cfg-llamada-uso-texto').textContent = `Llamadas usadas este mes: ${usadas} de ${limite}`;
-      document.getElementById('cfg-llamada-uso-bar').style.width = pct + '%';
-      document.getElementById('cfg-llamada-uso-bar').style.background = pct > 80 ? '#e74c3c' : '#1565C0';
-    }
+
     // Siempre mostrar datos y wifi
     cargarDatosDispositivo();
 
