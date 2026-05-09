@@ -475,14 +475,17 @@
     document.getElementById('pantalla-panel').style.display = 'block';
     document.getElementById('main-header').style.display = 'flex';
     document.getElementById('header-email').textContent = sesionEmail;
+    // Pequeño delay para que el backend esté listo
+    await new Promise(r => setTimeout(r, 500));
     await cargarDispositivos();
     await cargarAlertas();
     setInterval(async () => { await cargarDispositivos(); await cargarAlertas(); }, 30000);
   }
 
-  async function cargarDispositivos() {
+  async function cargarDispositivos(intentos = 3) {
     try {
       const res = await fetch(`${BACKEND}/dispositivos?email=${encodeURIComponent(sesionEmail)}`);
+      if (!res.ok) throw new Error('Error ' + res.status);
       const data = await res.json();
       dispositivosData = data.dispositivos || [];
       const contenedor = document.getElementById('lista-dispositivos');
@@ -517,7 +520,12 @@
       sel.innerHTML = dispositivosData.map(d => `<option value="${d.chip_id}">${d.nombre || d.chip_id}</option>`).join('');
       actualizarTabExtras();
     } catch(e) {
-      document.getElementById('lista-dispositivos').innerHTML = '<p class="vacio">Error al cargar</p>';
+      if (intentos > 1) {
+        document.getElementById('lista-dispositivos').innerHTML = '<p class="loading">Conectando...</p>';
+        setTimeout(() => cargarDispositivos(intentos - 1), 3000);
+      } else {
+        document.getElementById('lista-dispositivos').innerHTML = '<p class="vacio">Error al cargar. <a href="#" onclick="cargarDispositivos(3);return false;" style="color:#1565C0">Reintentar</a></p>';
+      }
     }
   }
 
