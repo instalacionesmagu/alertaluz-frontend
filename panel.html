@@ -510,12 +510,14 @@
 
       const sel = document.getElementById('selector-chip');
       const selConfig = document.getElementById('selector-chip-config');
+      if (sel) {
+        sel.innerHTML = dispositivosData.map(d => `<option value="${d.chip_id}">${d.nombre || d.chip_id}</option>`).join('');
+      }
       if (selConfig) {
         selConfig.innerHTML = dispositivosData.map(d => `<option value="${d.chip_id}">${d.nombre || d.chip_id}</option>`).join('');
         cargarConfigDispositivo();
       }
-      sel.innerHTML = dispositivosData.map(d => `<option value="${d.chip_id}">${d.nombre || d.chip_id}</option>`).join('');
-      actualizarTabExtras();
+      if (sel) actualizarTabExtras();
     } catch(e) {
       document.getElementById('lista-dispositivos').innerHTML = '<p class="vacio">Error al cargar</p>';
     }
