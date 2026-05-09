@@ -3,453 +3,247 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>AlertaLuz — MaGu Multiservicios</title>
+  <title>AlertaLuz — Mi Panel</title>
+  <script src="https://cdn.onesignal.com/sdks/web/v16/OneSignalSDK.page.js" defer></script>
+  <script>
+    window.OneSignalDeferred = window.OneSignalDeferred || [];
+    OneSignalDeferred.push(async function(OneSignal) {
+      await OneSignal.init({
+        appId: "462db3a9-8b2c-4146-9d65-35bc04d5529c",
+        safari_web_id: "web.onesignal.auto.54cd441e-7f12-4aed-9845-f98eb5c10ecb",
+        notifyButton: { enable: false },
+        welcomeNotification: { disable: true }
+      });
+    });
+  </script>
   <style>
     * { margin: 0; padding: 0; box-sizing: border-box; }
     body { font-family: system-ui, sans-serif; background: #f0f2f5; color: #333; }
 
-    .header { background: linear-gradient(135deg, #1565C0 0%, #1976D2 100%); padding: 16px 24px; display: flex; align-items: center; justify-content: space-between; }
-    .header-left { display: flex; align-items: center; gap: 12px; }
-    .header-logo { width: 44px; height: 44px; background: rgba(255,255,255,0.15); border-radius: 12px; border: 1px solid rgba(255,255,255,0.3); overflow: hidden; display: flex; align-items: center; justify-content: center; }
-    .header-logo img { width: 100%; height: 100%; object-fit: contain; }
-    .header-texts .title { color: white; font-size: 18px; font-weight: 700; }
-    .header-texts .brand { color: #FFD600; font-size: 11px; font-weight: 700; letter-spacing: 0.5px; }
-    .header-texts .email { color: rgba(255,255,255,0.7); font-size: 11px; margin-top: 1px; }
-    .btn-salir { background: rgba(255,255,255,0.15); border: 1px solid rgba(255,255,255,0.3); color: white; padding: 7px 16px; border-radius: 8px; font-size: 12px; font-weight: 600; cursor: pointer; }
-
-    #pantalla-login { min-height: 100vh; background: linear-gradient(135deg, #1565C0 0%, #1976D2 50%, #FFD600 100%); display: flex; align-items: center; justify-content: center; padding: 24px; }
-    .login-card { background: white; border-radius: 20px; padding: 36px 32px; width: 100%; max-width: 380px; box-shadow: 0 20px 60px rgba(0,0,0,0.15); }
-    .login-logo { text-align: center; margin-bottom: 28px; }
-    .login-logo-img { width: 80px; height: 80px; background: #f0f4ff; border-radius: 20px; margin: 0 auto 12px; overflow: hidden; display: flex; align-items: center; justify-content: center; }
-    .login-logo-img img { width: 100%; height: 100%; object-fit: contain; }
-    .login-title { font-size: 24px; font-weight: 700; color: #1a1a2e; }
-    .login-brand { font-size: 13px; color: #1976D2; font-weight: 600; margin-top: 2px; }
-    .login-sub { font-size: 12px; color: #888; margin-top: 4px; }
-    .form-group { margin-bottom: 16px; }
+    /* LOGIN */
+    .login-wrap { min-height: 100vh; background: linear-gradient(135deg, #1a1a2e, #1565C0); display: flex; align-items: center; justify-content: center; padding: 24px; }
+    .login-card { background: white; border-radius: 16px; padding: 32px; width: 100%; max-width: 360px; }
+    .login-logo { display: flex; align-items: center; gap: 10px; margin-bottom: 24px; }
+    .login-logo img { width: 40px; height: 40px; border-radius: 10px; }
+    .login-logo-texto { font-size: 18px; font-weight: 700; color: #1a1a2e; }
+    .login-logo-sub { font-size: 11px; color: #1565C0; font-weight: 600; }
+    .login-card h2 { font-size: 20px; font-weight: 700; margin-bottom: 4px; }
+    .login-card p { font-size: 13px; color: #888; margin-bottom: 24px; }
+    .form-group { margin-bottom: 14px; }
     .form-group label { display: block; font-size: 12px; font-weight: 600; color: #555; margin-bottom: 6px; text-transform: uppercase; letter-spacing: 0.5px; }
-    .form-group input { width: 100%; padding: 12px 16px; border: 1.5px solid #e8e8e8; border-radius: 10px; font-size: 14px; color: #333; }
-    .form-group input:focus { outline: none; border-color: #1976D2; }
-    .btn-login { width: 100%; padding: 13px; background: linear-gradient(135deg, #1565C0, #1976D2); color: white; border: none; border-radius: 10px; font-size: 15px; font-weight: 600; cursor: pointer; margin-top: 8px; }
-    .error-msg { color: #e74c3c; font-size: 13px; margin-top: 12px; text-align: center; display: none; }
+    .form-group input { width: 100%; padding: 11px 14px; border: 1.5px solid #e8e8e8; border-radius: 8px; font-size: 14px; }
+    .form-group input:focus { outline: none; border-color: #1565C0; }
+    .btn-login { width: 100%; padding: 12px; background: linear-gradient(135deg, #1565C0, #1976D2); color: white; border: none; border-radius: 8px; font-size: 14px; font-weight: 600; cursor: pointer; }
+    .login-error { color: #e74c3c; font-size: 12px; margin-top: 10px; text-align: center; display: none; }
 
-    #pantalla-panel { display: none; }
-    .nav-tabs { background: white; border-bottom: 1px solid #eee; display: flex; padding: 0 16px; }
-    .nav-tab { padding: 14px 18px; font-size: 13px; font-weight: 600; color: #888; cursor: pointer; border-bottom: 3px solid transparent; }
+    /* HEADER */
+    .main-header { background: linear-gradient(135deg, #1565C0, #1976D2); padding: 14px 20px; display: flex; align-items: center; justify-content: space-between; display: none; }
+    .header-logo { display: flex; align-items: center; gap: 10px; }
+    .header-logo img { width: 36px; height: 36px; border-radius: 8px; }
+    .header-info { color: white; font-size: 15px; font-weight: 700; }
+    .header-email { color: rgba(255,255,255,0.75); font-size: 11px; }
+    .header-sub { color: #FFD600; font-size: 10px; font-weight: 700; }
+    .btn-salir { background: rgba(255,255,255,0.15); color: white; border: 1px solid rgba(255,255,255,0.3); padding: 7px 16px; border-radius: 8px; font-size: 12px; font-weight: 600; cursor: pointer; }
+
+    /* TABS */
+    .nav-tabs { background: white; border-bottom: 2px solid #eee; display: flex; padding: 0 16px; display: none; }
+    .nav-tab { padding: 14px 16px; font-size: 13px; font-weight: 600; color: #888; cursor: pointer; border-bottom: 3px solid transparent; margin-bottom: -2px; }
     .nav-tab.active { color: #1565C0; border-bottom-color: #1565C0; }
 
-    .container { max-width: 800px; margin: 24px auto; padding: 0 16px; }
+    /* PANEL */
+    .panel { max-width: 900px; margin: 0 auto; padding: 20px 16px; display: none; }
     .tab-content { display: none; }
     .tab-content.active { display: block; }
 
-    .stats-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-bottom: 20px; }
-    .stat-card { background: white; border-radius: 14px; padding: 16px; border: 1px solid #eee; }
-    .stat-icon { width: 36px; height: 36px; border-radius: 10px; display: flex; align-items: center; justify-content: center; margin-bottom: 10px; font-size: 18px; }
-    .stat-icon.blue { background: #e3f2fd; }
-    .stat-icon.yellow { background: #fffde7; }
-    .stat-num { font-size: 24px; font-weight: 700; color: #1a1a2e; }
-    .stat-label { font-size: 11px; color: #888; margin-top: 2px; font-weight: 500; }
+    /* STATS */
+    .stats-row { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-bottom: 20px; }
+    .stat-card { background: white; border-radius: 12px; padding: 16px; border: 1px solid #eee; text-align: center; }
+    .stat-icon { font-size: 24px; margin-bottom: 6px; }
+    .stat-num { font-size: 28px; font-weight: 700; color: #1a1a2e; }
+    .stat-label { font-size: 11px; color: #888; margin-top: 2px; }
 
-    .section-title { font-size: 12px; font-weight: 700; color: #888; text-transform: uppercase; letter-spacing: 0.8px; margin-bottom: 10px; }
+    /* DISPOSITIVOS */
+    .section-title { font-size: 11px; font-weight: 700; color: #888; text-transform: uppercase; letter-spacing: 0.8px; margin: 16px 0 8px; }
+    .disp-card { background: white; border-radius: 12px; padding: 16px; border: 1px solid #eee; margin-bottom: 10px; display: flex; align-items: center; justify-content: space-between; border-left: 4px solid #eee; }
+    .disp-card.online { border-left-color: #27ae60; }
+    .disp-card.offline { border-left-color: #e74c3c; }
+    .disp-dot { width: 10px; height: 10px; border-radius: 50%; margin-right: 10px; flex-shrink: 0; }
+    .disp-dot.online { background: #27ae60; }
+    .disp-dot.offline { background: #e74c3c; animation: blink 1.5s infinite; }
+    @keyframes blink { 0%,100%{opacity:1} 50%{opacity:0.3} }
+    .disp-nombre { font-size: 15px; font-weight: 700; color: #1a1a2e; }
+    .disp-ping { font-size: 11px; color: #aaa; margin-top: 2px; }
+    .badge-estado { font-size: 11px; font-weight: 700; padding: 4px 10px; border-radius: 20px; }
+    .badge-estado.online { background: #e8faf0; color: #27ae60; }
+    .badge-estado.offline { background: #fdecea; color: #c0392b; }
 
-    .device-card { background: white; border-radius: 14px; padding: 16px 18px; margin-bottom: 10px; display: flex; align-items: center; gap: 14px; border: 1px solid #eee; border-left: 4px solid #2ecc71; }
-    .device-card.offline { border-left-color: #e74c3c; }
-    .device-pulse { position: relative; width: 14px; height: 14px; flex-shrink: 0; }
-    .pulse-dot { width: 14px; height: 14px; border-radius: 50%; background: #2ecc71; }
-    .pulse-dot.offline { background: #e74c3c; }
-    .pulse-ring { position: absolute; top: -4px; left: -4px; width: 22px; height: 22px; border-radius: 50%; background: rgba(46,204,113,0.2); animation: pulse 2s infinite; }
-    .pulse-ring.offline { background: rgba(231,76,60,0.2); animation: none; }
-    @keyframes pulse { 0% { transform: scale(0.8); opacity: 1; } 100% { transform: scale(1.4); opacity: 0; } }
-    .device-info { flex: 1; }
-    .device-name { font-size: 15px; font-weight: 700; color: #1a1a2e; }
-    .device-detail { font-size: 12px; color: #888; margin-top: 2px; }
-    .device-badge { font-size: 11px; font-weight: 700; padding: 5px 12px; border-radius: 20px; }
-    .device-badge.online { background: #e8faf0; color: #27ae60; }
-    .device-badge.offline { background: #fdecea; color: #c0392b; }
-
-    .historial-card { background: white; border-radius: 14px; padding: 16px 18px; border: 1px solid #eee; }
-    .historial-card h3 { font-size: 14px; font-weight: 700; color: #1a1a2e; margin-bottom: 14px; }
-    .hist-row { display: flex; align-items: center; gap: 10px; padding: 9px 0; border-bottom: 1px solid #f5f5f5; font-size: 12px; }
-    .hist-row:last-child { border-bottom: none; }
-    .hist-badge { font-size: 10px; font-weight: 700; padding: 3px 8px; border-radius: 8px; flex-shrink: 0; }
+    /* HISTORIAL */
+    .hist-card { background: white; border-radius: 12px; padding: 16px; border: 1px solid #eee; margin-bottom: 10px; }
+    .hist-card h3 { font-size: 13px; font-weight: 700; color: #1a1a2e; margin-bottom: 12px; }
+    .hist-item { display: flex; align-items: flex-start; gap: 10px; padding: 8px 0; border-bottom: 1px solid #f5f5f5; font-size: 13px; }
+    .hist-item:last-child { border-bottom: none; }
+    .hist-badge { font-size: 10px; font-weight: 700; padding: 3px 8px; border-radius: 10px; white-space: nowrap; flex-shrink: 0; }
     .hist-badge.offline { background: #fdecea; color: #c0392b; }
     .hist-badge.online { background: #e8faf0; color: #27ae60; }
     .hist-badge.corte_luz { background: #fff3e0; color: #e65100; }
     .hist-badge.corte_internet { background: #e3f2fd; color: #1565C0; }
-    .hist-msg { flex: 1; color: #555; word-break: break-word; }
-    .hist-time { color: #bbb; flex-shrink: 0; }
+    .hist-msg { color: #555; flex: 1; line-height: 1.4; }
+    .hist-fecha { font-size: 11px; color: #bbb; white-space: nowrap; }
 
-    /* EXTRAS */
-    .bloque { background: white; border-radius: 14px; border: 1px solid #eee; padding: 20px; margin-bottom: 16px; }
-    .bloque h3 { font-size: 15px; font-weight: 700; color: #1a1a2e; margin-bottom: 6px; }
-    .bloque p { font-size: 13px; color: #666; line-height: 1.6; }
-
-    .servicio-base-card { background: linear-gradient(135deg, #e3f2fd, #f0f8ff); border-radius: 14px; border: 1px solid #bbdefb; padding: 20px; margin-bottom: 16px; }
-    .servicio-base-header { display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 12px; }
-    .servicio-base-titulo { font-size: 15px; font-weight: 700; color: #1565C0; }
-    .servicio-expira { font-size: 12px; color: #666; margin-top: 4px; }
-    .badge-activo { background: #e8faf0; color: #27ae60; font-size: 11px; font-weight: 700; padding: 4px 12px; border-radius: 20px; }
-    .badge-caduca-pronto { background: #fff3e0; color: #e65100; font-size: 11px; font-weight: 700; padding: 4px 12px; border-radius: 20px; }
-    .badge-caducado { background: #fdecea; color: #c0392b; font-size: 11px; font-weight: 700; padding: 4px 12px; border-radius: 20px; }
-
-    .renovacion-opciones { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin: 14px 0; }
-    .renovacion-opcion { border: 2px solid #e8e8e8; border-radius: 10px; padding: 14px; text-align: center; cursor: pointer; transition: all 0.2s; }
-    .renovacion-opcion:hover { border-color: #1565C0; }
-    .renovacion-opcion.seleccionada { border-color: #1565C0; background: #e3f2fd; }
-    .renovacion-opcion-precio { font-size: 20px; font-weight: 700; color: #1565C0; }
-    .renovacion-opcion-label { font-size: 12px; color: #888; margin-top: 4px; }
-    .renovacion-opcion-ahorro { font-size: 11px; color: #27ae60; font-weight: 600; margin-top: 4px; }
-
-    .selector-dispositivo { margin-bottom: 14px; }
-    .selector-dispositivo label { display: block; font-size: 12px; font-weight: 700; color: #888; text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 8px; }
-    .selector-dispositivo select { width: 100%; padding: 10px 14px; border: 1.5px solid #e8e8e8; border-radius: 8px; font-size: 14px; color: #333; }
-
-    .extras-activos-lista { display: grid; gap: 8px; margin-bottom: 4px; }
-    .extra-activo-item { display: flex; align-items: center; gap: 8px; font-size: 13px; color: #555; padding: 8px 12px; background: #f8f9fa; border-radius: 8px; }
-    .extra-activo-item .dot-verde { width: 8px; height: 8px; border-radius: 50%; background: #27ae60; flex-shrink: 0; }
-
-    .extras-checklist { display: grid; gap: 10px; margin-bottom: 16px; }
-    .extra-check { display: flex; align-items: flex-start; gap: 10px; padding: 12px; background: #f8f9fa; border-radius: 10px; cursor: pointer; border: 2px solid transparent; transition: border-color 0.2s; }
-    .extra-check:hover { border-color: #1565C0; }
-    .extra-check.seleccionado { border-color: #1565C0; background: #e3f2fd; }
-    .extra-check input[type="checkbox"] { margin-top: 2px; flex-shrink: 0; width: 16px; height: 16px; accent-color: #1565C0; }
+    /* RENOVACION */
+    .info-card { background: white; border-radius: 12px; padding: 20px; border: 1px solid #eee; margin-bottom: 14px; }
+    .info-card h3 { font-size: 14px; font-weight: 700; color: #1a1a2e; margin-bottom: 12px; }
+    .badge-servicio { display: inline-block; font-size: 11px; font-weight: 700; padding: 4px 12px; border-radius: 20px; margin-bottom: 10px; }
+    .badge-servicio.activo { background: #e8faf0; color: #27ae60; }
+    .badge-servicio.caduca { background: #fff3e0; color: #e65100; }
+    .badge-servicio.caducado { background: #fdecea; color: #c0392b; }
+    .renovar-btns { display: flex; gap: 10px; flex-wrap: wrap; margin-top: 14px; }
+    .btn-renovar { background: #1565C0; color: white; border: none; padding: 10px 20px; border-radius: 8px; font-size: 13px; font-weight: 600; cursor: pointer; }
+    .btn-renovar.secondary { background: #f0f4ff; color: #1565C0; }
+    .extras-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-bottom: 14px; }
+    .extra-item { background: #f8f9fb; border-radius: 8px; padding: 12px; border: 1px solid #eee; }
+    .extra-nombre { font-size: 12px; font-weight: 700; color: #1a1a2e; }
+    .extra-estado { font-size: 11px; color: #27ae60; margin-top: 2px; }
+    .extra-check { display: flex; align-items: flex-start; gap: 10px; padding: 10px 0; border-bottom: 1px solid #f5f5f5; }
+    .extra-check:last-child { border-bottom: none; }
+    .extra-check input { margin-top: 2px; accent-color: #1565C0; }
     .extra-check-info { flex: 1; }
-    .extra-check-titulo { font-size: 13px; font-weight: 600; color: #1a1a2e; }
-    .extra-check-precio { font-size: 12px; color: #1565C0; margin-top: 2px; }
-    .extra-check-desc { font-size: 12px; color: #888; margin-top: 2px; }
+    .extra-check-nombre { font-size: 13px; font-weight: 600; color: #1a1a2e; }
+    .extra-check-desc { font-size: 11px; color: #888; margin-top: 2px; }
+    .extra-check-precio { font-size: 12px; font-weight: 700; color: #1565C0; }
+    .precio-total-box { background: #e3f2fd; border-radius: 8px; padding: 12px; margin: 12px 0; display: flex; justify-content: space-between; align-items: center; }
+    .precio-total-label { font-size: 13px; font-weight: 600; color: #1565C0; }
+    .precio-total-num { font-size: 18px; font-weight: 700; color: #1565C0; }
+    .periodicidad-sel { display: flex; gap: 8px; margin: 10px 0; }
+    .per-btn { flex: 1; padding: 8px; border: 2px solid #e8e8e8; border-radius: 8px; font-size: 12px; font-weight: 600; cursor: pointer; background: white; color: #888; text-align: center; }
+    .per-btn.active { border-color: #1565C0; color: #1565C0; background: #e3f2fd; }
+    .solicitud-exito { display: none; background: #e8faf0; border: 1px solid #27ae60; color: #27ae60; padding: 12px; border-radius: 8px; font-size: 13px; font-weight: 600; text-align: center; margin-top: 10px; }
+    .selector-dispositivo select { width: 100%; padding: 10px 12px; border: 1.5px solid #e8e8e8; border-radius: 8px; font-size: 13px; background: white; margin-top: 6px; }
 
-    .periodicidad-selector { display: flex; gap: 10px; margin-bottom: 16px; }
-    .periodo-btn { flex: 1; padding: 10px; border: 2px solid #e8e8e8; border-radius: 10px; text-align: center; cursor: pointer; font-size: 13px; font-weight: 600; color: #888; transition: all 0.2s; }
-    .periodo-btn.activo { border-color: #1565C0; color: #1565C0; background: #e3f2fd; }
+    /* CONFIGURACION */
+    .config-card { background: white; border-radius: 12px; padding: 20px; border: 1px solid #eee; margin-bottom: 14px; }
+    .config-card h3 { font-size: 14px; font-weight: 700; color: #1a1a2e; margin-bottom: 6px; }
+    .config-card p { font-size: 13px; color: #666; margin-bottom: 14px; line-height: 1.5; }
+    .config-grupo { margin-bottom: 12px; }
+    .config-label { display: block; font-size: 11px; font-weight: 700; color: #888; text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 6px; }
+    .config-input { width: 100%; padding: 10px 12px; border: 1.5px solid #e8e8e8; border-radius: 8px; font-size: 13px; margin-bottom: 8px; }
+    .config-input:focus { outline: none; border-color: #1565C0; }
+    .btn-guardar-config { background: linear-gradient(135deg, #1565C0, #1976D2); color: white; border: none; padding: 11px 24px; border-radius: 8px; font-size: 13px; font-weight: 600; cursor: pointer; width: 100%; }
+    .config-exito { display: none; background: #e8faf0; border: 1px solid #27ae60; color: #27ae60; padding: 10px; border-radius: 8px; font-size: 13px; font-weight: 600; text-align: center; margin-bottom: 10px; }
+    .loading-msg { color: #aaa; font-size: 14px; text-align: center; padding: 40px; }
 
-    .resumen-precio { background: #e3f2fd; border-radius: 10px; padding: 14px; margin-bottom: 16px; display: flex; justify-content: space-between; align-items: center; }
-    .resumen-precio-label { font-size: 13px; color: #1565C0; font-weight: 600; }
-    .resumen-precio-total { font-size: 20px; font-weight: 700; color: #1565C0; }
-
-    .form-textarea { width: 100%; padding: 10px 14px; border: 1.5px solid #e8e8e8; border-radius: 8px; font-size: 13px; color: #333; resize: vertical; min-height: 70px; margin-bottom: 14px; font-family: inherit; }
-    .btn-solicitar { width: 100%; padding: 13px; background: linear-gradient(135deg, #1565C0, #1976D2); color: white; border: none; border-radius: 10px; font-size: 15px; font-weight: 600; cursor: pointer; }
-    .btn-solicitar:disabled { opacity: 0.5; cursor: not-allowed; }
-    .btn-renovar-base { width: 100%; padding: 12px; background: linear-gradient(135deg, #27ae60, #2ecc71); color: white; border: none; border-radius: 10px; font-size: 14px; font-weight: 600; cursor: pointer; margin-top: 4px; }
-
-    .exito-msg { background: #e8faf0; border: 1px solid #27ae60; color: #27ae60; padding: 14px; border-radius: 10px; text-align: center; font-size: 13px; font-weight: 600; display: none; margin-bottom: 16px; }
-
-    .config-card { background: white; border-radius: 14px; border: 1px solid #eee; padding: 20px; margin-bottom: 16px; }
-    .config-card h3 { font-size: 15px; font-weight: 700; color: #1a1a2e; margin-bottom: 4px; }
-    .config-card p { font-size: 13px; color: #666; margin-bottom: 16px; line-height: 1.5; }
-    .config-grupo { margin-bottom: 14px; }
-    .config-label { display: block; font-size: 12px; font-weight: 600; color: #555; margin-bottom: 6px; text-transform: uppercase; letter-spacing: 0.5px; }
-    .config-input { width: 100%; padding: 10px 14px; border: 1.5px solid #e8e8e8; border-radius: 8px; font-size: 14px; color: #333; margin-bottom: 6px; }
-    .config-input:focus { outline: none; border-color: #1976D2; }
-    .config-select { width: 100%; padding: 10px 14px; border: 1.5px solid #e8e8e8; border-radius: 8px; font-size: 14px; color: #333; background: white; margin-bottom: 6px; }
-    .config-fila { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
-    .btn-guardar-config { width: 100%; padding: 12px; background: linear-gradient(135deg, #1565C0, #1976D2); color: white; border: none; border-radius: 10px; font-size: 14px; font-weight: 600; cursor: pointer; margin-top: 4px; }
-    .config-exito { background: #e8faf0; border: 1px solid #27ae60; color: #27ae60; padding: 10px 14px; border-radius: 8px; font-size: 13px; font-weight: 600; display: none; margin-bottom: 12px; text-align: center; }
-    .info-box { background: #e3f2fd; border-radius: 10px; padding: 14px; margin-bottom: 12px; font-size: 13px; color: #1565C0; line-height: 1.6; }
-    .info-box b { display: block; margin-bottom: 4px; }
-    .uso-bar { background: #f0f0f0; border-radius: 20px; height: 6px; margin-top: 6px; }
-    .uso-bar-fill { background: #1565C0; border-radius: 20px; height: 6px; transition: width 0.3s; }
-    .uso-texto { font-size: 11px; color: #888; margin-top: 4px; }
-    .vacio { color: #aaa; font-size: 14px; text-align: center; padding: 24px 0; }
-    .loading { color: #aaa; font-size: 14px; text-align: center; padding: 40px 0; }
-    .divider { border: none; border-top: 1px solid #eee; margin: 20px 0; }
+    @media (max-width: 600px) {
+      .extras-grid { grid-template-columns: 1fr; }
+      .renovar-btns { flex-direction: column; }
+    }
   </style>
 </head>
 <body>
 
-<div class="header" id="main-header" style="display:none">
-  <div class="header-left">
-    <div class="header-logo"><img src="/img/logo.jpeg" alt="MaGu"></div>
-    <div class="header-texts">
-      <div class="title">AlertaLuz</div>
-      <div class="brand">MaGu Multiservicios</div>
-      <div class="email" id="header-email"></div>
-    </div>
-  </div>
-  <button class="btn-salir" onclick="cerrarSesion()">Salir</button>
-</div>
-
+<!-- LOGIN -->
 <div id="pantalla-login">
-  <div class="login-card">
-    <div class="login-logo">
-      <div class="login-logo-img"><img src="/img/logo.jpeg" alt="MaGu AlertaLuz"></div>
-      <div class="login-title">AlertaLuz</div>
-      <div class="login-brand">by MaGu Multiservicios</div>
-      <div class="login-sub">Monitoreo de suministro eléctrico</div>
+  <div class="login-wrap">
+    <div class="login-card">
+      <div class="login-logo">
+        <img src="/img/logo.jpeg" alt="AlertaLuz">
+        <div>
+          <div class="login-logo-texto">AlertaLuz</div>
+          <div class="login-logo-sub">MaGu Multiservicios</div>
+        </div>
+      </div>
+      <h2>Accede a tu panel</h2>
+      <p>Monitoreo de suministro eléctrico</p>
+      <div class="form-group">
+        <label>Email</label>
+        <input type="email" id="login-email" placeholder="tu@email.com" onkeydown="if(event.key==='Enter')login()">
+      </div>
+      <div class="form-group">
+        <label>Contraseña</label>
+        <input type="password" id="login-password" placeholder="••••••••" onkeydown="if(event.key==='Enter')login()">
+      </div>
+      <button class="btn-login" onclick="login()">Entrar</button>
+      <p class="login-error" id="login-error">Email o contraseña incorrectos</p>
     </div>
-    <div class="form-group">
-      <label>Email</label>
-      <input type="email" id="login-email" placeholder="tucorreo@email.com">
-    </div>
-    <div class="form-group">
-      <label>Contraseña</label>
-      <input type="password" id="login-password" placeholder="••••••••" onkeydown="if(event.key==='Enter')iniciarSesion()">
-    </div>
-    <button class="btn-login" onclick="iniciarSesion()">Acceder a mi panel</button>
-    <p class="error-msg" id="login-error">Email o contraseña incorrectos</p>
   </div>
 </div>
 
-<div id="pantalla-panel">
-  <div class="nav-tabs">
-    <div class="nav-tab active" onclick="cambiarTab('inicio', this)">Mis dispositivos</div>
-    <div class="nav-tab" onclick="cambiarTab('extras', this)">Renovación y extras</div>
-    <div class="nav-tab" onclick="cambiarTab('config', this)">Mi configuración</div>
-  </div>
-
-  <div class="container">
-
-    <!-- TAB INICIO -->
-    <div id="tab-inicio" class="tab-content active">
-      <div class="stats-grid">
-        <div class="stat-card">
-          <div class="stat-icon blue">🔌</div>
-          <div class="stat-num" id="stat-online">-</div>
-          <div class="stat-label">Dispositivos online</div>
-        </div>
-        <div class="stat-card">
-          <div class="stat-icon yellow">⚡</div>
-          <div class="stat-num" id="stat-alertas">-</div>
-          <div class="stat-label">Alertas este mes</div>
-        </div>
-      </div>
-      <div class="section-title">Tus dispositivos</div>
-      <div id="lista-dispositivos"><p class="loading">Cargando...</p></div>
-      <br>
-      <div class="historial-card">
-        <h3>📋 Historial de alertas</h3>
-        <div id="lista-alertas"><p class="loading">Cargando...</p></div>
-      </div>
-    </div>
-
-    <!-- TAB EXTRAS -->
-    <div id="tab-extras" class="tab-content">
-
-      <div class="selector-dispositivo">
-        <label>Selecciona el dispositivo</label>
-        <select id="selector-chip" onchange="actualizarTabExtras()">
-          <option value="">Cargando...</option>
-        </select>
-      </div>
-
-      <!-- RENOVACIÓN BASE -->
-      <div class="section-title">Servicio base</div>
-      <div class="servicio-base-card" id="servicio-base-card">
-        <div class="servicio-base-header">
-          <div>
-            <div class="servicio-base-titulo">⚡ AlertaLuz — Servicio base</div>
-            <div class="servicio-expira" id="servicio-expira-texto">Cargando...</div>
-          </div>
-          <span id="badge-estado-base" class="badge-activo">Activo</span>
-        </div>
-        <p style="font-size:13px;color:#666;margin-bottom:14px">Incluye: monitoreo 24h, alertas por email, panel web, detección luz/internet.</p>
-        <div class="renovacion-opciones">
-          <div class="renovacion-opcion seleccionada" id="opcion-anual" onclick="seleccionarRenovacion('anual')">
-            <div class="renovacion-opcion-precio">15€</div>
-            <div class="renovacion-opcion-label">Renovación anual</div>
-            <div class="renovacion-opcion-ahorro">Recomendado</div>
-          </div>
-          <div class="renovacion-opcion" id="opcion-mensual" onclick="seleccionarRenovacion('mensual')">
-            <div class="renovacion-opcion-precio">1,50€</div>
-            <div class="renovacion-opcion-label">Renovación mensual</div>
-            <div class="renovacion-opcion-ahorro">Más flexible</div>
-          </div>
-        </div>
-        <button class="btn-renovar-base" onclick="solicitarRenovacionBase()">
-          Solicitar renovación del servicio
-        </button>
-      </div>
-
-      <hr class="divider">
-
-      <!-- EXTRAS ACTIVOS -->
-      <div class="section-title">Extras activos</div>
-      <div id="extras-activos" style="margin-bottom:20px"><p class="vacio">Sin extras activos</p></div>
-
-      <hr class="divider">
-
-      <!-- CONTRATAR EXTRAS -->
-      <div class="bloque">
-        <h3>🛒 Contratar extras</h3>
-        <p style="margin-bottom:16px">Selecciona los servicios adicionales que quieres añadir. Te enviaremos un presupuesto y nos pondremos en contacto para gestionar el pago.</p>
-
-        <div class="extras-checklist" id="extras-checklist"></div>
-
-        <div class="section-title">Periodicidad</div>
-        <div class="periodicidad-selector">
-          <div class="periodo-btn activo" onclick="seleccionarPeriodo('anual', this)">Anual<br><small style="font-weight:400;font-size:11px">Ahorra 2 meses</small></div>
-          <div class="periodo-btn" onclick="seleccionarPeriodo('mensual', this)">Mensual<br><small style="font-weight:400;font-size:11px">Más flexible</small></div>
-        </div>
-
-        <div class="resumen-precio">
-          <span class="resumen-precio-label" id="resumen-label">Selecciona extras para ver el precio</span>
-          <span class="resumen-precio-total" id="resumen-total"></span>
-        </div>
-
-        <textarea class="form-textarea" id="solicitud-mensaje" placeholder="¿Alguna pregunta o comentario? (opcional)"></textarea>
-        <div class="exito-msg" id="exito-solicitud">✅ ¡Solicitud enviada! Nos pondremos en contacto contigo en breve.</div>
-        <button class="btn-solicitar" id="btn-solicitar" onclick="enviarSolicitud()" disabled>Enviar solicitud</button>
-      </div>
-
-    </div>
-
-    <!-- TAB CONFIGURACIÓN -->
-    <div id="tab-config" class="tab-content">
-
-      <div class="selector-dispositivo" style="background:white;border-radius:14px;padding:16px;border:1px solid #eee;margin-bottom:16px">
-        <label style="display:block;font-size:12px;font-weight:700;color:#888;text-transform:uppercase;letter-spacing:0.5px;margin-bottom:8px">Selecciona el dispositivo</label>
-        <select id="selector-chip-config" onchange="cargarConfigDispositivo()">
-          <option value="">Cargando...</option>
-        </select>
-      </div>
-
-      <!-- DATOS DEL DISPOSITIVO -->
-      <div class="config-card" id="cfg-datos-card" style="display:none">
-        <h3>⚙️ Datos del dispositivo</h3>
-        <p style="margin-bottom:14px">Cambia el nombre del dispositivo o tu contraseña de acceso al panel.</p>
-        <div class="config-exito" id="cfg-datos-exito">✅ Guardado correctamente</div>
-        <div class="config-grupo">
-          <label class="config-label">Nombre del dispositivo</label>
-          <input class="config-input" id="cfg-nuevo-nombre" placeholder="ej: Casa, Oficina, Almacén">
-          <label class="config-label">Nueva contraseña del panel</label>
-          <input class="config-input" id="cfg-nuevo-password" type="password" placeholder="Dejar vacío para no cambiarla">
-        </div>
-        <button class="btn-guardar-config" onclick="guardarDatosDispositivo()">Guardar cambios</button>
-      </div>
-
-      <!-- RESET WIFI -->
-      <div class="config-card" id="cfg-wifi-card" style="display:none">
-        <h3>📶 Cambiar red WiFi</h3>
-        <p>Si has cambiado de router o contraseña WiFi, usa esta opción para reconectar el dispositivo.</p>
-        <div style="background:#fff3e0;border-radius:10px;padding:14px;margin:12px 0;font-size:13px;color:#e65100;line-height:1.6">
-          <b>⚠️ Importante:</b> Al pulsar este botón, en el próximo ping el dispositivo entrará en modo configuración y aparecerá la red <b>AlertaLuz-Config</b> en tu WiFi. Conéctate y configura la nueva red.
-        </div>
-        <button onclick="solicitarResetWifi()" style="background:#e67e22;color:white;border:none;padding:12px 20px;border-radius:10px;font-size:14px;font-weight:600;cursor:pointer;width:100%">
-          Preparar cambio de WiFi
-        </button>
-        <div id="cfg-wifi-exito" style="display:none;margin-top:10px;background:#e8faf0;border:1px solid #27ae60;color:#27ae60;padding:10px;border-radius:8px;font-size:13px;font-weight:600;text-align:center">
-          ✅ Listo. En el próximo minuto busca la red AlertaLuz-Config en tu WiFi.
-        </div>
-      </div>
-
-      <!-- EMAILS EXTRA -->
-      <div class="config-card" id="cfg-email-card" style="display:none">
-        <h3>📧 Emails adicionales</h3>
-        <p>Añade hasta 3 emails que recibirán las mismas alertas que tú.</p>
-        <div class="config-exito" id="cfg-email-exito">✅ Guardado correctamente</div>
-        <div class="config-grupo">
-          <label class="config-label">Email extra 1</label>
-          <input class="config-input" id="cfg-email1" type="email" placeholder="extra1@email.com">
-          <label class="config-label">Email extra 2</label>
-          <input class="config-input" id="cfg-email2" type="email" placeholder="extra2@email.com">
-          <label class="config-label">Email extra 3</label>
-          <input class="config-input" id="cfg-email3" type="email" placeholder="extra3@email.com">
-        </div>
-        <button class="btn-guardar-config" onclick="guardarEmails()">Guardar emails</button>
-      </div>
-
-      <!-- TELEGRAM EXTRA -->
-      <div class="config-card" id="cfg-telegram-card" style="display:none">
-        <h3>📱 Telegram adicionales</h3>
-        <p>Añade hasta 3 cuentas de Telegram que recibirán las alertas.</p>
-        <div class="info-box">
-          <b>¿Cómo obtener tu Chat ID?</b>
-          1. Abre Telegram y busca <b>@userinfobot</b><br>
-          2. Escribe /start — te responderá con tu ID numérico<br>
-          3. Copia ese número y pégalo aquí
-        </div>
-        <div class="config-exito" id="cfg-telegram-exito">✅ Guardado correctamente</div>
-        <div class="config-grupo">
-          <label class="config-label">Chat ID extra 1</label>
-          <input class="config-input" id="cfg-tg1" placeholder="123456789">
-          <label class="config-label">Chat ID extra 2</label>
-          <input class="config-input" id="cfg-tg2" placeholder="123456789">
-          <label class="config-label">Chat ID extra 3</label>
-          <input class="config-input" id="cfg-tg3" placeholder="123456789">
-        </div>
-        <button class="btn-guardar-config" onclick="guardarTelegrams()">Guardar Telegrams</button>
-      </div>
-
-      <!-- SMS -->
-      <div class="config-card" id="cfg-sms-card" style="display:none">
-        <h3>💬 Configuración SMS</h3>
-        <p>Configura el teléfono y el tiempo de espera antes de recibir el SMS.</p>
-        <div class="config-exito" id="cfg-sms-exito">✅ Guardado correctamente</div>
-        <div class="config-grupo">
-          <label class="config-label">Teléfono para SMS</label>
-          <input class="config-input" id="cfg-sms-tel" type="tel" placeholder="+34 600 000 000">
-          <label class="config-label">Enviar SMS después de</label>
-          <select class="config-select" id="cfg-sms-tiempo">
-            <option value="0">Inmediatamente al detectar el corte</option>
-            <option value="15">15 minutos sin señal</option>
-            <option value="30">30 minutos sin señal</option>
-            <option value="60">60 minutos sin señal</option>
-          </select>
-        </div>
-        <div id="cfg-sms-uso-wrap">
-          <div class="uso-texto" id="cfg-sms-uso-texto"></div>
-          <div class="uso-bar"><div class="uso-bar-fill" id="cfg-sms-uso-bar" style="width:0%"></div></div>
-        </div>
-        <button class="btn-guardar-config" style="margin-top:14px" onclick="guardarSMS()">Guardar configuración SMS</button>
-      </div>
-
-      <!-- PUSH -->
-      <div class="config-card" id="cfg-push-card" style="display:none">
-        <h3>🔔 Push notifications</h3>
-        <p>Recibe notificaciones instantáneas en tu móvil aunque no tengas el navegador abierto.</p>
-        <div class="info-box">
-          <b>¿Cómo activar las notificaciones push?</b>
-          1. Abre <b>alertaluz.es</b> en el navegador de tu móvil<br>
-          2. El navegador te pedirá permiso para enviar notificaciones<br>
-          3. Pulsa <b>"Permitir"</b><br>
-          4. Listo — recibirás las alertas aunque no tengas la página abierta<br><br>
-          <span style="color:#888">Si no te aparece el mensaje, ve a Ajustes del navegador → Notificaciones → alertaluz.es → Permitir</span>
-        </div>
-        <div id="push-estado-wrap" style="text-align:center;padding:10px 0">
-          <div id="push-estado-texto" style="font-size:13px;color:#888">Comprobando estado...</div>
-        </div>
-      </div>
-
-      <div id="cfg-sin-extras" style="display:none">
-        <p class="vacio">No tienes extras activos en este dispositivo.<br>Ve a "Renovación y extras" para contratar servicios adicionales.</p>
-      </div>
-
+<!-- HEADER -->
+<div class="main-header" id="main-header">
+  <div class="header-logo">
+    <img src="/img/logo.jpeg" alt="AlertaLuz">
+    <div>
+      <div class="header-info">AlertaLuz</div>
+      <div class="header-sub">MaGu Multiservicios</div>
+      <div class="header-email" id="header-email"></div>
     </div>
   </div>
+  <button class="btn-salir" onclick="salir()">Salir</button>
+</div>
+
+<!-- TABS -->
+<div class="nav-tabs" id="nav-tabs">
+  <div class="nav-tab active" onclick="cambiarTab('dispositivos')">Mis dispositivos</div>
+  <div class="nav-tab" onclick="cambiarTab('renovacion')">Renovación y extras</div>
+  <div class="nav-tab" onclick="cambiarTab('config')">Mi configuración</div>
+</div>
+
+<!-- PANEL -->
+<div class="panel" id="pantalla-panel">
+
+  <!-- TAB DISPOSITIVOS -->
+  <div id="tab-dispositivos" class="tab-content active">
+    <div class="stats-row">
+      <div class="stat-card">
+        <div class="stat-icon">🔌</div>
+        <div class="stat-num" id="stat-online">-</div>
+        <div class="stat-label">Dispositivos online</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-icon">⚡</div>
+        <div class="stat-num" id="stat-alertas">-</div>
+        <div class="stat-label">Alertas este mes</div>
+      </div>
+    </div>
+    <div class="section-title">Tus dispositivos</div>
+    <div id="lista-dispositivos"><p class="loading-msg">Cargando...</p></div>
+    <div id="historial-alertas"></div>
+  </div>
+
+  <!-- TAB RENOVACION -->
+  <div id="tab-renovacion" class="tab-content">
+    <div class="selector-dispositivo info-card">
+      <label class="config-label">Selecciona el dispositivo</label>
+      <select id="selector-chip-renovacion" onchange="cargarRenovacion()">
+        <option value="">Cargando...</option>
+      </select>
+    </div>
+    <div id="contenido-renovacion"></div>
+  </div>
+
+  <!-- TAB CONFIG -->
+  <div id="tab-config" class="tab-content">
+    <div class="selector-dispositivo info-card">
+      <label class="config-label">Selecciona el dispositivo</label>
+      <select id="selector-chip-config" onchange="cargarConfigDispositivo()">
+        <option value="">Cargando...</option>
+      </select>
+    </div>
+    <div id="contenido-config"></div>
+  </div>
+
 </div>
 
 <script>
   const BACKEND = 'https://alertaluz-backend.onrender.com';
   let sesionEmail = null;
   let dispositivosData = [];
-  let periodoSeleccionado = 'anual';
-  let renovacionSeleccionada = 'anual';
+  let alertasData = [];
+  let periodicidadSeleccionada = 'anual';
 
-  const EXTRAS = [
-    { id: 'email_multiple', nombre: 'Email múltiple', desc: 'Recibe alertas en hasta 3 emails distintos', precio_anual: 5, precio_mensual: 0.50, campo: 'extra_email_multiple' },
-    { id: 'telegram_multiple', nombre: 'Telegram múltiple', desc: 'Recibe alertas en hasta 3 cuentas de Telegram', precio_anual: 5, precio_mensual: 0.50, campo: 'extra_telegram_multiple' },
-    { id: 'push', nombre: 'Push notifications', desc: 'Notificaciones instantáneas en tu móvil', precio_anual: 5, precio_mensual: 0.50, campo: 'extra_push' },
-    { id: 'sms', nombre: 'SMS de alerta', desc: 'SMS cuando se detecte un corte. Máx. 10/mes', precio_anual: 10, precio_mensual: 1.00, campo: 'extra_sms' },
-
-  ];
-
-  window.onload = () => {
-    const emailGuardado = localStorage.getItem('alertaluz_email');
-    if (emailGuardado) { sesionEmail = emailGuardado; mostrarPanel(); }
-    renderChecklist();
-  };
-
-  function cambiarTab(tab, el) {
-    document.querySelectorAll('.nav-tab').forEach(t => t.classList.remove('active'));
-    document.querySelectorAll('.tab-content').forEach(t => t.classList.remove('active'));
-    el.classList.add('active');
-    document.getElementById(`tab-${tab}`).classList.add('active');
-    if (tab === 'config' && dispositivosData.length > 0) {
-      cargarConfigDispositivo();
-    }
-  }
-
-  async function iniciarSesion() {
+  // ===== LOGIN =====
+  async function login() {
     const email = document.getElementById('login-email').value.trim();
-    const password = document.getElementById('login-password').value;
+    const password = document.getElementById('login-password').value.trim();
     if (!email || !password) return;
     try {
       const res = await fetch(`${BACKEND}/login`, {
@@ -457,353 +251,373 @@
         body: JSON.stringify({ email, password })
       });
       const data = await res.json();
-      if (data.ok) { sesionEmail = email; localStorage.setItem('alertaluz_email', email); mostrarPanel(); }
-      else document.getElementById('login-error').style.display = 'block';
-    } catch(e) { document.getElementById('login-error').style.display = 'block'; }
+      if (data.ok) {
+        sesionEmail = email;
+        mostrarPanel();
+      } else {
+        document.getElementById('login-error').style.display = 'block';
+      }
+    } catch(e) {
+      document.getElementById('login-error').style.display = 'block';
+    }
   }
 
-  function cerrarSesion() {
-    localStorage.removeItem('alertaluz_email');
+  function salir() {
     sesionEmail = null;
-    document.getElementById('main-header').style.display = 'none';
+    dispositivosData = [];
     document.getElementById('pantalla-login').style.display = 'flex';
+    document.getElementById('main-header').style.display = 'none';
+    document.getElementById('nav-tabs').style.display = 'none';
     document.getElementById('pantalla-panel').style.display = 'none';
+    document.getElementById('login-email').value = '';
+    document.getElementById('login-password').value = '';
   }
 
   async function mostrarPanel() {
     document.getElementById('pantalla-login').style.display = 'none';
-    document.getElementById('pantalla-panel').style.display = 'block';
     document.getElementById('main-header').style.display = 'flex';
+    document.getElementById('nav-tabs').style.display = 'flex';
+    document.getElementById('pantalla-panel').style.display = 'block';
     document.getElementById('header-email').textContent = sesionEmail;
     await cargarDispositivos();
     await cargarAlertas();
+    setTimeout(registrarPush, 2000);
     setInterval(async () => { await cargarDispositivos(); await cargarAlertas(); }, 30000);
   }
 
+  function cambiarTab(tab) {
+    document.querySelectorAll('.nav-tab').forEach(t => t.classList.remove('active'));
+    document.querySelectorAll('.tab-content').forEach(t => t.classList.remove('active'));
+    event.target.classList.add('active');
+    document.getElementById(`tab-${tab}`).classList.add('active');
+    if (tab === 'config') cargarConfigDispositivo();
+    if (tab === 'renovacion') cargarRenovacion();
+  }
+
+  // ===== DISPOSITIVOS =====
   async function cargarDispositivos() {
     try {
       const res = await fetch(`${BACKEND}/dispositivos?email=${encodeURIComponent(sesionEmail)}`);
       const data = await res.json();
       dispositivosData = data.dispositivos || [];
-      const contenedor = document.getElementById('lista-dispositivos');
-
-      if (!dispositivosData.length) {
-        contenedor.innerHTML = '<p class="vacio">No tienes dispositivos registrados</p>';
-        document.getElementById('stat-online').textContent = '0';
-        return;
-      }
-
-      document.getElementById('stat-online').textContent = dispositivosData.filter(d => d.estado === 'online').length;
-      contenedor.innerHTML = dispositivosData.map(d => `
-        <div class="device-card ${d.estado === 'offline' ? 'offline' : ''}">
-          <div class="device-pulse">
-            <div class="pulse-dot ${d.estado === 'offline' ? 'offline' : ''}"></div>
-            <div class="pulse-ring ${d.estado === 'offline' ? 'offline' : ''}"></div>
-          </div>
-          <div class="device-info">
-            <div class="device-name">${d.nombre || d.chip_id}</div>
-            <div class="device-detail">Último ping: ${formatearFecha(d.ultimo_ping)} · Expira: ${d.fecha_expiracion ? formatearFechaSolo(d.fecha_expiracion) : 'sin fecha'}</div>
-          </div>
-          <span class="device-badge ${d.estado}">${d.estado === 'online' ? 'Online' : 'Sin señal'}</span>
-        </div>
-      `).join('');
-
-      const sel = document.getElementById('selector-chip');
-      const selConfig = document.getElementById('selector-chip-config');
-      if (selConfig) {
-        selConfig.innerHTML = dispositivosData.map(d => `<option value="${d.chip_id}">${d.nombre || d.chip_id}</option>`).join('');
-        cargarConfigDispositivo();
-      }
-      sel.innerHTML = dispositivosData.map(d => `<option value="${d.chip_id}">${d.nombre || d.chip_id}</option>`).join('');
-      actualizarTabExtras();
+      renderDispositivos();
+      actualizarSelectores();
     } catch(e) {
-      document.getElementById('lista-dispositivos').innerHTML = '<p class="vacio">Error al cargar</p>';
+      document.getElementById('lista-dispositivos').innerHTML = '<p class="loading-msg">Error al cargar dispositivos</p>';
     }
   }
 
-  function actualizarTabExtras() {
-    const chipId = document.getElementById('selector-chip').value;
-    const disp = dispositivosData.find(d => d.chip_id === chipId);
-    if (!disp) return;
+  function renderDispositivos() {
+    const online = dispositivosData.filter(d => d.estado === 'online').length;
+    document.getElementById('stat-online').textContent = online;
 
-    // Estado del servicio base
-    const hoy = new Date();
-    const badgeEl = document.getElementById('badge-estado-base');
-    const expiraTexto = document.getElementById('servicio-expira-texto');
-
-    if (disp.fecha_expiracion) {
-      const exp = new Date(disp.fecha_expiracion);
-      const dias = Math.ceil((exp - hoy) / (1000*60*60*24));
-      expiraTexto.textContent = `Servicio activo hasta: ${formatearFechaSolo(disp.fecha_expiracion)}`;
-      if (dias < 0) { badgeEl.className = 'badge-caducado'; badgeEl.textContent = 'Caducado'; }
-      else if (dias <= 30) { badgeEl.className = 'badge-caduca-pronto'; badgeEl.textContent = `Caduca en ${dias} días`; }
-      else { badgeEl.className = 'badge-activo'; badgeEl.textContent = 'Activo'; }
-    } else {
-      expiraTexto.textContent = 'Sin fecha de expiración';
-    }
-
-    // Extras activos
-    const activos = EXTRAS.filter(e => disp[e.campo]);
-    const contenedor = document.getElementById('extras-activos');
-    if (activos.length === 0) {
-      contenedor.innerHTML = '<p class="vacio">No tienes extras activos en este dispositivo</p>';
-    } else {
-      contenedor.innerHTML = `<div class="extras-activos-lista">${activos.map(e => `
-        <div class="extra-activo-item"><span class="dot-verde"></span>${e.nombre}</div>
-      `).join('')}</div>`;
-    }
-  }
-
-  function seleccionarRenovacion(tipo) {
-    renovacionSeleccionada = tipo;
-    document.getElementById('opcion-anual').classList.toggle('seleccionada', tipo === 'anual');
-    document.getElementById('opcion-mensual').classList.toggle('seleccionada', tipo === 'mensual');
-  }
-
-  async function solicitarRenovacionBase() {
-    const chipId = document.getElementById('selector-chip').value;
-    if (!chipId) { alert('Selecciona un dispositivo'); return; }
-
-    const precio = renovacionSeleccionada === 'anual' ? 15 : 1.50;
-    const disp = dispositivosData.find(d => d.chip_id === chipId);
-
-    try {
-      const res = await fetch(`${BACKEND}/solicitar-extras`, {
-        method: 'POST', headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({
-          email: sesionEmail,
-          chip_id: chipId,
-          extras: JSON.stringify([`Renovación servicio base (${renovacionSeleccionada})`]),
-          periodicidad: renovacionSeleccionada,
-          precio_total: precio.toFixed(2),
-          mensaje: `Solicitud de renovación del servicio base para ${disp?.nombre || chipId}`
-        })
-      });
-      const data = await res.json();
-      if (data.ok) alert('✅ Solicitud de renovación enviada. Nos pondremos en contacto contigo para gestionar el pago.');
-      else alert('Error al enviar. Inténtalo de nuevo.');
-    } catch(e) { alert('Error de conexión.'); }
-  }
-
-  function renderChecklist() {
-    document.getElementById('extras-checklist').innerHTML = EXTRAS.map(e => `
-      <div class="extra-check" id="check-${e.id}" onclick="toggleExtra('${e.id}', this)">
-        <input type="checkbox" id="cb-${e.id}" onclick="event.stopPropagation()">
-        <div class="extra-check-info">
-          <div class="extra-check-titulo">${e.nombre}</div>
-          <div class="extra-check-precio">${e.precio_anual}€/año · ${e.precio_mensual.toFixed(2)}€/mes</div>
-          <div class="extra-check-desc">${e.desc}</div>
-        </div>
-      </div>
-    `).join('');
-  }
-
-  function toggleExtra(id, el) {
-    const cb = document.getElementById(`cb-${id}`);
-    cb.checked = !cb.checked;
-    el.classList.toggle('seleccionado', cb.checked);
-    calcularPrecio();
-  }
-
-  function seleccionarPeriodo(periodo, el) {
-    periodoSeleccionado = periodo;
-    document.querySelectorAll('.periodo-btn').forEach(b => b.classList.remove('activo'));
-    el.classList.add('activo');
-    calcularPrecio();
-  }
-
-  function calcularPrecio() {
-    const seleccionados = EXTRAS.filter(e => document.getElementById(`cb-${e.id}`)?.checked);
-    const btn = document.getElementById('btn-solicitar');
-    if (seleccionados.length === 0) {
-      document.getElementById('resumen-label').textContent = 'Selecciona extras para ver el precio';
-      document.getElementById('resumen-total').textContent = '';
-      btn.disabled = true;
+    if (dispositivosData.length === 0) {
+      document.getElementById('lista-dispositivos').innerHTML = '<p class="loading-msg">No tienes dispositivos registrados</p>';
       return;
     }
-    const total = seleccionados.reduce((sum, e) => sum + (periodoSeleccionado === 'anual' ? e.precio_anual : e.precio_mensual), 0);
-    document.getElementById('resumen-label').textContent = `${seleccionados.length} extra${seleccionados.length > 1 ? 's' : ''} seleccionados`;
-    document.getElementById('resumen-total').textContent = `${total.toFixed(2)}€/${periodoSeleccionado === 'anual' ? 'año' : 'mes'}`;
-    btn.disabled = false;
-  }
 
-  async function enviarSolicitud() {
-    const chipId = document.getElementById('selector-chip').value;
-    if (!chipId) { alert('Selecciona un dispositivo'); return; }
-    const seleccionados = EXTRAS.filter(e => document.getElementById(`cb-${e.id}`)?.checked);
-    if (!seleccionados.length) { alert('Selecciona al menos un extra'); return; }
-    const total = seleccionados.reduce((sum, e) => sum + (periodoSeleccionado === 'anual' ? e.precio_anual : e.precio_mensual), 0);
-    const btn = document.getElementById('btn-solicitar');
-    btn.disabled = true; btn.textContent = 'Enviando...';
-    try {
-      const res = await fetch(`${BACKEND}/solicitar-extras`, {
-        method: 'POST', headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({
-          email: sesionEmail, chip_id: chipId,
-          extras: JSON.stringify(seleccionados.map(e => e.nombre)),
-          periodicidad: periodoSeleccionado,
-          precio_total: total.toFixed(2),
-          mensaje: document.getElementById('solicitud-mensaje').value
-        })
-      });
-      const data = await res.json();
-      if (data.ok) {
-        document.getElementById('exito-solicitud').style.display = 'block';
-        btn.textContent = '✅ Solicitud enviada';
-        EXTRAS.forEach(e => { const cb = document.getElementById(`cb-${e.id}`); if (cb) { cb.checked = false; document.getElementById(`check-${e.id}`).classList.remove('seleccionado'); } });
-        calcularPrecio();
-      } else { alert('Error. Inténtalo de nuevo.'); btn.disabled = false; btn.textContent = 'Enviar solicitud'; }
-    } catch(e) { alert('Error de conexión.'); btn.disabled = false; btn.textContent = 'Enviar solicitud'; }
+    document.getElementById('lista-dispositivos').innerHTML = dispositivosData.map(d => `
+      <div class="disp-card ${d.estado}">
+        <div style="display:flex;align-items:center">
+          <div class="disp-dot ${d.estado}"></div>
+          <div>
+            <div class="disp-nombre">${d.nombre || d.chip_id}</div>
+            <div class="disp-ping">Último ping: ${formatearFecha(d.ultimo_ping)} · Expira: ${formatearFechaSolo(d.fecha_expiracion)}</div>
+          </div>
+        </div>
+        <span class="badge-estado ${d.estado}">${d.estado === 'online' ? 'Online' : 'Sin señal'}</span>
+      </div>
+    `).join('');
   }
 
   async function cargarAlertas() {
     try {
       const res = await fetch(`${BACKEND}/alertas?email=${encodeURIComponent(sesionEmail)}`);
       const data = await res.json();
-      const contenedor = document.getElementById('lista-alertas');
-      if (!data.alertas || !data.alertas.length) {
-        contenedor.innerHTML = '<p class="vacio">Sin alertas recientes</p>';
-        document.getElementById('stat-alertas').textContent = '0';
-        return;
-      }
-      const esteMes = data.alertas.filter(a => {
-        const f = new Date(a.created_at + 'Z'); const n = new Date();
-        return f.getMonth() === n.getMonth() && f.getFullYear() === n.getFullYear();
+      alertasData = data.alertas || [];
+      const esteMes = alertasData.filter(a => {
+        const d = new Date(a.created_at);
+        const ahora = new Date();
+        return d.getMonth() === ahora.getMonth() && d.getFullYear() === ahora.getFullYear();
       }).length;
       document.getElementById('stat-alertas').textContent = esteMes;
-      contenedor.innerHTML = data.alertas.map(a => `
-        <div class="hist-row">
-          <span class="hist-badge ${getBadgeClass(a.tipo)}">${getBadgeLabel(a.tipo)}</span>
-          <span class="hist-msg">${formatearMensaje(a.mensaje)}</span>
-          <span class="hist-time">${formatearFecha(a.created_at)}</span>
+      renderAlertas();
+    } catch(e) {}
+  }
+
+  function renderAlertas() {
+    if (alertasData.length === 0) { document.getElementById('historial-alertas').innerHTML = ''; return; }
+    document.getElementById('historial-alertas').innerHTML = `
+      <div class="hist-card">
+        <h3>📋 Historial de alertas</h3>
+        ${alertasData.slice(0, 30).map(a => `
+          <div class="hist-item">
+            <span class="hist-badge ${getBadgeClass(a.tipo)}">${getBadgeLabel(a.tipo)}</span>
+            <span class="hist-msg">${a.mensaje || '—'}</span>
+            <span class="hist-fecha">${formatearFecha(a.created_at)}</span>
+          </div>
+        `).join('')}
+      </div>`;
+  }
+
+  function getBadgeClass(tipo) {
+    if (tipo === 'corte_luz') return 'corte_luz';
+    if (tipo === 'corte_internet') return 'corte_internet';
+    if (tipo === 'online') return 'online';
+    return 'offline';
+  }
+
+  function getBadgeLabel(tipo) {
+    if (tipo === 'corte_luz') return '⚡ Corte de luz';
+    if (tipo === 'corte_internet') return '📡 Corte de internet';
+    if (tipo === 'online') return '✅ Reconectado';
+    return 'Sin señal';
+  }
+
+  // ===== SELECTORES =====
+  function actualizarSelectores() {
+    const opciones = dispositivosData.map(d => `<option value="${d.chip_id}">${d.nombre || d.chip_id}</option>`).join('');
+    document.getElementById('selector-chip-renovacion').innerHTML = opciones || '<option value="">Sin dispositivos</option>';
+    document.getElementById('selector-chip-config').innerHTML = opciones || '<option value="">Sin dispositivos</option>';
+  }
+
+  // ===== RENOVACION =====
+  function cargarRenovacion() {
+    const chipId = document.getElementById('selector-chip-renovacion').value;
+    const disp = dispositivosData.find(d => d.chip_id === chipId);
+    if (!disp) { document.getElementById('contenido-renovacion').innerHTML = ''; return; }
+
+    const hoy = new Date(); hoy.setHours(0,0,0,0);
+    const expira = disp.fecha_expiracion ? new Date(disp.fecha_expiracion) : null;
+    const dias = expira ? Math.ceil((expira - hoy) / (1000*60*60*24)) : null;
+    let badgeClass = 'activo', badgeTexto = 'Activo';
+    if (!expira || dias < 0) { badgeClass = 'caducado'; badgeTexto = 'Caducado'; }
+    else if (dias <= 30) { badgeClass = 'caduca'; badgeTexto = `Caduca en ${dias} días`; }
+
+    const extrasActivos = [];
+    if (disp.extra_email_multiple) extrasActivos.push({ nombre: '📧 Email múltiple', expira: disp.extra_email_expira });
+    if (disp.extra_telegram_multiple) extrasActivos.push({ nombre: '📱 Telegram múltiple', expira: disp.extra_telegram_expira });
+    if (disp.extra_push) extrasActivos.push({ nombre: '🔔 Push notifications', expira: disp.extra_push_expira });
+    if (disp.extra_sms) extrasActivos.push({ nombre: '💬 SMS', expira: disp.extra_sms_expira });
+
+    const extras = [
+      { id: 'email', nombre: 'Email múltiple', desc: 'Hasta 3 emails adicionales por alerta', precio_anual: 5, precio_mensual: 0.50, campo: 'extra_email_multiple' },
+      { id: 'telegram', nombre: 'Telegram múltiple', desc: 'Alertas a hasta 3 usuarios de Telegram', precio_anual: 5, precio_mensual: 0.50, campo: 'extra_telegram_multiple' },
+      { id: 'push', nombre: 'Push notifications', desc: 'Notificaciones en tu móvil aunque no tengas el navegador abierto', precio_anual: 5, precio_mensual: 0.50, campo: 'extra_push' },
+      { id: 'sms', nombre: 'SMS (máx. 10/mes)', desc: 'Aviso por SMS si llevas más de 15 min sin señal', precio_anual: 10, precio_mensual: 1.00, campo: 'extra_sms' },
+    ];
+
+    const extrasDisponibles = extras.filter(e => !disp[e.campo]);
+
+    document.getElementById('contenido-renovacion').innerHTML = `
+      <div class="info-card">
+        <h3>🔄 Estado del servicio</h3>
+        <span class="badge-servicio ${badgeClass}">${badgeTexto}</span>
+        <p style="font-size:13px;color:#555">
+          ${expira ? `Fecha de expiración: <strong>${formatearFechaSolo(disp.fecha_expiracion)}</strong>` : 'Sin fecha de expiración registrada'}
+        </p>
+        <div class="renovar-btns">
+          <button class="btn-renovar" onclick="solicitarRenovacion('${chipId}', 'anual')">Renovar 1 año — 15€</button>
+          <button class="btn-renovar secondary" onclick="solicitarRenovacion('${chipId}', 'mensual')">Renovar mensual — 1,50€/mes</button>
         </div>
-      `).join('');
-    } catch(e) { document.getElementById('lista-alertas').innerHTML = '<p class="vacio">Error al cargar</p>'; }
+        <div class="solicitud-exito" id="exito-renovacion">✅ Solicitud enviada. Nos pondremos en contacto contigo.</div>
+      </div>
+
+      ${extrasActivos.length > 0 ? `
+        <div class="info-card">
+          <h3>✅ Extras activos</h3>
+          <div class="extras-grid">
+            ${extrasActivos.map(e => `
+              <div class="extra-item">
+                <div class="extra-nombre">${e.nombre}</div>
+                <div class="extra-estado">Activo · Expira: ${formatearFechaSolo(e.expira)}</div>
+              </div>
+            `).join('')}
+          </div>
+        </div>
+      ` : ''}
+
+      ${extrasDisponibles.length > 0 ? `
+        <div class="info-card">
+          <h3>➕ Contratar extras</h3>
+          <div class="periodicidad-sel">
+            <button class="per-btn active" id="per-anual" onclick="setPeriodicidad('anual')">Anual</button>
+            <button class="per-btn" id="per-mensual" onclick="setPeriodicidad('mensual')">Mensual</button>
+          </div>
+          <div id="lista-extras">
+            ${extrasDisponibles.map(e => `
+              <div class="extra-check">
+                <input type="checkbox" id="extra-${e.id}" value="${e.id}" onchange="actualizarPrecio()">
+                <div class="extra-check-info">
+                  <div class="extra-check-nombre">${e.nombre}</div>
+                  <div class="extra-check-desc">${e.desc}</div>
+                </div>
+                <div class="extra-check-precio" id="precio-${e.id}">${e.precio_anual}€/año</div>
+              </div>
+            `).join('')}
+          </div>
+          <div class="precio-total-box">
+            <span class="precio-total-label">Total seleccionado:</span>
+            <span class="precio-total-num" id="precio-total">0€</span>
+          </div>
+          <textarea id="msg-extras" placeholder="Mensaje adicional (opcional)" style="width:100%;padding:10px;border:1.5px solid #eee;border-radius:8px;font-size:13px;resize:none;height:70px;margin-bottom:10px"></textarea>
+          <button class="btn-renovar" onclick="solicitarExtras('${chipId}')">Enviar solicitud</button>
+          <div class="solicitud-exito" id="exito-extras">✅ Solicitud enviada. Nos pondremos en contacto contigo en breve.</div>
+        </div>
+      ` : ''}
+    `;
   }
 
-  function formatearMensaje(m) { return m.replace(/\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}(\.\d+)?/g, f => formatearFecha(f)); }
-  function formatearFecha(iso) {
-    if (!iso) return 'desconocida';
-    const s = iso.endsWith('Z') ? iso : iso + 'Z';
-    return new Date(s).toLocaleString('es-ES', { timeZone: 'Europe/Madrid', day: '2-digit', month: '2-digit', year: 'numeric', hour: '2-digit', minute: '2-digit' });
+  function setPeriodicidad(per) {
+    periodicidadSeleccionada = per;
+    document.getElementById('per-anual').classList.toggle('active', per === 'anual');
+    document.getElementById('per-mensual').classList.toggle('active', per === 'mensual');
+    actualizarPrecio();
   }
 
+  const extrasPrecios = { email: { anual: 5, mensual: 0.50 }, telegram: { anual: 5, mensual: 0.50 }, push: { anual: 5, mensual: 0.50 }, sms: { anual: 10, mensual: 1.00 } };
+
+  function actualizarPrecio() {
+    let total = 0;
+    Object.keys(extrasPrecios).forEach(id => {
+      const cb = document.getElementById(`extra-${id}`);
+      const precioEl = document.getElementById(`precio-${id}`);
+      if (!cb || !precioEl) return;
+      const precio = extrasPrecios[id][periodicidadSeleccionada];
+      precioEl.textContent = periodicidadSeleccionada === 'anual' ? `${precio}€/año` : `${precio}€/mes`;
+      if (cb.checked) total += precio;
+    });
+    const totalEl = document.getElementById('precio-total');
+    if (totalEl) totalEl.textContent = periodicidadSeleccionada === 'anual' ? `${total}€/año` : `${total}€/mes`;
+  }
+
+  async function solicitarRenovacion(chipId, periodicidad) {
+    const precio = periodicidad === 'anual' ? 15 : 1.50;
+    try {
+      const res = await fetch(`${BACKEND}/solicitar-extras`, {
+        method: 'POST', headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ email: sesionEmail, chip_id: chipId, extras: ['renovacion'], periodicidad, precio_total: precio, mensaje: '' })
+      });
+      const data = await res.json();
+      if (data.ok) document.getElementById('exito-renovacion').style.display = 'block';
+    } catch(e) {}
+  }
+
+  async function solicitarExtras(chipId) {
+    const seleccionados = Array.from(document.querySelectorAll('[id^="extra-"]:checked')).map(cb => cb.value);
+    if (seleccionados.length === 0) { alert('Selecciona al menos un extra'); return; }
+    let total = seleccionados.reduce((sum, id) => sum + (extrasPrecios[id]?.[periodicidadSeleccionada] || 0), 0);
+    const mensaje = document.getElementById('msg-extras').value.trim();
+    try {
+      const res = await fetch(`${BACKEND}/solicitar-extras`, {
+        method: 'POST', headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ email: sesionEmail, chip_id: chipId, extras: seleccionados, periodicidad: periodicidadSeleccionada, precio_total: total, mensaje })
+      });
+      const data = await res.json();
+      if (data.ok) document.getElementById('exito-extras').style.display = 'block';
+    } catch(e) {}
+  }
+
+  // ===== CONFIGURACION =====
   function cargarConfigDispositivo() {
     const chipId = document.getElementById('selector-chip-config').value;
     const disp = dispositivosData.find(d => d.chip_id === chipId);
-    if (!disp) return;
+    if (!disp) { document.getElementById('contenido-config').innerHTML = ''; return; }
 
-    const tieneEmailExtra = disp.extra_email_multiple;
-    const tieneTelegramExtra = disp.extra_telegram_multiple;
-    const tieneSMS = disp.extra_sms;
-    const tieneLlamada = false;
-    const tienePush = disp.extra_push;
-    const tieneAlgo = tieneEmailExtra || tieneTelegramExtra || tieneSMS || tienePush;
+    document.getElementById('contenido-config').innerHTML = `
+      <!-- DATOS -->
+      <div class="config-card">
+        <h3>⚙️ Datos del dispositivo</h3>
+        <p>Cambia el nombre del dispositivo o tu contraseña de acceso al panel.</p>
+        <div class="config-exito" id="cfg-datos-exito">✅ Guardado correctamente</div>
+        <label class="config-label">Nombre del dispositivo</label>
+        <input class="config-input" id="cfg-nuevo-nombre" placeholder="ej: Casa, Oficina, Almacén" value="${disp.nombre || ''}">
+        <label class="config-label">Nueva contraseña del panel</label>
+        <input class="config-input" id="cfg-nuevo-password" type="password" placeholder="Dejar vacío para no cambiarla">
+        <button class="btn-guardar-config" onclick="guardarDatosDispositivo('${chipId}')">Guardar cambios</button>
+      </div>
 
-    document.getElementById('cfg-email-card').style.display = tieneEmailExtra ? 'block' : 'none';
-    document.getElementById('cfg-telegram-card').style.display = tieneTelegramExtra ? 'block' : 'none';
-    document.getElementById('cfg-sms-card').style.display = tieneSMS ? 'block' : 'none';
+      <!-- EMAIL EXTRA -->
+      ${disp.extra_email_multiple ? `
+        <div class="config-card">
+          <h3>📧 Emails adicionales</h3>
+          <p>Configura hasta 3 emails adicionales que recibirán las alertas.</p>
+          <div class="config-exito" id="cfg-email-exito">✅ Guardado correctamente</div>
+          ${[1,2,3].map(i => {
+            const emails = (disp.extra_emails || '').split(',');
+            return `<input class="config-input" id="cfg-email${i}" type="email" placeholder="Email extra ${i}" value="${(emails[i-1]||'').trim()}">`;
+          }).join('')}
+          <button class="btn-guardar-config" onclick="guardarEmails('${chipId}')">Guardar emails</button>
+        </div>
+      ` : ''}
 
-    document.getElementById('cfg-push-card').style.display = tienePush ? 'block' : 'none';
-    document.getElementById('cfg-sin-extras').style.display = tieneAlgo ? 'none' : 'block';
+      <!-- TELEGRAM -->
+      ${disp.telegram_activo ? `
+        <div class="config-card">
+          <h3>📱 Telegram</h3>
+          <p>Para vincular tu cuenta de Telegram, busca el bot <strong>@alertaluz_magu_bot</strong> y escribe:</p>
+          <div style="background:#1a1a2e;color:#4ade80;font-family:monospace;font-size:13px;padding:12px;border-radius:8px;margin-bottom:12px">/vincular ${sesionEmail}</div>
+          ${disp.extra_telegram_multiple ? `
+            <p style="margin-top:8px">Chat IDs adicionales:</p>
+            ${[1,2,3].map(i => {
+              const ids = (disp.extra_telegram_ids || '').split(',');
+              return `<input class="config-input" id="cfg-tg${i}" placeholder="Chat ID extra ${i}" value="${(ids[i-1]||'').trim()}">`;
+            }).join('')}
+            <button class="btn-guardar-config" onclick="guardarTelegram('${chipId}')">Guardar Telegram</button>
+            <div class="config-exito" id="cfg-tg-exito">✅ Guardado correctamente</div>
+          ` : ''}
+        </div>
+      ` : ''}
 
-    if (tieneEmailExtra) {
-      const emails = (disp.extra_emails || '').split(',').map(e => e.trim());
-      document.getElementById('cfg-email1').value = emails[0] || '';
-      document.getElementById('cfg-email2').value = emails[1] || '';
-      document.getElementById('cfg-email3').value = emails[2] || '';
-    }
-    if (tieneTelegramExtra) {
-      const ids = (disp.extra_telegram_ids || '').split(',').map(e => e.trim());
-      document.getElementById('cfg-tg1').value = ids[0] || '';
-      document.getElementById('cfg-tg2').value = ids[1] || '';
-      document.getElementById('cfg-tg3').value = ids[2] || '';
-    }
-    if (tieneSMS) {
-      document.getElementById('cfg-sms-tel').value = disp.extra_sms_telefono || '';
-      document.getElementById('cfg-sms-tiempo').value = disp.extra_sms_tiempo || 0;
-      const usados = disp.extra_sms_usados || 0;
-      const limite = disp.extra_sms_limite || 10;
-      const pct = Math.min(100, Math.round(usados / limite * 100));
-      document.getElementById('cfg-sms-uso-texto').textContent = `SMS usados este mes: ${usados} de ${limite}`;
-      document.getElementById('cfg-sms-uso-bar').style.width = pct + '%';
-      document.getElementById('cfg-sms-uso-bar').style.background = pct > 80 ? '#e74c3c' : '#1565C0';
-    }
+      <!-- SMS -->
+      ${disp.extra_sms ? `
+        <div class="config-card">
+          <h3>💬 SMS</h3>
+          <p>Configura el teléfono que recibirá los SMS de alerta.</p>
+          <div class="config-exito" id="cfg-sms-exito">✅ Guardado correctamente</div>
+          <label class="config-label">Teléfono</label>
+          <input class="config-input" id="cfg-sms-tel" placeholder="+34 600 000 000" value="${disp.extra_sms_telefono || ''}">
+          <div style="background:#f0f4ff;border-radius:8px;padding:10px;font-size:12px;color:#1565C0;margin-bottom:10px">
+            SMS usados este mes: <strong>${disp.extra_sms_usados || 0}</strong> de <strong>${disp.extra_sms_limite || 10}</strong>
+          </div>
+          <button class="btn-guardar-config" onclick="guardarSMS('${chipId}')">Guardar teléfono</button>
+        </div>
+      ` : ''}
 
-    // Siempre mostrar datos y wifi
-    cargarDatosDispositivo();
+      <!-- PUSH -->
+      ${disp.extra_push ? `
+        <div class="config-card">
+          <h3>🔔 Push notifications</h3>
+          <p>Recibe notificaciones instantáneas en tu móvil aunque no tengas el navegador abierto.</p>
+          <div id="push-estado-texto">
+            ${typeof Notification !== 'undefined' && Notification.permission === 'granted'
+              ? '<span style="color:#27ae60;font-weight:600">✅ Notificaciones activadas en este dispositivo</span>'
+              : '<button onclick="registrarPush()" style="background:#1565C0;color:white;border:none;padding:10px 20px;border-radius:8px;font-size:13px;font-weight:600;cursor:pointer;width:100%">Activar notificaciones push</button>'
+            }
+          </div>
+        </div>
+      ` : ''}
 
-    if (tienePush) {
-      const pushEl = document.getElementById('push-estado-texto');
-      if ('Notification' in window) {
-        if (Notification.permission === 'granted') pushEl.innerHTML = '<span style="color:#27ae60;font-weight:600">✅ Notificaciones activadas</span>';
-        else if (Notification.permission === 'denied') pushEl.innerHTML = '<span style="color:#e74c3c">❌ Notificaciones bloqueadas. Ve a ajustes del navegador para permitirlas.</span>';
-        else pushEl.innerHTML = '<span style="color:#e67e22">⚠️ Pendiente de activar. Recarga la página y acepta el permiso de notificaciones.</span>';
-      } else {
-        pushEl.innerHTML = '<span style="color:#888">Tu navegador no soporta notificaciones push.</span>';
-      }
-    }
+      <!-- WIFI -->
+      <div class="config-card">
+        <h3>📶 Cambiar red WiFi</h3>
+        <p>Si has cambiado de router o contraseña WiFi, usa esta opción para reconectar el dispositivo.</p>
+        <div style="background:#fff3e0;border-radius:10px;padding:14px;margin:12px 0;font-size:13px;color:#e65100;line-height:1.6">
+          <b>⚠️ Importante:</b> Al pulsar este botón, en el próximo ping el dispositivo entrará en modo configuración y aparecerá la red <b>AlertaLuz-Config</b> en tu WiFi.
+        </div>
+        <button onclick="solicitarResetWifi('${chipId}')" style="background:#e67e22;color:white;border:none;padding:12px 20px;border-radius:10px;font-size:14px;font-weight:600;cursor:pointer;width:100%">
+          Preparar cambio de WiFi
+        </button>
+        <div id="cfg-wifi-exito" style="display:none;margin-top:10px;background:#e8faf0;border:1px solid #27ae60;color:#27ae60;padding:10px;border-radius:8px;font-size:13px;font-weight:600;text-align:center">
+          ✅ Listo. En el próximo minuto busca la red AlertaLuz-Config en tu WiFi.
+        </div>
+      </div>
+    `;
   }
 
-  async function guardarConfigCliente(datos, exitoId) {
-    const chipId = document.getElementById('selector-chip-config').value;
-    if (!chipId) return;
-    try {
-      const res = await fetch(`${BACKEND}/configurar-dispositivo`, {
-        method: 'POST', headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ email: sesionEmail, chip_id: chipId, ...datos })
-      });
-      const data = await res.json();
-      if (data.ok) {
-        const el = document.getElementById(exitoId);
-        el.style.display = 'block';
-        setTimeout(() => el.style.display = 'none', 3000);
-        await cargarDispositivos();
-        cargarConfigDispositivo();
-      } else alert('Error al guardar');
-    } catch(e) { alert('Error de conexión'); }
-  }
-
-  function guardarEmails() {
-    const emails = [
-      document.getElementById('cfg-email1').value.trim(),
-      document.getElementById('cfg-email2').value.trim(),
-      document.getElementById('cfg-email3').value.trim(),
-    ].filter(Boolean).join(',');
-    guardarConfigCliente({ extra_emails: emails }, 'cfg-email-exito');
-  }
-
-  function guardarTelegrams() {
-    const ids = [
-      document.getElementById('cfg-tg1').value.trim(),
-      document.getElementById('cfg-tg2').value.trim(),
-      document.getElementById('cfg-tg3').value.trim(),
-    ].filter(Boolean).join(',');
-    guardarConfigCliente({ extra_telegram_ids: ids }, 'cfg-telegram-exito');
-  }
-
-  function guardarSMS() {
-    guardarConfigCliente({
-      extra_sms_telefono: document.getElementById('cfg-sms-tel').value.trim(),
-      extra_sms_tiempo: parseInt(document.getElementById('cfg-sms-tiempo').value)
-    }, 'cfg-sms-exito');
-  }
-
-  function cargarDatosDispositivo() {
-    const chipId = document.getElementById('selector-chip-config').value;
-    const disp = dispositivosData.find(d => d.chip_id === chipId);
-    if (!disp) return;
-    document.getElementById('cfg-datos-card').style.display = 'block';
-    document.getElementById('cfg-wifi-card').style.display = 'block';
-    document.getElementById('cfg-nuevo-nombre').value = disp.nombre || '';
-    document.getElementById('cfg-nuevo-password').value = '';
-  }
-
-  async function guardarDatosDispositivo() {
-    const chipId = document.getElementById('selector-chip-config').value;
+  async function guardarDatosDispositivo(chipId) {
     const nuevoNombre = document.getElementById('cfg-nuevo-nombre').value.trim();
     const nuevoPassword = document.getElementById('cfg-nuevo-password').value.trim();
-    if (!chipId) return;
     try {
       const res = await fetch(`${BACKEND}/actualizar-config`, {
         method: 'POST', headers: { 'Content-Type': 'application/json' },
@@ -812,46 +626,112 @@
       const data = await res.json();
       if (data.ok) {
         const el = document.getElementById('cfg-datos-exito');
-        el.style.display = 'block';
-        setTimeout(() => el.style.display = 'none', 3000);
+        if (el) { el.style.display = 'block'; setTimeout(() => el.style.display = 'none', 3000); }
         await cargarDispositivos();
       } else alert('Error al guardar');
     } catch(e) { alert('Error de conexión'); }
   }
 
-  async function solicitarResetWifi() {
-    const chipId = document.getElementById('selector-chip-config').value;
-    if (!chipId) return;
+  async function guardarEmails(chipId) {
+    const emails = [1,2,3].map(i => document.getElementById(`cfg-email${i}`)?.value.trim()).filter(Boolean).join(',');
+    try {
+      const res = await fetch(`${BACKEND}/configurar-dispositivo`, {
+        method: 'POST', headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ email: sesionEmail, chip_id: chipId, extra_emails: emails })
+      });
+      const data = await res.json();
+      if (data.ok) {
+        const el = document.getElementById('cfg-email-exito');
+        if (el) { el.style.display = 'block'; setTimeout(() => el.style.display = 'none', 3000); }
+      } else alert('Error al guardar');
+    } catch(e) { alert('Error de conexión'); }
+  }
+
+  async function guardarTelegram(chipId) {
+    const ids = [1,2,3].map(i => document.getElementById(`cfg-tg${i}`)?.value.trim()).filter(Boolean).join(',');
+    try {
+      const res = await fetch(`${BACKEND}/configurar-dispositivo`, {
+        method: 'POST', headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ email: sesionEmail, chip_id: chipId, extra_telegram_ids: ids })
+      });
+      const data = await res.json();
+      if (data.ok) {
+        const el = document.getElementById('cfg-tg-exito');
+        if (el) { el.style.display = 'block'; setTimeout(() => el.style.display = 'none', 3000); }
+      } else alert('Error al guardar');
+    } catch(e) { alert('Error de conexión'); }
+  }
+
+  async function guardarSMS(chipId) {
+    const tel = document.getElementById('cfg-sms-tel')?.value.trim();
+    try {
+      const res = await fetch(`${BACKEND}/configurar-dispositivo`, {
+        method: 'POST', headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ email: sesionEmail, chip_id: chipId, extra_sms_telefono: tel })
+      });
+      const data = await res.json();
+      if (data.ok) {
+        const el = document.getElementById('cfg-sms-exito');
+        if (el) { el.style.display = 'block'; setTimeout(() => el.style.display = 'none', 3000); }
+      } else alert('Error al guardar');
+    } catch(e) { alert('Error de conexión'); }
+  }
+
+  async function solicitarResetWifi(chipId) {
     if (!confirm('¿Confirmas que quieres preparar el cambio de WiFi? El dispositivo entrará en modo configuración en el próximo minuto.')) return;
     try {
-      const res = await fetch(`${BACKEND}/admin/dispositivo/comando`, {
-        method: 'POST', headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ clave: 'cliente_' + sesionEmail, chip_id: chipId, comando: 'reset_wifi' })
-      });
-      // Usamos endpoint propio del cliente
-      const res2 = await fetch(`${BACKEND}/solicitar-reset-wifi`, {
+      const res = await fetch(`${BACKEND}/solicitar-reset-wifi`, {
         method: 'POST', headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ email: sesionEmail, chip_id: chipId })
       });
-      const data = await res2.json();
+      const data = await res.json();
       if (data.ok) {
-        document.getElementById('cfg-wifi-exito').style.display = 'block';
+        const el = document.getElementById('cfg-wifi-exito');
+        if (el) el.style.display = 'block';
       } else alert('Error al enviar comando');
     } catch(e) { alert('Error de conexión'); }
   }
 
-  function getBadgeClass(tipo) {
-    if (tipo === 'offline') return 'offline';
-    if (tipo === 'corte_luz') return 'corte_luz';
-    if (tipo === 'corte_internet') return 'corte_internet';
-    return 'online';
+  // ===== PUSH =====
+  async function registrarPush() {
+    try {
+      if (!window.OneSignalDeferred) return;
+      OneSignalDeferred.push(async function(OneSignal) {
+        const permiso = await OneSignal.Notifications.requestPermission();
+        if (!permiso) return;
+        let subId = null;
+        for (let i = 0; i < 10; i++) {
+          subId = OneSignal.User.PushSubscription.id;
+          if (subId) break;
+          await new Promise(r => setTimeout(r, 500));
+        }
+        if (!subId) return;
+        const chipId = document.getElementById('selector-chip-config')?.value;
+        if (!chipId) return;
+        await fetch(`${BACKEND}/onesignal/registrar`, {
+          method: 'POST', headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ email: sesionEmail, chip_id: chipId, subscription_id: subId })
+        });
+        const el = document.getElementById('push-estado-texto');
+        if (el) el.innerHTML = '<span style="color:#27ae60;font-weight:600">✅ Notificaciones activadas en este dispositivo</span>';
+      });
+    } catch(e) {}
   }
 
-  function getBadgeLabel(tipo) {
-    if (tipo === 'offline') return 'Sin señal';
-    if (tipo === 'corte_luz') return '⚡ Corte de luz';
-    if (tipo === 'corte_internet') return '📡 Corte de internet';
-    return '✅ Reconectado';
+  // ===== UTILS =====
+  function formatearFecha(isoString) {
+    if (!isoString) return '—';
+    const iso = isoString.endsWith('Z') ? isoString : isoString + 'Z';
+    return new Date(iso).toLocaleString('es-ES', {
+      timeZone: 'Europe/Madrid', day: '2-digit', month: '2-digit', year: 'numeric',
+      hour: '2-digit', minute: '2-digit'
+    });
+  }
+
+  function formatearFechaSolo(d) {
+    if (!d) return '—';
+    const [y,m,dd] = d.split('-');
+    return `${dd}/${m}/${y}`;
   }
 </script>
 </body>
